@@ -5,7 +5,7 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="ScneraioEditorExtend">
+    <Filter Include="ScenarioEditorExtend">
       <UniqueIdentifier>{3880d018-2395-4502-abfe-4b83e0817aab}</UniqueIdentifier>
     </Filter>
     <Filter Include="Internal">
@@ -20,30 +20,30 @@
       <Filter>Internal</Filter>
     </ClInclude>
     <ClInclude Include="TerrainTest.h">
-      <Filter>ScneraioEditorExtend</Filter>
+      <Filter>ScenarioEditorExtend</Filter>
     </ClInclude>
     <ClInclude Include="ScenarioCustomization.h">
-      <Filter>ScneraioEditorExtend</Filter>
+      <Filter>ScenarioEditorExtend</Filter>
     </ClInclude>
     <ClInclude Include="ScenarioCustomizationItem.h">
-      <Filter>ScneraioEditorExtend</Filter>
+      <Filter>ScenarioEditorExtend</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
-      <Filter>ScneraioEditorExtend</Filter>
+      <Filter>ScenarioEditorExtend</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Internal</Filter>
     </ClCompile>
     <ClCompile Include="TerrainTest.cpp">
-      <Filter>ScneraioEditorExtend</Filter>
+      <Filter>ScenarioEditorExtend</Filter>
     </ClCompile>
     <ClCompile Include="ScenarioCustomization.cpp">
-      <Filter>ScneraioEditorExtend</Filter>
+      <Filter>ScenarioEditorExtend</Filter>
     </ClCompile>
     <ClCompile Include="ScenarioCustomizationItem.cpp">
-      <Filter>ScneraioEditorExtend</Filter>
+      <Filter>ScenarioEditorExtend</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
