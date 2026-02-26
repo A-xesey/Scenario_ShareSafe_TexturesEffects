@@ -30,7 +30,8 @@ void ScenarioCustomization::InitItems(IWindow* window)
 	{
 		Math::Rectangle areaWin = window->GetRealArea();
 		float widthWin = areaWin.right - areaWin.left;
-		int columns = (int)((widthWin + ITEM_MARGIN) / ITEM_WIDTH);
+		float heightWin = areaWin.bottom - areaWin.top;
+		columns = (int)((widthWin + ITEM_MARGIN) / ITEM_WIDTH);
 		if (columns < 1) columns = 1;
 
 		vector<uint32_t> textures;
