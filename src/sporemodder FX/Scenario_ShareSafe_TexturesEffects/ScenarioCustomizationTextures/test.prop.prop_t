@@ -1,7 +1,0 @@
-texts PlanetCustomizationName
-	"test name"
-end
-
-key PlanetCustomizationImage global_ui_tribe~!dialog-bkgrnd.png
-
-key PlanetCustomizationDirectory global_ui_tribe~!dialog-bkgrnd.png
