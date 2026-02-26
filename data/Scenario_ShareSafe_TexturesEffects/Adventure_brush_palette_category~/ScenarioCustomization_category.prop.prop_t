@@ -1,0 +1,16 @@
+key paletteCategoryLayoutFile PlanetCustomizationPaletteCategory
+keys paletteCategoryIconList
+	ScenarioEditor!0x1380D080.png
+	ScenarioEditor!0x40EB7459.png
+	ScenarioEditor!0xBFD4264E.png
+	ScenarioEditor!0x1380D080.png
+	ScenarioEditor!0xBAD41E2D.png
+	ScenarioEditor!0x40EB7459.png
+	ScenarioEditor!0x9A03957E.png
+	ScenarioEditor!0xBAD41E2D.png
+	ScenarioEditor!0x40EB7459.png
+end
+texts paletteCategoryName
+	"Planet Custom"
+end
+uint32 paletteCategorySequenceNumber 500

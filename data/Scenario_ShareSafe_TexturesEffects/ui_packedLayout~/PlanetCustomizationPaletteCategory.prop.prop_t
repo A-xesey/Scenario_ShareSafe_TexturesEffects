@@ -1,0 +1,3 @@
+keys preloadTextures
+	graphics_atlas~!NoGroup_sculpt-SculptPaletteCategory-00
+end
