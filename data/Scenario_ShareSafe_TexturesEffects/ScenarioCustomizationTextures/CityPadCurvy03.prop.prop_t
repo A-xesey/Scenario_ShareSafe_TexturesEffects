@@ -1,0 +1,8 @@
+# "Directory"????
+key PlanetCustomizationDirectory citypad_curvy03
+
+key PlanetCustomizationImage citypad_curvy03.rw4 #remove, should look for ScenarioCustomizationTextures!CityPadCurvy03.png
+
+texts PlanetCustomizationName
+	"City Pad - Curvy 3"
+end

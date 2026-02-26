@@ -1,0 +1,8 @@
+# "Directory"????
+key PlanetCustomizationDirectory sg_solar_surface_a
+
+key PlanetCustomizationImage sg_solar_surface_a.rw4 #remove, should look for ScenarioCustomizationTextures!Lizard.png
+
+texts PlanetCustomizationName
+	"Lizard"
+end

@@ -1,0 +1,8 @@
+# "Directory"????
+key PlanetCustomizationDirectory tv_static
+
+key PlanetCustomizationImage tv_static.rw4 #remove, should look for ScenarioCustomizationTextures!StaticNoise.png
+
+texts PlanetCustomizationName
+	"Static Noise"
+end

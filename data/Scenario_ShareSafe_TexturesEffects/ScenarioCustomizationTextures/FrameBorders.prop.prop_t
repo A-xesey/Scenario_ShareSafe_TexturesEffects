@@ -1,0 +1,8 @@
+# "Directory"????
+key PlanetCustomizationDirectory rollover~!bubble-caption.png
+
+key PlanetCustomizationImage rollover~!bubble-caption.png #remove, should look for ScenarioCustomizationTextures!FrameBorders.png
+
+texts PlanetCustomizationName
+	"Frame Borders"
+end

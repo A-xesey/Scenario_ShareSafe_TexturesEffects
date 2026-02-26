@@ -1,0 +1,8 @@
+# "Directory"????
+key PlanetCustomizationDirectory ww
+
+key PlanetCustomizationImage ww.rw4 #remove, should look for ScenarioCustomizationTextures!ww.png
+
+texts PlanetCustomizationName
+	"Will"
+end
