@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 
-ScenarioCustomizationItem::ScenarioCustomizationItem()
+ScenarioCustomizationItem::ScenarioCustomizationItem() : btnWindow(nullptr)
 {
 
 }
@@ -37,30 +37,49 @@ std::u16string uintToString(const unsigned int& i) {
 	return std::u16string(s.begin(), s.end());
 }
 
-void ScenarioCustomizationItem::SetCustomizationAndImage(const App::PropertyList& propList)
+void ScenarioCustomizationItem::SetCustomizationAndImage(const App::PropertyList& propList, IWinProc* handler)
 {
 	this->LoadByID(id("PlanetCustomizationItem"));
 
-	ResourceKey CustomizationID;
-	ResourceKey Thumbnail;
-	LocalizedString name;
-	App::Property::GetKey(&propList, id("PlanetCustomizationDirectory"), CustomizationID);
-	App::Property::GetKey(&propList, id("PlanetCustomizationImage"), Thumbnail);
+	App::Property::GetKey(&propList, id("PlanetCustomizationDirectory"), customizationID);
+	App::Property::GetKey(&propList, id("PlanetCustomizationImage"), thumbnail);
 	App::Property::GetText(&propList, id("PlanetCustomizationName"), name);
 	IWindowPtr winThumb = this->FindWindowByID(id("PlanetCustomizationItemThumbnail"));
-	if (winThumb != nullptr && Thumbnail.instanceID != 0)
-		UTFWin::Image::SetBackgroundByKey(winThumb.get(), Thumbnail);
+	if (winThumb != nullptr && thumbnail.instanceID != 0)
+		UTFWin::Image::SetBackgroundByKey(winThumb.get(), thumbnail);
 
 	IWindowPtr winButton = this->FindWindowByID(id("PlanetCustomizationItem"));
-	if (winButton != nullptr && name.GetText() != nullptr)
+	if (winButton != nullptr)
+	{
+		App::ConsolePrintF("winButton");
 		winButton->SetCaption(name.GetText());
+		winButton->AddWinProc(handler);
+		btnWindow = winButton.get();
+	}
 
 	IWindowPtr winDirectory = this->FindWindowByID(id("PlanetCustomizationItemDirectory"));
-	if (winDirectory != nullptr && CustomizationID.instanceID != 0)
+	if (winDirectory != nullptr && customizationID.instanceID != 0)
 	{
-		std::u16string CustomizationIDString = uintToString(CustomizationID.groupID) + u"!" + uintToString(CustomizationID.instanceID) + u"." + uintToString(CustomizationID.typeID);
+		std::u16string CustomizationIDString = uintToString(customizationID.groupID) + u"!" + uintToString(customizationID.instanceID) + u"." + uintToString(customizationID.typeID);
 		winDirectory->SetCaption(CustomizationIDString.c_str());
 	}
+}
+
+ResourceKey* ScenarioCustomizationItem::GetCustomizationID()
+{
+	return &customizationID;
+}
+ResourceKey* ScenarioCustomizationItem::GetThumbnail()
+{
+	return &thumbnail;
+}
+LocalizedString* ScenarioCustomizationItem::GetName()
+{
+	return &name;
+}
+IWindow* ScenarioCustomizationItem::GetButtonWindow() const
+{
+	return btnWindow;
 }
 
 // For internal use, do not modify.

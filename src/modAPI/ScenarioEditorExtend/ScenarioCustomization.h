@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Spore\BasicIncludes.h>
+#include "ScenarioCustomizationItem.h"
 
 #define ScenarioCustomizationPtr intrusive_ptr<ScenarioCustomization>
 
@@ -11,13 +12,17 @@ class ScenarioCustomization
 	: public IWinProc
 	, public DefaultRefCounted
 {
+protected:
+	vector<ScenarioCustomizationItemPtr> items;
+	bool initialized;
+	uint32_t openedWinID;
 public:
 	static const uint32_t TYPE = id("ScenarioCustomization");
 	
 	ScenarioCustomization();
 	~ScenarioCustomization();
 
-	virtual void InitItems(UTFWin::IWindow* window);
+	virtual void InitItems(IWindow* window);
 
 	int AddRef() override;
 	int Release() override;

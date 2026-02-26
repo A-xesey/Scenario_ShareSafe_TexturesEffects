@@ -24,14 +24,15 @@ member_detour(PaletteCategoryUI_Load, PaletteCategoryUI, void(PaletteCategory*, 
 	void detoured(PaletteCategory* pCategory, UTFWin::IWindow* pWindow, PaletteInfo* pInfo)
 	{
 		original_function(this, pCategory, pWindow, pInfo);
+		IWindowPtr items = this->mpLayout->FindWindowByID(id("PlanetCustomizationItems"));
+		if (items == nullptr) return; // fix for a copy on (0,0)
 		IWindowPtr button = this->mpLayout->FindWindowByID(id("PlanetCustomizationTextureButton"));
 		IWindowPtr panel = this->mpLayout->FindWindowByID(id("PlanetCustomizationPanel"));
-		IWindowPtr items = this->mpLayout->FindWindowByID(id("PlanetCustomizationItems"));
-		winProc = new ScenarioCustomization();
+		if (winProc == nullptr) winProc = new ScenarioCustomization();
+		winProc->InitItems(items.get());
 		if (button != nullptr) button->AddWinProc(winProc.get());
 		if (panel != nullptr) panel->AddWinProc(winProc.get());
 		if (items != nullptr) items->AddWinProc(winProc.get());
-		winProc->InitItems(items.get());
 	}
 };
 

@@ -11,13 +11,22 @@ class ScenarioCustomizationItem
 	: public UILayout
 	, public DefaultRefCounted
 {
+protected:
+	ResourceKey customizationID;
+	ResourceKey thumbnail;
+	LocalizedString name;
+	IWindow* btnWindow;
 public:
 	static const uint32_t TYPE = id("ScenarioCustomizationItem");
 	
 	ScenarioCustomizationItem();
 	~ScenarioCustomizationItem();
 
-	virtual void SetCustomizationAndImage(const App::PropertyList&);
+	virtual void SetCustomizationAndImage(const App::PropertyList&, IWinProc* handler);
+	virtual ResourceKey* GetCustomizationID();
+	virtual ResourceKey* GetThumbnail();
+	virtual LocalizedString* GetName();
+	IWindow* GetButtonWindow() const;
 
 	int AddRef() override;
 	int Release() override;

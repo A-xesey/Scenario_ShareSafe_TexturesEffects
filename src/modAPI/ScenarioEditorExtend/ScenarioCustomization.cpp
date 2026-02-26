@@ -8,39 +8,72 @@ using namespace Simulator;
 using namespace Terrain;
 using namespace App;
 
-bool isInit = false;
-
-void ScenarioCustomization::InitItems(UTFWin::IWindow* window)
-{
-	if (!isInit)
-	{
-		vector<uint32_t> textures;
-		PropManager.GetPropertyListIDs(id("ScenarioCustomizationTextures"), textures);
-		if (textures.size() != 0)
-		{
-			for (const uint32_t& texture : textures)
-			{
-				PropertyListPtr propList;
-				PropManager.GetPropertyList(texture, id("ScenarioCustomizationTextures"), propList);
-				if (propList != nullptr)
-				{
-					ScenarioCustomizationItem* item = new ScenarioCustomizationItem();
-					item->SetCustomizationAndImage(*propList.get());
-					item->SetParentWindow(window);
-					item->FindWindowByID(id("PlanetCustomizationItem"))->AddWinProc(this);
-				}
-			}
-		}
-	}
-	isInit = true;
+namespace {
+	const float	GRID_START_X = 0.0f;
+	const float	GRID_START_Y = 0.0f;
+	const float	ITEM_MARGIN = 10.0f;//TBD
+	const float	ITEM_WIDTH = 64.0f + ITEM_MARGIN;//TBD
+	const float	ITEM_HEIGHT = 64.0f + ITEM_MARGIN;//TBD
 }
 
-ScenarioCustomization::ScenarioCustomization()
+ScenarioCustomization::ScenarioCustomization() : initialized(false), openedWinID(0)
 {
 }
 
 ScenarioCustomization::~ScenarioCustomization()
 {
+}
+
+void ScenarioCustomization::InitItems(IWindow* window)
+{
+	if (!initialized && window != nullptr)
+	{
+		Math::Rectangle areaWin = window->GetRealArea();
+		float widthWin = areaWin.right - areaWin.left;
+		int columns = (int)((widthWin + ITEM_MARGIN) / ITEM_WIDTH);
+		if (columns < 1) columns = 1;
+
+		vector<uint32_t> textures;
+		PropManager.GetPropertyListIDs(id("ScenarioCustomizationTextures"), textures);
+		if (!textures.empty())
+		{
+			int index = 0;
+			for (const uint32_t& texture : textures)
+			{
+				PropertyListPtr propList;
+				if (PropManager.GetPropertyList(texture, id("ScenarioCustomizationTextures"), propList))
+				{
+					ScenarioCustomizationItem* item = new ScenarioCustomizationItem();
+					item->SetCustomizationAndImage(*propList.get(), this);
+					item->SetParentWindow(window);
+
+					int row = index / columns;
+					int col = index % columns;
+					float xPosition = GRID_START_X + (col * ITEM_WIDTH);
+					float yPosition = GRID_START_Y + (row * ITEM_HEIGHT);
+
+					IWindow* itemWin = item->FindWindowByID(id("PlanetCustomizationItem"));
+					if (itemWin != nullptr)
+					{
+						Math::Rectangle areaItem = itemWin->GetArea();
+
+						float width = areaItem.right - areaItem.left;
+						float height = areaItem.bottom - areaItem.top;
+						areaItem.left = xPosition;
+						areaItem.top = yPosition;
+						areaItem.right = xPosition + width;
+						areaItem.bottom = yPosition + height;
+
+						itemWin->SetArea(areaItem);
+					}
+
+					items.push_back(item);
+					index++;
+				}
+			}
+		}
+	}
+	initialized = true;
 }
 
 // For internal use, do not modify.
@@ -84,11 +117,21 @@ unsigned long uintFromString(const std::u16string& i)
 bool ScenarioCustomization::HandleUIMessage(IWindow* window, const Message& message)
 {
 	if (message.IsType(UTFWin::kMsgButtonClick))
-	{
+	{ // move id("PlanetCustomizationTextureButton") to .h later
 		if (message.source->GetControlID() == id("PlanetCustomizationTextureButton"))
 		{
-			message.source->GetParent()->FindWindowByID(id("PlanetCustomizationPanel"))->SetVisible(true);
-			message.source->GetParent()->FindWindowByID(id("PlanetCustomizationItems"))->SetVisible(true);
+			if (openedWinID != id("PlanetCustomizationTextureButton"))
+			{
+				message.source->GetParent()->FindWindowByID(id("PlanetCustomizationPanel"))->SetVisible(true);
+				message.source->GetParent()->FindWindowByID(id("PlanetCustomizationItems"))->SetVisible(true);
+				openedWinID = id("PlanetCustomizationTextureButton");
+			}
+			else
+			{
+				message.source->GetParent()->FindWindowByID(id("PlanetCustomizationPanel"))->SetVisible(false);
+				message.source->GetParent()->FindWindowByID(id("PlanetCustomizationItems"))->SetVisible(false);
+				openedWinID = 0;
+			}
 		}
 		else if (message.source->GetControlID() == id("PlanetCustomizationItem"))
 		{
