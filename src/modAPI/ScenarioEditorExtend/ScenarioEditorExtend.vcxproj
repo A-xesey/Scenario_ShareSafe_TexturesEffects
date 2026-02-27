@@ -98,20 +98,13 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ScenarioCustomization.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="ScenarioCustomizationItem.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
+    <ClInclude Include="WinScrollbar.h" />
+    <ClInclude Include="ScenarioCustomization.h" />
+    <ClInclude Include="ScenarioCustomizationItem.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="TerrainTest.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
+    <ClInclude Include="TerrainTest.h" />
+    <ClInclude Include="WinGrid.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -122,22 +115,13 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ScenarioCustomization.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="ScenarioCustomizationItem.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
+    <ClCompile Include="ScenarioCustomization.cpp" />
+    <ClCompile Include="ScenarioCustomizationItem.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TerrainTest.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
+    <ClCompile Include="TerrainTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SdkPathConfig.props" />

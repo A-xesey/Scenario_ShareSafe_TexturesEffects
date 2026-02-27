@@ -11,6 +11,12 @@
     <Filter Include="Internal">
       <UniqueIdentifier>{d62ad12d-69d8-4933-8342-03043c9adc22}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Spore">
+      <UniqueIdentifier>{6a9b3917-9557-49e3-9f81-f9c32fb55147}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Spore\UTFWin">
+      <UniqueIdentifier>{5e7085ee-dc3e-416f-b548-ea4cb89a748b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -19,14 +25,20 @@
     <ClInclude Include="stdafx.h">
       <Filter>Internal</Filter>
     </ClInclude>
-    <ClInclude Include="TerrainTest.h">
-      <Filter>ScenarioEditorExtend</Filter>
-    </ClInclude>
     <ClInclude Include="ScenarioCustomization.h">
       <Filter>ScenarioEditorExtend</Filter>
     </ClInclude>
     <ClInclude Include="ScenarioCustomizationItem.h">
       <Filter>ScenarioEditorExtend</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainTest.h">
+      <Filter>ScenarioEditorExtend</Filter>
+    </ClInclude>
+    <ClInclude Include="WinGrid.h">
+      <Filter>Spore\UTFWin</Filter>
+    </ClInclude>
+    <ClInclude Include="WinScrollbar.h">
+      <Filter>Spore\UTFWin</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -36,13 +48,13 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Internal</Filter>
     </ClCompile>
-    <ClCompile Include="TerrainTest.cpp">
-      <Filter>ScenarioEditorExtend</Filter>
-    </ClCompile>
     <ClCompile Include="ScenarioCustomization.cpp">
       <Filter>ScenarioEditorExtend</Filter>
     </ClCompile>
     <ClCompile Include="ScenarioCustomizationItem.cpp">
+      <Filter>ScenarioEditorExtend</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainTest.cpp">
       <Filter>ScenarioEditorExtend</Filter>
     </ClCompile>
   </ItemGroup>
