@@ -57,6 +57,12 @@
     <ClCompile Include="TerrainTest.cpp">
       <Filter>ScenarioEditorExtend</Filter>
     </ClCompile>
+    <ClCompile Include="WinGrid.cpp">
+      <Filter>Spore\UTFWin</Filter>
+    </ClCompile>
+    <ClCompile Include="AddressesWinGrid.cpp">
+      <Filter>Spore\UTFWin</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="SdkPathConfig.props" />
