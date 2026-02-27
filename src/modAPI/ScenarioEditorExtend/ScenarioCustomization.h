@@ -15,6 +15,10 @@ class ScenarioCustomization
 protected:
 	vector<ScenarioCustomizationItemPtr> items;
 	bool initialized;
+	float scrollCurrent = 0.0f;
+	float scrollMax = 0.0f;
+	int rows = 1;
+	int columns = 1;
 	uint32_t openedWinID;
 public:
 	static const uint32_t TYPE = id("ScenarioCustomization");
