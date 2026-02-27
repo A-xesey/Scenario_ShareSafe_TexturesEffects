@@ -52,8 +52,10 @@ void ScenarioCustomizationItem::SetCustomizationAndImage(const App::PropertyList
 	if (winButton != nullptr)
 	{
 		App::ConsolePrintF("winButton");
-		winButton->SetCaption(name.GetText());
+		//winButton->SetCaption(name.GetText());
+		SporeTooltipWinProcPtr tooltip = new UTFWin::SporeTooltipWinProc(u"tooltips", 0x3754E6C, name.GetText(), Math::Point(0, 30.0f), TooltipBehaviour::Default, u"", 0x3754E6C);
 		winButton->AddWinProc(handler);
+		winButton->AddWinProc(tooltip.get());
 		btnWindow = winButton.get();
 	}
 

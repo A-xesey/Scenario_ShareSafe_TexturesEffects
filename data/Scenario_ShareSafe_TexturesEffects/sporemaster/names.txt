@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 ScenarioCustomizationProps
 Gears
 auto_ScenarioCustomizationTextures_Knots
@@ -34,8 +35,79 @@ graphics_atlas~	0x31a44893
 WW
 ScenarioEditor
 sporemaster
+=======
+CityPadCurvy03
+auto_Adventure_brush_palette_category~_ScenarioCustomization_category
+NoGroup_sculpt-SculptPaletteCategory-00
+editor_rigblock~	0x40606000
+auto_ui_packedLayout~_PlanetCustomizationPaletteCategory
+auto_Adventure_brush_palette~_ScenarioCustomization_pagescore
+ScenarioCustomizationTextures
+WW
+ToolBag
+Tech~	0xa5b2d4bf
+Drapery
+palette_config~	0x406b0100
+global_ui_creature~	0x106c7116
+PlanetCustomizationItem
+ScenarioCustomization_category
+TemplatePaletteScenarioPaintPage
+auto_Adventure_brush_palette_pages~_ScenarioCustomization_page
+ui_packedLayout~	0x40464200
+ScenarioCustomizationEffects
+citypad_curvy03
+auto_ScenarioCustomizationTextures_WW
+PlanetCustomizationItemDirectory
+auto_ScenarioCustomizationTextures_Drapery
+auto_ScenarioCustomizationTextures_StaticNoise
+PlanetCustomizationItemThumbnail
+sg_solar_surface_a
+AssetBrowserGraphics
+tt_bag_field_01
+PlanetCustomizationPanel
+tv_static
+rollover~	0x199b485
+sporemaster
+auto_ScenarioCustomizationTextures_CityPadCurvy03
+cr-mission-description-win
+Lizard
+PlanetCustomizationItems
+auto_ScenarioCustomizationTextures_Lizard
+auto_palette_config~_TemplatePaletteScenarioPaintPage
+EP1_chainlink
+gear_largeRock1
+ExpansionPack1
+test
+Chains
+auto_ScenarioCustomizationTextures_test
+0
+dialog-bkgrnd
+StaticNoise
+Tech
+Neon
+graphics_atlas~	0x31a44893
+Knots
+EP1_draperyBlack
+auto_ScenarioCustomizationTextures_Bumps
+auto_palette_config~_TemplatePaletteScenarioSculptCategory
+bubble-caption
+auto_ScenarioCustomizationTextures_Paper
+ScenarioEditor
+>>>>>>> Stashed changes
 PlanetCustomizationTextureButton
+FrameBorders
+auto_ScenarioCustomizationTextures_FrameBorders
+Gears
+auto_ScenarioCustomizationTextures_Knots
+auto_ScenarioCustomizationTextures_Chains
+Adventure_brush_palette~	0x406b6bdc
+auto_ScenarioCustomizationTextures_Gears
+Adventure_brush_palette_pages~	0x406b6cdc
+ScenarioCustomization_page
+Bumps
+global_ui_tribe~	0x11c0c08
 names
+<<<<<<< Updated upstream
 Drapery
 auto_ScenarioCustomizationTextures_Drapery
 bubble-caption
@@ -83,3 +155,17 @@ PlanetCustomizationItemThumbnail
 auto_ScenarioCustomizationTextures_test
 StaticNoise
 auto_ScenarioCustomizationTextures_FrameBorders
+=======
+ScenarioCustomizationProps
+SculptPaletteCategory
+TemplatePaletteScenarioSculptCategory
+music-background
+PlanetCustomizationPaletteCategory
+be_plate
+auto_ScenarioCustomizationTextures_Tech
+auto_ScenarioCustomizationTextures_Neon
+Adventure_brush_palette_category~	0x406b6edc
+ScenarioCustomization_pagescore
+Paper
+auto_ui_packedLayout~_SculptPaletteCategory
+>>>>>>> Stashed changes
