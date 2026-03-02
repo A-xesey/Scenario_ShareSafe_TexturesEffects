@@ -6,6 +6,7 @@
 using namespace Simulator;
 using namespace Terrain;
 using namespace App;
+using namespace Editors;
 
 TerrainTest::TerrainTest()
 {
@@ -56,7 +57,7 @@ void TerrainTest::ParseLine(const ArgScript::Line& line)
 		}
 		terrainState = nullptr;
 	}*/
-	ResourceKey CustomizationID = { id("dialog-bkgrnd"), TypeIDs::png, 0x011C0C08 };
+	/*ResourceKey CustomizationID = { id("dialog-bkgrnd"), TypeIDs::png, 0x011C0C08 };
 	std::u16string a = uintToString2(CustomizationID.groupID) + u"!" + uintToString2(CustomizationID.instanceID) + u"." + uintToString2(CustomizationID.typeID);
 	eastl::string16 b = a.c_str();
 	App::ConsolePrintF("%ls", b.c_str());
@@ -70,7 +71,7 @@ void TerrainTest::ParseLine(const ArgScript::Line& line)
 	auto ltypeID = uintFromString2(b.substr(typeID + 1, b.length() - typeID).c_str());
 	App::ConsolePrintF("instanceIDl 0x%x", instanceIDl);
 	App::ConsolePrintF("lgroupID 0x%x", lgroupID);
-	App::ConsolePrintF("ltypeID 0x%x", ltypeID);
+	App::ConsolePrintF("ltypeID 0x%x", ltypeID);*/
 	cScenarioTerraformMode* scnTerrain = ScenarioMode.GetTerraformMode();
 	if (scnTerrain != nullptr)
 	{

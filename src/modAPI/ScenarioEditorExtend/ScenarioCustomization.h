@@ -2,6 +2,7 @@
 
 #include <Spore\BasicIncludes.h>
 #include "ScenarioCustomizationItem.h"
+#include "Spore\UTFWin\WinGrid.h"
 
 #define ScenarioCustomizationPtr intrusive_ptr<ScenarioCustomization>
 
@@ -26,7 +27,7 @@ public:
 	ScenarioCustomization();
 	~ScenarioCustomization();
 
-	virtual void InitItems(IWindow* window);
+	virtual void InitItems(WinGrid* window);
 
 	int AddRef() override;
 	int Release() override;

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ScenarioCustomization.h"
 #include "ScenarioCustomizationItem.h"
+#include "Spore\UTFWin\WinGrid.h"
 #include <string>
 #include <iostream>
 
@@ -24,7 +25,7 @@ ScenarioCustomization::~ScenarioCustomization()
 {
 }
 
-void ScenarioCustomization::InitItems(IWindow* window)
+void ScenarioCustomization::InitItems(WinGrid* window)
 {
 	if (!initialized && window != nullptr)
 	{
@@ -46,29 +47,29 @@ void ScenarioCustomization::InitItems(IWindow* window)
 				{
 					ScenarioCustomizationItem* item = new ScenarioCustomizationItem();
 					item->SetCustomizationAndImage(*propList.get(), this);
-					item->SetParentWindow(window);
-
+					//item->SetParentWindow(window);
 					int row = index / columns;
 					int col = index % columns;
 					float xPosition = GRID_START_X + (col * ITEM_WIDTH);
 					float yPosition = GRID_START_Y + (row * ITEM_HEIGHT);
 
-					IWindow* itemWin = item->FindWindowByID(id("PlanetCustomizationItem"));
+					IWindowPtr itemWin = item->FindWindowByID(id("PlanetCustomizationItem"));
 					if (itemWin != nullptr)
 					{
-						Math::Rectangle areaItem = itemWin->GetArea();
+						window->SetCellImage(row, col, (Image*)itemWin->func18(), 0);
+						/*Math::Rectangle areaItem = itemWin->GetArea();
 
 						float width = areaItem.right - areaItem.left;
 						float height = areaItem.bottom - areaItem.top;
 						areaItem.left = xPosition;
 						areaItem.top = yPosition;
 						areaItem.right = xPosition + width;
-						areaItem.bottom = yPosition + height;
+						areaItem.bottom = yPosition + height;*/
 
-						itemWin->SetArea(areaItem);
+						//itemWin->SetArea(areaItem);
 					}
 
-					items.push_back(item);
+					//items.push_back(item);
 					index++;
 				}
 			}

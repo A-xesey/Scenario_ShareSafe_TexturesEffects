@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "TerrainTest.h"
 #include "ScenarioCustomization.h"
+#include "Spore\UTFWin\WinGrid.h"
 
 using namespace Terrain;
 using namespace App;
@@ -26,13 +27,34 @@ member_detour(PaletteCategoryUI_Load, PaletteCategoryUI, void(PaletteCategory*, 
 		original_function(this, pCategory, pWindow, pInfo);
 		IWindowPtr items = this->mpLayout->FindWindowByID(id("PlanetCustomizationItems"));
 		if (items == nullptr) return; // fix for a copy on (0,0)
+		WinGridPtr winTest = new UTFWin::WinGrid();
+		if (winTest == nullptr) return; // fix for a copy on (0,0)
+		if (winTest != nullptr)
+		{
+			winTest->SetFillColor(items->GetFillColor());
+			winTest->SetArea(items->GetArea());
+			winTest->SetControlID(id("PlanetCustomizationItems"));
+			winTest->AddWinProc(new UTFWin::SimpleLayout(UTFWin::kAnchorBottom | UTFWin::kAnchorLeft | UTFWin::kAnchorRight | UTFWin::kAnchorTop));
+			winTest->SetEnabled(true);
+			winTest->SetFlag(UTFWin::kWinFlagIgnoreMouse, true);
+			winTest->SetFlag(UTFWin::kWinFlagClip, true);
+			winTest->SetDefaultRowHeight(120);
+			winTest->SetDefaultColumnWidth(120);
+			winTest->SetCellColors(0,0,0, items->GetFillColor());
+		}
 		IWindowPtr button = this->mpLayout->FindWindowByID(id("PlanetCustomizationTextureButton"));
 		IWindowPtr panel = this->mpLayout->FindWindowByID(id("PlanetCustomizationPanel"));
+		panel->RemoveWindow(items.get());
+		panel->AddWindow(winTest.get());
 		if (winProc == nullptr) winProc = new ScenarioCustomization();
-		winProc->InitItems(items.get());
+		//winProc->InitItems(items.get());
+		IScrollbarDrawablePtr scrollbar = object_cast<IScrollbarDrawable>(this->mpLayout->FindWindowByID(id("PlanetCustomizationScrollbar")));
+		winTest->SetScrollBarDrawableVertical(scrollbar.get());
+		winProc->InitItems(winTest.get());
 		if (button != nullptr) button->AddWinProc(winProc.get());
 		if (panel != nullptr) panel->AddWinProc(winProc.get());
-		if (items != nullptr) items->AddWinProc(winProc.get());
+		//if (items != nullptr) items->AddWinProc(winProc.get());
+		if (winTest != nullptr) winTest->AddWinProc(winProc.get());
 	}
 };
 
