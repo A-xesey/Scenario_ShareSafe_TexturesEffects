@@ -98,6 +98,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Global.h" />
     <ClInclude Include="ScenarioCustomization.h" />
     <ClInclude Include="ScenarioCustomizationItem.h" />
     <ClInclude Include="stdafx.h" />

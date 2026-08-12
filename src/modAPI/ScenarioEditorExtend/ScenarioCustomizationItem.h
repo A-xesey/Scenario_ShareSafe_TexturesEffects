@@ -9,24 +9,27 @@ using namespace UTFWin;
 
 class ScenarioCustomizationItem 
 	: public UILayout
-	, public DefaultRefCounted
 {
 protected:
-	ResourceKey customizationID;
-	ResourceKey thumbnail;
-	LocalizedString name;
-	IWindow* btnWindow;
+	ResourceKey mCustomizationKey;
+	ResourceKey mThumbnailKey;
+	LocalizedString mName;
+	bool mbIsSelected;
+	IWindowPtr mpButton;
+	SporeTooltipWinProcPtr mpTooltipWinProc;
 public:
 	static const uint32_t TYPE = id("ScenarioCustomizationItem");
 	
 	ScenarioCustomizationItem();
 	~ScenarioCustomizationItem();
 
-	virtual void SetCustomizationAndImage(const App::PropertyList&, IWinProc* handler);
-	virtual ResourceKey* GetCustomizationID();
-	virtual ResourceKey* GetThumbnail();
-	virtual LocalizedString* GetName();
-	IWindow* GetButtonWindow() const;
+	virtual void SetCustomizationAndImage(const App::PropertyList* pPropList, ResourceKey thumbnailKey, IWinProc* pHandler);
+	virtual void SetSelection(bool bIsSelected);
+	inline ResourceKey* ScenarioCustomizationItem::GetCustomization() { return &mCustomizationKey; }
+	inline ResourceKey* ScenarioCustomizationItem::GetThumbnail() { return &mThumbnailKey; }
+	inline LocalizedString* ScenarioCustomizationItem::GetName() { return &mName; }
+	inline IWindow* ScenarioCustomizationItem::GetButtonWindow() { return mpButton.get(); }
+	inline bool ScenarioCustomizationItem::IsSelected() const { return mbIsSelected; }
 
 	int AddRef() override;
 	int Release() override;

@@ -1,8 +1,7 @@
-# "Directory"????
-key PlanetCustomizationDirectory EP1_chainlink
+key CustomizationItemKey EP1_chainlink
 
-key PlanetCustomizationImage EP1_chainlink.rw4 #remove, should look for ScenarioCustomizationTextures!Chains.png
+key CustomizationItemThumbnail EP1_chainlink.rw4 #remove, should look for ScenarioCustomizationTextures!Chains.png
 
-texts PlanetCustomizationName
+texts CustomizationItemName
 	"Chains"
 end

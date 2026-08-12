@@ -1,8 +1,7 @@
 #pragma once
 
-#include <Spore\BasicIncludes.h>
+#include "Global.h"
 #include "ScenarioCustomizationItem.h"
-#include "Spore\UTFWin\WinGrid.h"
 
 #define ScenarioCustomizationPtr intrusive_ptr<ScenarioCustomization>
 
@@ -13,21 +12,58 @@ class ScenarioCustomization
 	: public IWinProc
 	, public DefaultRefCounted
 {
-protected:
-	vector<ScenarioCustomizationItemPtr> items;
-	bool initialized;
-	float scrollCurrent = 0.0f;
-	float scrollMax = 0.0f;
-	int rows = 1;
-	int columns = 1;
-	uint32_t openedWinID;
 public:
-	static const uint32_t TYPE = id("ScenarioCustomization");
+	enum CustomizationItemsGroup : uint32_t
+	{
+		kCustomizationItemsGroupNone,
+		kCustomizationItemsGroupTextures = GROUP_ID_TEXTURES_DEFINITIONS,
+		kCustomizationItemsGroupEffects = GROUP_ID_TEXTURES_DEFINITIONS
+	};
+
+private:
+#pragma region constants
+	static constexpr float GRID_START_X = 0.0f;
+	static constexpr float GRID_START_Y = 0.0f;
+	static constexpr float ITEM_MARGIN = 4.0f; // TBD
+	static constexpr float ITEM_WIDTH = 64.0f + ITEM_MARGIN; // TBD
+	static constexpr float ITEM_HEIGHT = 64.0f + ITEM_MARGIN; // TBD
+#pragma endregion
+
+protected:
+	IWindowPtr mpScrollFrameVerticalWin;
+	IWindowPtr mpContentClientWin;
+	Simulator::cScenarioTerraformMode* mpScenarioTerraformMode;
+	vector<ScenarioCustomizationItemPtr> mItems;
+	map<IWindow*, ScenarioCustomizationItemPtr> mWinItemMap;
+	ScenarioCustomizationItemPtr mpSelectedItem;
+	CustomizationItemsGroup mItemsGroup;
+	int mRows = 1;
+	int mColumns = 1;
+	uint32_t mOpenedWinId;
+	string16 mSearchString = u"";
+
+public:
+	static const uint32_t TYPE = id(PrivateName("ScenarioCustomization"));
 	
-	ScenarioCustomization();
+	ScenarioCustomization(IWindowPtr pScrollFrameVerticalWin, IWindowPtr pContentClientWin);
 	~ScenarioCustomization();
 
-	virtual void InitItems(WinGrid* window);
+	virtual void InitItems(
+		IWindow* pWindow,
+		CustomizationItemsGroup itemsGroup,
+		uint32_t propertyId,
+		string16 searchString = u""
+	);
+	virtual void ClearItems();
+
+	inline void SelectItem(ScenarioCustomizationItemPtr pItem)
+	{
+		if (mpSelectedItem)
+			mpSelectedItem->SetSelection(false);
+		if (pItem)
+			pItem->SetSelection(true);
+		mpSelectedItem = pItem;
+	}
 
 	int AddRef() override;
 	int Release() override;
@@ -36,5 +72,4 @@ public:
 	int GetEventFlags() const override;
 	// This is the function you have to implement, called when a window you added this winproc to received an event
 	bool HandleUIMessage(IWindow* pWindow, const Message& message) override;
-	
 };

@@ -1,171 +1,111 @@
-<<<<<<< Updated upstream
-ScenarioCustomizationProps
 Gears
 auto_ScenarioCustomizationTextures_Knots
+PlanetCustomizationChooseTexture
+Tech~	0xa5b2d4bf
+PlanetCustomizationItemsFilter
+CityPadCurvy03
+global_ui_tribe~	0x11c0c08
+auto_Adventure_brush_palette_pages~_ScenarioCustomization_page
+auto_ScenarioCustomizationTextures_Bumps
+rollover~	0x199b485
+auto_palette_config~_TemplatePaletteScenarioSculptCategory
+auto_Adventure_brush_palette_category~_ScenarioCustomization_category
+0
+dialog-bkgrnd
+auto_ScenarioCustomizationTextures_Gears
+graphics_atlas~	0x31a44893
+sporemaster
+names
+AssetBrowse
+Drapery
+bubble-caption
+Paper
+sg_solar_surface_a
+ui_packedLayout~	0x40464200
+ExpansionPack1
+PlanetCustomizationPaletteCategory
+NoGroup_sculpt-PlanetCustomizationPaletteCategory-Scrollbar
+Knots
+PlanetCustomizationItems
+auto_ScenarioCustomizationTextures_CityPadCurvy03
+As
+NoGroup_sculpt-SculptPaletteCategory-00
+editor_rigblock~	0x40606000
+Asset
+Ass
+EP1_draperyBlack
+palette_config~	0x406b0100
+AssetBrow
+>>>>>>> Stashed changes
+citypad_curvy03
+AssetBr
+terrainThemeCliff~	0x3b4f7c6
+A
+auto_ui_packedLayout~_PlanetCustomizationPaletteCategory
+auto_Adventure_brush_palette~_ScenarioCustomization_pagescore
+terrainThemeBeach2~	0x3b4f7cd
+global_ui_creature~	0x106c7116
+terrainThemeAboveDetail2~	0x3b4f7c9
+StaticNoise
+PlanetCustomizationPaletteCategory-SearchBar-00
+terrainThemeAboveDetailNoise~	0x3b4f7ca
+terrainThemeBelow~	0x3b4f7cb
+ScenarioCustomizationProps
+AssetBrowserAssetGrid-00
 auto_ScenarioCustomizationTextures_Chains
 ScenarioCustomizationTextures
+PlanetCustomizationItemsFilterClear
 AssetBrowserGraphics
 Tech
-Tech~	0xa5b2d4bf
 SculptPaletteCategory
 PlanetCustomizationScrollbar
-CityPadCurvy03
-global_ui_tribe~	0x11c0c08
-auto_Adventure_brush_palette_pages~_ScenarioCustomization_page
-auto_ScenarioCustomizationTextures_Bumps
-rollover~	0x199b485
-auto_palette_config~_TemplatePaletteScenarioSculptCategory
-auto_Adventure_brush_palette_category~_ScenarioCustomization_category
 tt_bag_field_01
 be_plate
-0
 auto_ScenarioCustomizationTextures_Paper
 auto_ScenarioCustomizationTextures_WW
 auto_ScenarioCustomizationTextures_Lizard
-dialog-bkgrnd
+AssetB
 auto_ScenarioCustomizationTextures_Tech
-auto_ScenarioCustomizationTextures_Gears
+Asse
 PlanetCustomizationItemDirectory
 auto_ScenarioCustomizationTextures_Neon
 auto_palette_config~_TemplatePaletteScenarioPaintPage
 Adventure_brush_palette~	0x406b6bdc
 Adventure_brush_palette_pages~	0x406b6cdc
 Adventure_brush_palette_category~	0x406b6edc
-graphics_atlas~	0x31a44893
 WW
 ScenarioEditor
-sporemaster
-=======
-CityPadCurvy03
-auto_Adventure_brush_palette_category~_ScenarioCustomization_category
-NoGroup_sculpt-SculptPaletteCategory-00
-editor_rigblock~	0x40606000
-auto_ui_packedLayout~_PlanetCustomizationPaletteCategory
-auto_Adventure_brush_palette~_ScenarioCustomization_pagescore
-ScenarioCustomizationTextures
-WW
-ToolBag
-Tech~	0xa5b2d4bf
-Drapery
-palette_config~	0x406b0100
-global_ui_creature~	0x106c7116
-PlanetCustomizationItem
-ScenarioCustomization_category
-TemplatePaletteScenarioPaintPage
-auto_Adventure_brush_palette_pages~_ScenarioCustomization_page
-ui_packedLayout~	0x40464200
-ScenarioCustomizationEffects
-citypad_curvy03
-auto_ScenarioCustomizationTextures_WW
-PlanetCustomizationItemDirectory
-auto_ScenarioCustomizationTextures_Drapery
-auto_ScenarioCustomizationTextures_StaticNoise
-PlanetCustomizationItemThumbnail
-sg_solar_surface_a
-AssetBrowserGraphics
-tt_bag_field_01
-PlanetCustomizationPanel
-tv_static
-rollover~	0x199b485
-sporemaster
-auto_ScenarioCustomizationTextures_CityPadCurvy03
-cr-mission-description-win
-Lizard
-PlanetCustomizationItems
-auto_ScenarioCustomizationTextures_Lizard
-auto_palette_config~_TemplatePaletteScenarioPaintPage
-EP1_chainlink
-gear_largeRock1
-ExpansionPack1
-test
-Chains
-auto_ScenarioCustomizationTextures_test
-0
-dialog-bkgrnd
-StaticNoise
-Tech
-Neon
-graphics_atlas~	0x31a44893
-Knots
-EP1_draperyBlack
-auto_ScenarioCustomizationTextures_Bumps
-auto_palette_config~_TemplatePaletteScenarioSculptCategory
-bubble-caption
-auto_ScenarioCustomizationTextures_Paper
-ScenarioEditor
->>>>>>> Stashed changes
 PlanetCustomizationTextureButton
-FrameBorders
-auto_ScenarioCustomizationTextures_FrameBorders
-Gears
-auto_ScenarioCustomizationTextures_Knots
-auto_ScenarioCustomizationTextures_Chains
-Adventure_brush_palette~	0x406b6bdc
-auto_ScenarioCustomizationTextures_Gears
-Adventure_brush_palette_pages~	0x406b6cdc
-ScenarioCustomization_page
-Bumps
-global_ui_tribe~	0x11c0c08
-names
-<<<<<<< Updated upstream
-Drapery
+AssetBro
 auto_ScenarioCustomizationTextures_Drapery
-bubble-caption
-Paper
+PlanetCustomizationItemsFilterTE
+AssetBrowser
 test
-sg_solar_surface_a
-ui_packedLayout~	0x40464200
 PlanetCustomizationItem
-ScenarioCustomization_pagescore
 ScenarioCustomization_category
+ScenarioCustomization_pagescore
 auto_ui_packedLayout~_SculptPaletteCategory
-ExpansionPack1
-PlanetCustomizationPaletteCategory
 ToolBag
-NoGroup_sculpt-PlanetCustomizationPaletteCategory-Scrollbar
-ScenarioCustomization_page
 Chains
-Knots
-PlanetCustomizationItems
-auto_ScenarioCustomizationTextures_CityPadCurvy03
+ScenarioCustomization_page
 ~	0x811c9dc5
+AssetBrows
 Neon
-NoGroup_sculpt-SculptPaletteCategory-00
 cr-mission-description-win
-editor_rigblock~	0x40606000
 PlanetCustomizationPanel
 Lizard
 EP1_chainlink
-EP1_draperyBlack
-palette_config~	0x406b0100
 TemplatePaletteScenarioSculptCategory
-FrameBorders
 tv_static
+FrameBorders
 TemplatePaletteScenarioPaintPage
 ScenarioCustomizationEffects
 Bumps
-citypad_curvy03
 music-background
-auto_ui_packedLayout~_PlanetCustomizationPaletteCategory
-auto_Adventure_brush_palette~_ScenarioCustomization_pagescore
 gear_largeRock1
-global_ui_creature~	0x106c7116
 auto_ScenarioCustomizationTextures_StaticNoise
 PlanetCustomizationItemThumbnail
+PlanetCustomizationToggle
 auto_ScenarioCustomizationTextures_test
-StaticNoise
+PlanetCustomizationItemSelected
 auto_ScenarioCustomizationTextures_FrameBorders
-=======
-ScenarioCustomizationProps
-SculptPaletteCategory
-TemplatePaletteScenarioSculptCategory
-music-background
-PlanetCustomizationPaletteCategory
-be_plate
-auto_ScenarioCustomizationTextures_Tech
-auto_ScenarioCustomizationTextures_Neon
-Adventure_brush_palette_category~	0x406b6edc
-ScenarioCustomization_pagescore
-Paper
-auto_ui_packedLayout~_SculptPaletteCategory
->>>>>>> Stashed changes

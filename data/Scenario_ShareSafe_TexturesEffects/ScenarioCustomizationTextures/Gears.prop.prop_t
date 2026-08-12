@@ -1,8 +1,7 @@
-# "Directory"????
-key PlanetCustomizationDirectory gear_largeRock1
+key CustomizationItemKey gear_largeRock1
 
-key PlanetCustomizationImage gear_largeRock1.rw4 #remove, should look for ScenarioCustomizationTextures!Gears.png
+key CustomizationItemThumbnail gear_largeRock1.rw4 #remove, should look for ScenarioCustomizationTextures!Gears.png
 
-texts PlanetCustomizationName
+texts CustomizationItemName
 	"Gears"
 end

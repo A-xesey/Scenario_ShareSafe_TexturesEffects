@@ -1,23 +1,20 @@
 #include "stdafx.h"
 #include "ScenarioCustomization.h"
-#include "ScenarioCustomizationItem.h"
-#include "Spore\UTFWin\WinGrid.h"
-#include <string>
-#include <iostream>
+#include <EASTL\sort.h>
+#include <Spore\UI\ScrollFrameVertical.h>
 
 using namespace Simulator;
 using namespace Terrain;
 using namespace App;
+using namespace UI;
 
-namespace {
-	const float	GRID_START_X = 0.0f;
-	const float	GRID_START_Y = 0.0f;
-	const float	ITEM_MARGIN = 10.0f;//TBD
-	const float	ITEM_WIDTH = 64.0f + ITEM_MARGIN;//TBD
-	const float	ITEM_HEIGHT = 64.0f + ITEM_MARGIN;//TBD
-}
-
-ScenarioCustomization::ScenarioCustomization() : initialized(false), openedWinID(0)
+ScenarioCustomization::ScenarioCustomization(IWindowPtr pScrollFrameVerticalWin, IWindowPtr pContentClientWin)
+	: mpScenarioTerraformMode(ScenarioMode.GetTerraformMode())
+	, mpScrollFrameVerticalWin(pScrollFrameVerticalWin)
+	, mpContentClientWin(pContentClientWin)
+	, mItemsGroup(CustomizationItemsGroup::kCustomizationItemsGroupNone)
+	, mpSelectedItem(nullptr)
+	, mOpenedWinId(0)
 {
 }
 
@@ -25,57 +22,167 @@ ScenarioCustomization::~ScenarioCustomization()
 {
 }
 
-void ScenarioCustomization::InitItems(WinGrid* window)
+void ScenarioCustomization::InitItems(
+	IWindow* pWindow,
+	CustomizationItemsGroup itemsGroup,
+	uint32_t propertyId,
+	string16 searchString
+)
 {
-	if (!initialized && window != nullptr)
+	if ((mItemsGroup != itemsGroup || mSearchString != searchString) && pWindow)
 	{
-		Math::Rectangle areaWin = window->GetRealArea();
-		float widthWin = areaWin.right - areaWin.left;
-		float heightWin = areaWin.bottom - areaWin.top;
-		columns = (int)((widthWin + ITEM_MARGIN) / ITEM_WIDTH);
-		if (columns < 1) columns = 1;
+		Math::Rectangle winArea = pWindow->GetRealArea();
+		float winWidth = winArea.right - winArea.left;
+		float winHeight = winArea.bottom - winArea.top;
+		mColumns = (int)((winWidth + ITEM_MARGIN) / ITEM_WIDTH);
+		if (mColumns < 1)
+			mColumns = 1;
 
-		vector<uint32_t> textures;
-		PropManager.GetPropertyListIDs(id("ScenarioCustomizationTextures"), textures);
-		if (!textures.empty())
+		ClearItems();
+		ResourceKey customizationKeyCurrent;
+		if (!Property::GetKey(
+			mpScenarioTerraformMode->mpPropList.get(),
+			propertyId,
+			customizationKeyCurrent
+		))
+			customizationKeyCurrent = EmptyKey;
+		vector<uint32_t> definitionIds;
+		PropManager.GetPropertyListIDs((uint32_t)itemsGroup, definitionIds);
+		if (!definitionIds.empty())
 		{
-			int index = 0;
-			for (const uint32_t& texture : textures)
+			for (uint32_t definitionId : definitionIds)
 			{
-				PropertyListPtr propList;
-				if (PropManager.GetPropertyList(texture, id("ScenarioCustomizationTextures"), propList))
+				PropertyListPtr pPropList;
+				if (!PropManager.GetPropertyList(
+					definitionId,
+					(uint32_t)itemsGroup,
+					pPropList)
+					)
+					continue;
+
+#pragma region Blacklist
+				vector<uint32_t> itemPropertyBlacklist;
+				Property::GetArrayUInt32(
+					pPropList.get(),
+					PROPERTY_ID_CUSTOMIZATION_ITEM_BLACKLIST,
+					itemPropertyBlacklist
+				);
+				if (
+					find(
+						itemPropertyBlacklist.begin(),
+						itemPropertyBlacklist.end(),
+						propertyId
+					) != itemPropertyBlacklist.end()
+					)
+					continue;
+#pragma endregion
+
+#pragma region Add Item
+				ScenarioCustomizationItemPtr pItem = new ScenarioCustomizationItem();
+				pItem->SetCustomizationAndImage(
+					pPropList.get(),
+					ResourceKey(definitionId, TypeIDs::png, (uint32_t)itemsGroup),
+					this
+				);
+				string16 itemName = pItem->GetName()->GetText();
+				itemName.make_lower();
+				if (itemName.find(searchString) == string16::npos)
+					continue;
+				ResourceKey customizationKey = *pItem->GetCustomization();
+				if (customizationKey == customizationKeyCurrent)
 				{
-					ScenarioCustomizationItem* item = new ScenarioCustomizationItem();
-					item->SetCustomizationAndImage(*propList.get(), this);
-					//item->SetParentWindow(window);
-					int row = index / columns;
-					int col = index % columns;
-					float xPosition = GRID_START_X + (col * ITEM_WIDTH);
-					float yPosition = GRID_START_Y + (row * ITEM_HEIGHT);
-
-					IWindowPtr itemWin = item->FindWindowByID(id("PlanetCustomizationItem"));
-					if (itemWin != nullptr)
-					{
-						window->SetCellImage(row, col, (Image*)itemWin->func18(), 0);
-						/*Math::Rectangle areaItem = itemWin->GetArea();
-
-						float width = areaItem.right - areaItem.left;
-						float height = areaItem.bottom - areaItem.top;
-						areaItem.left = xPosition;
-						areaItem.top = yPosition;
-						areaItem.right = xPosition + width;
-						areaItem.bottom = yPosition + height;*/
-
-						//itemWin->SetArea(areaItem);
-					}
-
-					//items.push_back(item);
-					index++;
+					pItem->SetSelection(true);
+					mpSelectedItem = pItem;
 				}
+				mItems.push_back(pItem);
+#pragma endregion
+
+			}
+
+#pragma region Sort
+			stable_sort(
+				mItems.begin(),
+				mItems.end(),
+				[](
+					const ScenarioCustomizationItemPtr& a,
+					const ScenarioCustomizationItemPtr& b
+				)
+				{ return *a->GetCustomization() < *b->GetCustomization(); }
+			);
+			mItems.erase(
+				unique(
+					mItems.rbegin(),
+					mItems.rend(),
+					[](
+						const ScenarioCustomizationItemPtr& a,
+						const ScenarioCustomizationItemPtr& b
+					)
+					{ return *a->GetCustomization() == *b->GetCustomization(); }
+				),
+				mItems.rend()
+			);
+
+			quick_sort(
+				mItems.begin(),
+				mItems.end(),
+				[](
+					const ScenarioCustomizationItemPtr& a,
+					const ScenarioCustomizationItemPtr& b
+				)
+				{
+					const char16_t* pTextA = a->GetName()->GetText();
+					const char16_t* pTextB = b->GetName()->GetText();
+					return string16::comparei(
+						pTextA, pTextA + CharStrlen(pTextA),
+						pTextB, pTextB + CharStrlen(pTextB)
+					) < 0;
+				}
+			);
+#pragma endregion
+
+#pragma region Register Windows for Items
+
+			size_t index = 0;
+			for (ScenarioCustomizationItemPtr pItem : mItems)
+			{
+				pItem->SetParentWindow(pWindow);
+				int row = index / mColumns;
+				int col = index % mColumns;
+				float positionX = GRID_START_X + (col * ITEM_WIDTH);
+				float positionY = GRID_START_Y + (row * ITEM_HEIGHT);
+
+				if (IWindowPtr itemWin = pItem->FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM))
+				{
+					Math::Rectangle itemArea = itemWin->GetArea();
+
+					float width = itemArea.right - itemArea.left;
+					float height = itemArea.bottom - itemArea.top;
+					itemArea.left = positionX;
+					itemArea.top = positionY;
+					itemArea.right = positionX + width;
+					itemArea.bottom = positionY + height;
+
+					itemWin->SetArea(itemArea);
+
+					mWinItemMap[itemWin.get()] = pItem;
+				}
+				index++;
 			}
 		}
+#pragma endregion
+
+		ScrollFrameVertical::Update(mpScrollFrameVerticalWin.get());
+		mItemsGroup = itemsGroup;
+		mSearchString = searchString;
 	}
-	initialized = true;
+}
+
+void ScenarioCustomization::ClearItems()
+{
+	for (pair<IWindow* const, ScenarioCustomizationItemPtr>& pairWinItem : mWinItemMap)
+		pairWinItem.first->RemoveWindow(pairWinItem.first);
+	mWinItemMap.clear();
+	mItems.clear();
 }
 
 // For internal use, do not modify.
@@ -107,77 +214,116 @@ int ScenarioCustomization::GetEventFlags() const
 	return kEventFlagBasicInput | kEventFlagAdvanced;
 }
 
-
-unsigned long uintFromString(const std::u16string& i)
-{
-	unsigned long hexe = std::stoul(std::string(i.begin(), i.end()), nullptr, 16);
-	return hexe;
-}
-
 // The method that receives the message. The first thing you should do is probably
 // checking what kind of message was sent...
 bool ScenarioCustomization::HandleUIMessage(IWindow* window, const Message& message)
 {
-	if (message.IsType(UTFWin::kMsgButtonClick))
-	{ // move id("PlanetCustomizationTextureButton") to .h later
-		if (message.source->GetControlID() == id("PlanetCustomizationTextureButton"))
+	switch (message.eventType)
+	{
+	case kMsgButtonClick:
+	{
+		switch (message.source->GetControlID())
 		{
-			if (openedWinID != id("PlanetCustomizationTextureButton"))
-			{
-				message.source->GetParent()->FindWindowByID(id("PlanetCustomizationPanel"))->SetVisible(true);
-				message.source->GetParent()->FindWindowByID(id("PlanetCustomizationItems"))->SetVisible(true);
-				openedWinID = id("PlanetCustomizationTextureButton");
+		case CONTROL_ID_CUSTOMIZATION_PANEL_BTN_TEXTURE: //TODO: rewrite for multiple types
+		{
+			IWindow* pPanelWin = message.source->GetParent()->
+				FindWindowByID(CONTROL_ID_CUSTOMIZATION_PANEL);
+			/*IWindow* pPanelItemsWin = pPanelWin->
+				FindWindowByID(CONTROL_ID_CUSTOMIZATION_PANEL_ITEMS);*/
+			if (mOpenedWinId == CONTROL_ID_CUSTOMIZATION_PANEL_BTN_TEXTURE) {
+				pPanelWin->SetVisible(false);
+				mpContentClientWin->SetVisible(false);
+				mOpenedWinId = 0;
 			}
 			else
 			{
-				message.source->GetParent()->FindWindowByID(id("PlanetCustomizationPanel"))->SetVisible(false);
-				message.source->GetParent()->FindWindowByID(id("PlanetCustomizationItems"))->SetVisible(false);
-				openedWinID = 0;
+				InitItems(
+					mpContentClientWin.get(),
+					CustomizationItemsGroup::kCustomizationItemsGroupTextures,
+					//TODO: PLACEHOLDER
+					PROPERTY_ID_TERRAIN_ABOVE_DETAIL2
+				);
+
+				pPanelWin->SetVisible(true);
+				mpContentClientWin->SetVisible(true);
+				mOpenedWinId = CONTROL_ID_CUSTOMIZATION_PANEL_BTN_TEXTURE;
 			}
+			return true;
 		}
-		else if (message.source->GetControlID() == id("PlanetCustomizationItem"))
+		case CONTROL_ID_CUSTOMIZATION_ITEM:
 		{
-			cScenarioTerraformMode* scnTerrain = ScenarioMode.GetTerraformMode();
-			if (scnTerrain != nullptr)
+			if (mpScenarioTerraformMode)
 			{
-				scnTerrain->StartHistoryEntry();
-				eastl::string16 ItemDirectoryString = message.source->FindWindowByID(id("PlanetCustomizationItemDirectory"))->GetCaption();
-				if (ItemDirectoryString.c_str() != nullptr)
-				{
-					ResourceKey key;
-					auto groupID = ItemDirectoryString.find_first_of(u"!");
-					auto typeID = ItemDirectoryString.find_last_of(u".");
+				IWindow* pItemWin = message.source;
+				ScenarioCustomizationItemPtr pItem = mWinItemMap[pItemWin];
+				if (pItem->IsSelected())
+					return true;
+				mpScenarioTerraformMode->StartHistoryEntry();
+				ResourceKey key = *pItem->GetCustomization();
+				PropertyListPtr pTerrainScript = mpScenarioTerraformMode->mpPropList;
+#pragma region TESTS
+				vector<uint32_t> testPropertyIds = {
+					PROPERTY_ID_TERRAIN_CLIFF,
+					PROPERTY_ID_TERRAIN_ABOVE_DETAIL2,
+					PROPERTY_ID_TERRAIN_ABOVE_DETAIL_NOISE,
+					PROPERTY_ID_TERRAIN_BELOW,
+					PROPERTY_ID_TERRAIN_BEACH2
+				};
 
-					auto linstanceID = uintFromString(ItemDirectoryString.substr(groupID + 1, typeID - groupID - 1).c_str());
-					auto lgroupID = uintFromString(ItemDirectoryString.substr(0, groupID).c_str());
-					auto ltypeID = uintFromString(ItemDirectoryString.substr(typeID + 1, ItemDirectoryString.length() - typeID).c_str());
+				for (uint32_t propertyId : testPropertyIds)
+					pTerrainScript->SetProperty(propertyId, &Property().SetValueKey(key));
 
-					key = { linstanceID, ltypeID, lgroupID };
-
-					/// set texture
-					//terrainThemeCliff
-					scnTerrain->mpPropList->SetProperty(0x03b4f7c6, &Property().SetValueKey(key));
-					//terrainThemeAboveDetail2
-					scnTerrain->mpPropList->SetProperty(0x03B4F7C9, &Property().SetValueKey(key));
-					//terrainThemeAboveDetailNoise
-					scnTerrain->mpPropList->SetProperty(0x03b4f7ca, &Property().SetValueKey(key));
-					//terrainThemeBelow
-					scnTerrain->mpPropList->SetProperty(0x03b4f7cb, &Property().SetValueKey(key));
-					//terrainThemeBeach2
-					scnTerrain->mpPropList->SetProperty(0x03b4f7cd, &Property().SetValueKey(key));
-					//update current textures
-					//cTerrainStateMgr_UpdateFromDefinition
-					CALL(
-						Address(ModAPI::ChooseAddress(0xf902d0, 0xfbc100)),
-						void,
-						Args(cTerrainStateMgr*, PropertyList*),
-						Args(scnTerrain->mpTerrainStateMgr, scnTerrain->mpPropList.get()));
-				}
-				scnTerrain->CommitHistoryEntry();
+				//update current textures
+				//cTerrainStateMgr_UpdateFromDefinition
+				CALL(
+					Address(ModAPI::ChooseAddress(0xf902d0, 0xfbc100)),
+					void,
+					Args(cTerrainStateMgr*, PropertyList*),
+					Args(mpScenarioTerraformMode->mpTerrainStateMgr, pTerrainScript.get())
+				);
+#pragma endregion
+				SelectItem(pItem);
+				mpScenarioTerraformMode->CommitHistoryEntry();
 			}
-			scnTerrain = nullptr;
+			return true;
+		}
+		case CONTROL_ID_CUSTOMIZATION_PANEL_SEARCHBOX_BTN_CLEAR:
+		{
+			if (ITextEdit* pSearchboxTextEdit = (ITextEdit*)message.source->GetParent()->
+				FindWindowByID(CONTROL_ID_CUSTOMIZATION_PANEL_SEARCHBOX)->
+				Cast(ITextEdit::TYPE)
+			)
+				pSearchboxTextEdit->SetText(u"", 0);
+			return true;
+		}
+		default:
+			return false;
 		}
 	}
-	// Return true if the message was handled, and therefore no other window procedure should receive it.
-	return false;
+	case kMsgTextChanged:
+	{
+		if (message.source->GetControlID() == CONTROL_ID_CUSTOMIZATION_PANEL_SEARCHBOX)
+		{
+			ITextEdit* pSearchboxTextEdit = (ITextEdit*)message.source->Cast(ITextEdit::TYPE);
+			if (!pSearchboxTextEdit)
+				return false;
+			string16 searchString = pSearchboxTextEdit->GetText();
+			searchString.make_lower();
+			if (IWindowPtr pSearchboxClearWin = message.source->GetParent()->
+				FindWindowByID(CONTROL_ID_CUSTOMIZATION_PANEL_SEARCHBOX_BTN_CLEAR))
+				pSearchboxClearWin->SetVisible(!searchString.empty());
+			InitItems(
+				mpContentClientWin.get(),
+				mItemsGroup,
+				//TODO: PLACEHOLDER
+				PROPERTY_ID_TERRAIN_ABOVE_DETAIL2,
+				searchString
+			);
+			return true;
+		}
+		return false;
+	}
+	default:
+		return false;
+	}
 }

@@ -1,8 +1,7 @@
-# "Directory"????
-key PlanetCustomizationDirectory Tech~
+key CustomizationItemKey Tech~
 
-key PlanetCustomizationImage Tech~.rw4 #remove, should look for ScenarioCustomizationTextures!Tech.png
+key CustomizationItemThumbnail Tech~.rw4 #remove, should look for ScenarioCustomizationTextures!Tech.png
 
-texts PlanetCustomizationName
+texts CustomizationItemName
 	"Tech"
 end

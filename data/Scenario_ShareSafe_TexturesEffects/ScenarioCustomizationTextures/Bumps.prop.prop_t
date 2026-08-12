@@ -1,8 +1,5 @@
-# "Directory"????
-key PlanetCustomizationDirectory global_ui_creature~!cr-mission-description-win.png
+key CustomizationItemKey global_ui_creature~!cr-mission-description-win.png
 
-key PlanetCustomizationImage global_ui_creature~!cr-mission-description-win.png #remove, should look for ScenarioCustomizationTextures!Bumps.png
-
-texts PlanetCustomizationName
+texts CustomizationItemName
 	"Bumps"
 end

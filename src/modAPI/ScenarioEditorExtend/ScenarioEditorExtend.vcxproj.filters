@@ -28,6 +28,7 @@
     <ClInclude Include="TerrainTest.h">
       <Filter>ScenarioEditorExtend</Filter>
     </ClInclude>
+    <ClInclude Include="Global.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

@@ -1,60 +1,77 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "stdafx.h"
+#include "Global.h"
 #include "TerrainTest.h"
 #include "ScenarioCustomization.h"
-#include "Spore\UTFWin\WinGrid.h"
+#include <Spore\UI\ScrollFrameVertical.h>
 
-using namespace Terrain;
+//using namespace Terrain;
 using namespace App;
 using namespace Palettes;
+using namespace UI;
+using namespace UTFWin;
 
-ScenarioCustomizationPtr winProc = nullptr;
+ScenarioCustomizationPtr g_pWinProc = nullptr;
 
 void Initialize()
 {
-	CheatManager.AddCheat("terst", new TerrainTest());
+	// do we still need this?
+	//CheatManager.AddCheat("terst", new TerrainTest());
 }
 
 void Dispose()
 {
-	// This method is called when the game is closing
+	g_pWinProc = nullptr;
 }
 
-member_detour(PaletteCategoryUI_Load, PaletteCategoryUI, void(PaletteCategory*, UTFWin::IWindow*, PaletteInfo*))
+member_detour(
+	PaletteCategoryUI_Load,
+	PaletteCategoryUI,
+	void(PaletteCategory*, IWindow*, PaletteInfo*)
+)
 {
-	void detoured(PaletteCategory* pCategory, UTFWin::IWindow* pWindow, PaletteInfo* pInfo)
+	void detoured(PaletteCategory* pCategory, IWindow* pWindow, PaletteInfo* pInfo)
 	{
+		
 		original_function(this, pCategory, pWindow, pInfo);
-		IWindowPtr items = this->mpLayout->FindWindowByID(id("PlanetCustomizationItems"));
-		if (items == nullptr) return; // fix for a copy on (0,0)
-		WinGridPtr winTest = new UTFWin::WinGrid();
-		if (winTest == nullptr) return; // fix for a copy on (0,0)
-		if (winTest != nullptr)
-		{
-			winTest->SetFillColor(items->GetFillColor());
-			winTest->SetArea(items->GetArea());
-			winTest->SetControlID(id("PlanetCustomizationItems"));
-			winTest->AddWinProc(new UTFWin::SimpleLayout(UTFWin::kAnchorBottom | UTFWin::kAnchorLeft | UTFWin::kAnchorRight | UTFWin::kAnchorTop));
-			winTest->SetEnabled(true);
-			winTest->SetFlag(UTFWin::kWinFlagIgnoreMouse, true);
-			winTest->SetFlag(UTFWin::kWinFlagClip, true);
-			winTest->SetDefaultRowHeight(120);
-			winTest->SetDefaultColumnWidth(120);
-			winTest->SetCellColors(0,0,0, items->GetFillColor());
-		}
-		IWindowPtr button = this->mpLayout->FindWindowByID(id("PlanetCustomizationTextureButton"));
-		IWindowPtr panel = this->mpLayout->FindWindowByID(id("PlanetCustomizationPanel"));
-		panel->RemoveWindow(items.get());
-		panel->AddWindow(winTest.get());
-		if (winProc == nullptr) winProc = new ScenarioCustomization();
-		//winProc->InitItems(items.get());
-		IScrollbarDrawablePtr scrollbar = object_cast<IScrollbarDrawable>(this->mpLayout->FindWindowByID(id("PlanetCustomizationScrollbar")));
-		winTest->SetScrollBarDrawableVertical(scrollbar.get());
-		winProc->InitItems(winTest.get());
-		if (button != nullptr) button->AddWinProc(winProc.get());
-		if (panel != nullptr) panel->AddWinProc(winProc.get());
-		//if (items != nullptr) items->AddWinProc(winProc.get());
-		if (winTest != nullptr) winTest->AddWinProc(winProc.get());
+
+		IWindowPtr pPanelWin = mpLayout->FindWindowByID(CONTROL_ID_CUSTOMIZATION_PANEL);
+		if (!pPanelWin)
+			return;
+		IWindowPtr pPanelItemsWin = pPanelWin->FindWindowByID(CONTROL_ID_CUSTOMIZATION_PANEL_ITEMS);
+		if (!pPanelItemsWin)
+			return;
+
+		Math::Rectangle panelItemsWinArea = pPanelItemsWin->GetArea();
+		pPanelWin->RemoveWindow(pPanelItemsWin.get());
+		IWindowPtr pScrollFrameVerticalWin = ScrollFrameVertical::Create(
+			ScrollFrameVertical::GENERIC_LAYOUT,
+			pPanelItemsWin
+		);
+		if (!g_pWinProc)
+			g_pWinProc = new ScenarioCustomization(pScrollFrameVerticalWin, pPanelItemsWin);
+		pPanelWin->AddWindow(pScrollFrameVerticalWin.get());
+		pScrollFrameVerticalWin->SetFillColor(Math::Color(0));
+		pScrollFrameVerticalWin->AddWinProc(
+			new SimpleLayout(kAnchorBottom | kAnchorLeft | kAnchorRight | kAnchorTop)
+		);
+		pScrollFrameVerticalWin->SetEnabled(true);
+		pScrollFrameVerticalWin->SetFlag(kWinFlagIgnoreMouse, true);
+		pScrollFrameVerticalWin->SetFlag(kWinFlagClip, true);
+		pScrollFrameVerticalWin->SetArea(panelItemsWinArea);
+		ScrollFrameVertical::Update(pScrollFrameVerticalWin.get());
+
+		//TODO: add other buttons here
+		
+		if (IWindowPtr pPanelToggleBtn = mpLayout->FindWindowByID(
+			CONTROL_ID_CUSTOMIZATION_PANEL_BTN_TEXTURE
+		))
+			pPanelToggleBtn->AddWinProc(g_pWinProc.get());
+		if (IWindowPtr pPanelSearchbox = pPanelWin->FindWindowByID(
+			CONTROL_ID_CUSTOMIZATION_PANEL_SEARCHBOX
+		))
+			pPanelSearchbox->AddWinProc(g_pWinProc.get());
+		pPanelWin->AddWinProc(g_pWinProc.get());
 	}
 };
 

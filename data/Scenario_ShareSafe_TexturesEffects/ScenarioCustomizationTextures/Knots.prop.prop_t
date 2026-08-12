@@ -1,8 +1,7 @@
-# "Directory"????
-key PlanetCustomizationDirectory ToolBag!tt_bag_field_01
+key CustomizationItemKey ToolBag!tt_bag_field_01
 
-key PlanetCustomizationImage ToolBag!tt_bag_field_01.rw4 #remove, should look for ScenarioCustomizationTextures!Knots.png
+key CustomizationItemThumbnail ToolBag!tt_bag_field_01.rw4 #remove, should look for ScenarioCustomizationTextures!Knots.png
 
-texts PlanetCustomizationName
+texts CustomizationItemName
 	"Knots"
 end

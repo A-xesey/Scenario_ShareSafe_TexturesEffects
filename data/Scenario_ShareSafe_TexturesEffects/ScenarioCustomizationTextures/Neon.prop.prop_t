@@ -1,8 +1,7 @@
-# "Directory"????
-key PlanetCustomizationDirectory AssetBrowserGraphics!music-background.png
+key CustomizationItemKey AssetBrowserGraphics!music-background.png
 
-key PlanetCustomizationImage AssetBrowserGraphics!music-background.png #remove, should look for ScenarioCustomizationTextures!Neon.png
+key CustomizationItemThumbnail AssetBrowserGraphics!music-background.png #remove, should look for ScenarioCustomizationTextures!Neon.png
 
-texts PlanetCustomizationName
+texts CustomizationItemName
 	"Neon"
 end

@@ -1,8 +1,7 @@
-# "Directory"????
-key PlanetCustomizationDirectory tv_static
+key CustomizationItemKey tv_static
 
-key PlanetCustomizationImage tv_static.rw4 #remove, should look for ScenarioCustomizationTextures!StaticNoise.png
+key CustomizationItemThumbnail tv_static.rw4 #remove, should look for ScenarioCustomizationTextures!StaticNoise.png
 
-texts PlanetCustomizationName
+texts CustomizationItemName
 	"Static Noise"
 end
