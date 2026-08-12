@@ -1,7 +1,5 @@
 key CustomizationItemKey AssetBrowserGraphics!music-background.png
 
-key CustomizationItemThumbnail AssetBrowserGraphics!music-background.png #remove, should look for ScenarioCustomizationTextures!Neon.png
-
 texts CustomizationItemName
 	"Neon"
 end

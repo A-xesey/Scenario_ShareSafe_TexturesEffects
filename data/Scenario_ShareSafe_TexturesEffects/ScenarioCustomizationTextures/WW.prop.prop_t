@@ -1,7 +1,5 @@
 key CustomizationItemKey ww
 
-key CustomizationItemThumbnail ww.rw4 #remove, should look for ScenarioCustomizationTextures!ww.png
-
 texts CustomizationItemName
 	"Will"
 end

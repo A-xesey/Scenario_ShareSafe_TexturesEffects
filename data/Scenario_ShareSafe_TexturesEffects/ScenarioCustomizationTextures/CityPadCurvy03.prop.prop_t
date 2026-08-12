@@ -1,7 +1,5 @@
 key CustomizationItemKey citypad_curvy03
 
-key CustomizationItemThumbnail citypad_curvy03.rw4 #remove, should look for ScenarioCustomizationTextures!CityPadCurvy03.png
-
 texts CustomizationItemName
 	"City Pad - Curvy 3"
 end

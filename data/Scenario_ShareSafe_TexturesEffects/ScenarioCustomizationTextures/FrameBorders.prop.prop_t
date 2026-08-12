@@ -1,7 +1,5 @@
 key CustomizationItemKey rollover~!bubble-caption.png
 
-key CustomizationItemThumbnail rollover~!bubble-caption.png #remove, should look for ScenarioCustomizationTextures!FrameBorders.png
-
 texts CustomizationItemName
 	"Frame Borders"
 end

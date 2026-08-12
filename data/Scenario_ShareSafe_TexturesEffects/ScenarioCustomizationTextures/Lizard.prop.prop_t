@@ -1,7 +1,5 @@
 key CustomizationItemKey sg_solar_surface_a
 
-key CustomizationItemThumbnail sg_solar_surface_a.rw4 #remove, should look for ScenarioCustomizationTextures!Lizard.png
-
 texts CustomizationItemName
 	"Lizard"
 end

@@ -1,7 +1,5 @@
 key CustomizationItemKey EP1_chainlink
 
-key CustomizationItemThumbnail EP1_chainlink.rw4 #remove, should look for ScenarioCustomizationTextures!Chains.png
-
 texts CustomizationItemName
 	"Chains"
 end

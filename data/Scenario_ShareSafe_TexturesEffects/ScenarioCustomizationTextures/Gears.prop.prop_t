@@ -1,7 +1,5 @@
 key CustomizationItemKey gear_largeRock1
 
-key CustomizationItemThumbnail gear_largeRock1.rw4 #remove, should look for ScenarioCustomizationTextures!Gears.png
-
 texts CustomizationItemName
 	"Gears"
 end

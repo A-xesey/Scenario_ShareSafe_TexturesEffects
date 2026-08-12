@@ -1,0 +1,6 @@
+key CustomizationItemKey global_ui_tribe~!dialog-bkgrnd.png
+
+texts CustomizationItemName
+	"Wooden Planks"
+end
+

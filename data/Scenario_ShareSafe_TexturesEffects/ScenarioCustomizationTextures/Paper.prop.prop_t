@@ -1,7 +1,5 @@
 key CustomizationItemKey editor_rigblock~!be_plate
 
-key CustomizationItemThumbnail editor_rigblock~!be_plate.rw4 #remove, should look for ScenarioCustomizationTextures!Paper.png
-
 texts CustomizationItemName
 	"Paper"
 end

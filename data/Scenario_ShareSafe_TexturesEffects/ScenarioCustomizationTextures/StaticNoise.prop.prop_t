@@ -1,7 +1,5 @@
 key CustomizationItemKey tv_static
 
-key CustomizationItemThumbnail tv_static.rw4 #remove, should look for ScenarioCustomizationTextures!StaticNoise.png
-
 texts CustomizationItemName
 	"Static Noise"
 end

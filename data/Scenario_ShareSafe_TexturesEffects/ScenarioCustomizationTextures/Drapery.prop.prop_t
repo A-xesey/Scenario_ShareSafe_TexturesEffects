@@ -1,7 +1,5 @@
 key CustomizationItemKey EP1_draperyBlack
 
-key CustomizationItemThumbnail EP1_draperyBlack.rw4 #remove, should look for ScenarioCustomizationTextures!Drapery.png
-
 texts CustomizationItemName
 	"Drapery"
 end

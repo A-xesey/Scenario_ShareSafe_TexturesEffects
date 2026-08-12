@@ -17,6 +17,7 @@ graphics_atlas~	0x31a44893
 sporemaster
 names
 AssetBrowse
+auto_ScenarioCustomizationTextures_WoodenPlanks
 Drapery
 bubble-caption
 Paper
@@ -86,10 +87,12 @@ ScenarioCustomization_category
 ScenarioCustomization_pagescore
 auto_ui_packedLayout~_SculptPaletteCategory
 ToolBag
+WoodenPlanks
 Chains
 ScenarioCustomization_page
 ~	0x811c9dc5
 AssetBrows
+_mask
 Neon
 cr-mission-description-win
 PlanetCustomizationPanel
