@@ -35,10 +35,13 @@ member_detour(
 		
 		original_function(this, pCategory, pWindow, pInfo);
 
-		IWindowPtr pPanelWin = mpLayout->FindWindowByID(CONTROL_ID_CUSTOMIZATION_PANEL);
-		if (!pPanelWin)
-			return;
-		IWindowPtr pPanelItemsWin = pPanelWin->FindWindowByID(CONTROL_ID_CUSTOMIZATION_PANEL_ITEMS);
+		IWindowPtr pPaletteCategoryWin = mpLayout->FindWindowByID(CONTROL_ID_PALETTE);
+		IWindowPtr pPanelWin = pPaletteCategoryWin
+			? pPaletteCategoryWin->FindWindowByID(CONTROL_ID_CUSTOMIZATION_PANEL)
+			: nullptr;
+		IWindowPtr pPanelItemsWin = pPanelWin
+			? pPanelWin->FindWindowByID(CONTROL_ID_CUSTOMIZATION_PANEL_ITEMS)
+			: nullptr;
 		if (!pPanelItemsWin)
 			return;
 
@@ -48,8 +51,6 @@ member_detour(
 			ScrollFrameVertical::GENERIC_LAYOUT,
 			pPanelItemsWin
 		);
-		if (!g_pWinProc)
-			g_pWinProc = new ScenarioCustomization(pScrollFrameVerticalWin, pPanelItemsWin);
 		pPanelWin->AddWindow(pScrollFrameVerticalWin.get());
 		pScrollFrameVerticalWin->SetFillColor(Math::Color(0));
 		pScrollFrameVerticalWin->AddWinProc(
@@ -61,10 +62,16 @@ member_detour(
 		pScrollFrameVerticalWin->SetArea(panelItemsWinArea);
 		ScrollFrameVertical::Update(pScrollFrameVerticalWin.get());
 
+		g_pWinProc = new ScenarioCustomization(
+			pPaletteCategoryWin,
+			pScrollFrameVerticalWin,
+			pPanelItemsWin
+		);
+
 		//TODO: add other buttons here
 		
 		if (IWindowPtr pPanelToggleBtn = mpLayout->FindWindowByID(
-			CONTROL_ID_CUSTOMIZATION_PANEL_BTN_TEXTURE
+			CONTROL_ID_PALETTE_BTN_TEXTURE
 		))
 			pPanelToggleBtn->AddWinProc(g_pWinProc.get());
 		if (IWindowPtr pPanelSearchbox = pPanelWin->FindWindowByID(

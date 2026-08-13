@@ -8,14 +8,44 @@ using namespace Terrain;
 using namespace App;
 using namespace UI;
 
-ScenarioCustomization::ScenarioCustomization(IWindowPtr pScrollFrameVerticalWin, IWindowPtr pContentClientWin)
+ScenarioCustomization::ScenarioCustomization(
+	IWindowPtr pPaletteCategoryWin,
+	IWindowPtr pScrollFrameVerticalWin,
+	IWindowPtr pContentClientWin
+)
 	: mpScenarioTerraformMode(ScenarioMode.GetTerraformMode())
+	, mpPaletteCategoryWin(pPaletteCategoryWin)
 	, mpScrollFrameVerticalWin(pScrollFrameVerticalWin)
 	, mpContentClientWin(pContentClientWin)
-	, mItemsGroup(CustomizationItemsGroup::kCustomizationItemsGroupNone)
+	, mpPanelWin(pPaletteCategoryWin->FindWindowByID(CONTROL_ID_CUSTOMIZATION_PANEL))
+	, mpSearchboxTextEdit(
+		(ITextEdit*)mpPanelWin->FindWindowByID(CONTROL_ID_CUSTOMIZATION_PANEL_SEARCHBOX)->
+		Cast(ITextEdit::TYPE)
+	)
+	, mpPaletteTextureWin(mpPaletteCategoryWin->FindWindowByID(CONTROL_ID_PALETTE_BTN_TEXTURE))
+	, mpPaletteTextureNameWin(
+		mpPaletteCategoryWin->FindWindowByID(CONTROL_ID_PALETTE_NAME_TEXTURE)
+	)
+	//, mpPaletteEffectWin(mpPaletteWinq->FindWindowByID(CONTROL_ID_PALETTE_BTN_EFFECT))
+	, mItemsGroup(kCustomizationItemsGroupNone)
+	, mPropertyTexture(PROPERTY_DEFAULT_TEXTURE)
+	, mPropertyEffect(PROPERTY_DEFAULT_EFFECT)
 	, mpSelectedItem(nullptr)
-	, mOpenedWinId(0)
+	, mOpenedPanelItemsGroup(kCustomizationItemsGroupNone)
 {
+	if (mpPaletteTextureWin)
+	{
+		Math::Rectangle areaPaletteTextureWin = mpPaletteTextureWin->GetRealArea();
+		mPanelTextureY = areaPaletteTextureWin.top;
+
+		InitItems(
+			mpContentClientWin.get(),
+			kCustomizationItemsGroupTextures,
+			PROPERTY_DEFAULT_TEXTURE
+		);
+		UpdatePaletteTexture();
+	}
+	// TODO: add the same thing for effects
 }
 
 ScenarioCustomization::~ScenarioCustomization()
@@ -39,13 +69,7 @@ void ScenarioCustomization::InitItems(
 			mColumns = 1;
 
 		ClearItems();
-		ResourceKey customizationKeyCurrent;
-		if (!Property::GetKey(
-			mpScenarioTerraformMode->mpPropList.get(),
-			propertyId,
-			customizationKeyCurrent
-		))
-			customizationKeyCurrent = EmptyKey;
+		ResourceKey customizationKeyCurrent = GetCurrentCustomizationKey(propertyId);
 		vector<uint32_t> definitionIds;
 		PropManager.GetPropertyListIDs((uint32_t)itemsGroup, definitionIds);
 		if (!definitionIds.empty())
@@ -185,6 +209,59 @@ void ScenarioCustomization::ClearItems()
 	mItems.clear();
 }
 
+void ScenarioCustomization::UpdatePaletteTexture()
+{
+	if (IWindowPtr pPaletteTextureThumbnailWin = mpPaletteTextureWin->
+		FindWindowByID(CONTROL_ID_PALETTE_BTN_TEXTURE_THUMBNAIL))
+	{
+		ResourceKey customizationKeyCurrent = mpSelectedItem
+			? *mpSelectedItem->GetThumbnail()
+			: GetCurrentCustomizationKey(mPropertyTexture);
+		if (!customizationKeyCurrent.typeID)
+			customizationKeyCurrent.typeID = TypeIDs::rw4;
+		Image::SetBackgroundByKey(pPaletteTextureThumbnailWin.get(), customizationKeyCurrent);
+	}
+	if (mpPaletteTextureNameWin)
+		mpPaletteTextureNameWin->SetCaption(mpSelectedItem
+			? mpSelectedItem->GetName()->GetText()
+			: u"-"
+		);
+}
+
+#pragma region Show & Hide Panel
+void ScenarioCustomization::ShowCustomizationPanel(
+	CustomizationItemsGroup itemsGroup,
+	uint32_t propertyId,
+	float positionY
+)
+{
+	ClearSearchbar();
+	InitItems(
+		mpContentClientWin.get(),
+		itemsGroup,
+		propertyId
+	);
+
+	Math::Rectangle areaPanelWin = mpPanelWin->GetArea();
+	float heightPanelWin = areaPanelWin.bottom - areaPanelWin.top;
+	areaPanelWin.top = positionY;
+	areaPanelWin.bottom = areaPanelWin.top + heightPanelWin;
+	mpPanelWin->SetArea(areaPanelWin);
+
+	mpPanelWin->SetVisible(true);
+	mpContentClientWin->SetVisible(true);
+	mOpenedPanelItemsGroup = itemsGroup;
+}
+
+void ScenarioCustomization::HideCustomizationPanel()
+{
+	mpPanelWin->SetVisible(false);
+	mpContentClientWin->SetVisible(false);
+	mOpenedPanelItemsGroup = kCustomizationItemsGroupNone;
+}
+#pragma endregion
+
+#pragma region Refcount
 // For internal use, do not modify.
 int ScenarioCustomization::AddRef()
 {
@@ -205,6 +282,7 @@ void* ScenarioCustomization::Cast(uint32_t type) const
 	CLASS_CAST(ScenarioCustomization);
 	return nullptr;
 }
+#pragma endregion
 
 // This method returns a combinations of values in UTFWin::EventFlags.
 // The combination determines what types of events (messages) this window procedure receives.
@@ -224,29 +302,18 @@ bool ScenarioCustomization::HandleUIMessage(IWindow* window, const Message& mess
 	{
 		switch (message.source->GetControlID())
 		{
-		case CONTROL_ID_CUSTOMIZATION_PANEL_BTN_TEXTURE: //TODO: rewrite for multiple types
+		case CONTROL_ID_PALETTE_BTN_TEXTURE: //TODO: rewrite for multiple types
 		{
-			IWindow* pPanelWin = message.source->GetParent()->
-				FindWindowByID(CONTROL_ID_CUSTOMIZATION_PANEL);
-			/*IWindow* pPanelItemsWin = pPanelWin->
-				FindWindowByID(CONTROL_ID_CUSTOMIZATION_PANEL_ITEMS);*/
-			if (mOpenedWinId == CONTROL_ID_CUSTOMIZATION_PANEL_BTN_TEXTURE) {
-				pPanelWin->SetVisible(false);
-				mpContentClientWin->SetVisible(false);
-				mOpenedWinId = 0;
-			}
+			if (mOpenedPanelItemsGroup == kCustomizationItemsGroupTextures)
+				HideCustomizationPanel();
 			else
 			{
-				InitItems(
-					mpContentClientWin.get(),
-					CustomizationItemsGroup::kCustomizationItemsGroupTextures,
-					//TODO: PLACEHOLDER
-					PROPERTY_ID_TERRAIN_ABOVE_DETAIL2
+				ShowCustomizationPanel(
+					kCustomizationItemsGroupTextures,
+					// TODO: PLACEHOLDER
+					kCustomizationPropertyTextureDetail,
+					mPanelTextureY
 				);
-
-				pPanelWin->SetVisible(true);
-				mpContentClientWin->SetVisible(true);
-				mOpenedWinId = CONTROL_ID_CUSTOMIZATION_PANEL_BTN_TEXTURE;
 			}
 			return true;
 		}
@@ -283,17 +350,14 @@ bool ScenarioCustomization::HandleUIMessage(IWindow* window, const Message& mess
 				);
 #pragma endregion
 				SelectItem(pItem);
+				UpdatePaletteTexture();
 				mpScenarioTerraformMode->CommitHistoryEntry();
 			}
 			return true;
 		}
 		case CONTROL_ID_CUSTOMIZATION_PANEL_SEARCHBOX_BTN_CLEAR:
 		{
-			if (ITextEdit* pSearchboxTextEdit = (ITextEdit*)message.source->GetParent()->
-				FindWindowByID(CONTROL_ID_CUSTOMIZATION_PANEL_SEARCHBOX)->
-				Cast(ITextEdit::TYPE)
-			)
-				pSearchboxTextEdit->SetText(u"", 0);
+			ClearSearchbar();
 			return true;
 		}
 		default:
@@ -304,10 +368,9 @@ bool ScenarioCustomization::HandleUIMessage(IWindow* window, const Message& mess
 	{
 		if (message.source->GetControlID() == CONTROL_ID_CUSTOMIZATION_PANEL_SEARCHBOX)
 		{
-			ITextEdit* pSearchboxTextEdit = (ITextEdit*)message.source->Cast(ITextEdit::TYPE);
-			if (!pSearchboxTextEdit)
+			if (!mpSearchboxTextEdit)
 				return false;
-			string16 searchString = pSearchboxTextEdit->GetText();
+			string16 searchString = mpSearchboxTextEdit->GetText();
 			searchString.make_lower();
 			if (IWindowPtr pSearchboxClearWin = message.source->GetParent()->
 				FindWindowByID(CONTROL_ID_CUSTOMIZATION_PANEL_SEARCHBOX_BTN_CLEAR))

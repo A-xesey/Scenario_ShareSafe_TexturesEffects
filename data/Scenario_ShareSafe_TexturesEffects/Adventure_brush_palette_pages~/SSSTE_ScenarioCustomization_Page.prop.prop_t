@@ -1,4 +1,4 @@
 #key parent palette_config~!TemplatePaletteScenarioPaintPage.prop
-key palettePageParentCategory Adventure_brush_palette_category~!ScenarioCustomization_category
+key palettePageParentCategory Adventure_brush_palette_category~!SSSTE_ScenarioCustomization_Category
 uint32 palettePageSequenceNumber 100
 int32 palettePageSetId 1

@@ -1,6 +1,10 @@
+root~	0x0
+SS
 Gears
 auto_ScenarioCustomizationTextures_Knots
+auto_Adventure_brush_palette~_SSSTE_ScenarioCustomization_Pages
 PlanetCustomizationChooseTexture
+rlovr_bkgrnd3
 Tech~	0xa5b2d4bf
 PlanetCustomizationItemsFilter
 CityPadCurvy03
@@ -9,6 +13,7 @@ auto_Adventure_brush_palette_pages~_ScenarioCustomization_page
 auto_ScenarioCustomizationTextures_Bumps
 rollover~	0x199b485
 auto_palette_config~_TemplatePaletteScenarioSculptCategory
+auto_Adventure_brush_palette_category~_SSSTE_ScenarioCustomization_Category
 auto_Adventure_brush_palette_category~_ScenarioCustomization_category
 0
 dialog-bkgrnd
@@ -25,16 +30,22 @@ sg_solar_surface_a
 ui_packedLayout~	0x40464200
 ExpansionPack1
 PlanetCustomizationPaletteCategory
+SSSTE_ScenarioCustomization_Pages
 NoGroup_sculpt-PlanetCustomizationPaletteCategory-Scrollbar
+0c1
 Knots
 PlanetCustomizationItems
+SSS
 auto_ScenarioCustomizationTextures_CityPadCurvy03
 As
 NoGroup_sculpt-SculptPaletteCategory-00
 editor_rigblock~	0x40606000
+S
 Asset
 Ass
+auto_Adventure_brush_palette_pages~_SSSTE_ScenarioCustomization_Page
 EP1_draperyBlack
+PlanetCustomizationSelectTexture
 palette_config~	0x406b0100
 AssetBrow
 >>>>>>> Stashed changes
@@ -42,6 +53,7 @@ citypad_curvy03
 AssetBr
 terrainThemeCliff~	0x3b4f7c6
 A
+SSSTE_ScenarioCustomization_Page
 auto_ui_packedLayout~_PlanetCustomizationPaletteCategory
 auto_Adventure_brush_palette~_ScenarioCustomization_pagescore
 terrainThemeBeach2~	0x3b4f7cd
@@ -60,12 +72,15 @@ AssetBrowserGraphics
 Tech
 SculptPaletteCategory
 PlanetCustomizationScrollbar
+PlanetCustomizationTextureThumbnail
+Opt_sectionContainer
 tt_bag_field_01
 be_plate
 auto_ScenarioCustomizationTextures_Paper
 auto_ScenarioCustomizationTextures_WW
 auto_ScenarioCustomizationTextures_Lizard
 AssetB
+SSST
 auto_ScenarioCustomizationTextures_Tech
 Asse
 PlanetCustomizationItemDirectory
@@ -75,9 +90,11 @@ Adventure_brush_palette~	0x406b6bdc
 Adventure_brush_palette_pages~	0x406b6cdc
 Adventure_brush_palette_category~	0x406b6edc
 WW
+SSSTE
 ScenarioEditor
 PlanetCustomizationTextureButton
 AssetBro
+common~	0x11c0bde
 auto_ScenarioCustomizationTextures_Drapery
 PlanetCustomizationItemsFilterTE
 AssetBrowser
@@ -86,18 +103,22 @@ PlanetCustomizationItem
 ScenarioCustomization_category
 ScenarioCustomization_pagescore
 auto_ui_packedLayout~_SculptPaletteCategory
+PlanetCustomizationPalette
 ToolBag
 WoodenPlanks
 Chains
 ScenarioCustomization_page
+en-us
 ~	0x811c9dc5
 AssetBrows
 _mask
 Neon
+SSSTE_ScenarioCustomization_Category
 cr-mission-description-win
 PlanetCustomizationPanel
 Lizard
 EP1_chainlink
+0c
 TemplatePaletteScenarioSculptCategory
 tv_static
 FrameBorders
@@ -107,6 +128,7 @@ Bumps
 music-background
 gear_largeRock1
 auto_ScenarioCustomizationTextures_StaticNoise
+locale~	0x2fabf01
 PlanetCustomizationItemThumbnail
 PlanetCustomizationToggle
 auto_ScenarioCustomizationTextures_test

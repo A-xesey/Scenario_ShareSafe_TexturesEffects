@@ -59,12 +59,6 @@ void ScenarioCustomizationItem::SetCustomizationAndImage(const PropertyList* pPr
 	}
 
 	SetSelection(false);
-	/*IWindowPtr winDirectory = this->FindWindowByID(id("PlanetCustomizationItemDirectory"));
-	if (winDirectory != nullptr && customizationID.instanceID != 0)
-	{
-		std::u16string CustomizationIDString = uintToString(customizationID.groupID) + u"!" + uintToString(customizationID.instanceID) + u"." + uintToString(customizationID.typeID);
-		winDirectory->SetCaption(CustomizationIDString.c_str());
-	}*/
 }
 
 void ScenarioCustomizationItem::SetSelection(bool bIsSelected)
