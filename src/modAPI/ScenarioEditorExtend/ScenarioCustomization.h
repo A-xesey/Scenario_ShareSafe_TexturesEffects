@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Global.h"
 #include "ScenarioCustomizationItem.h"
 #include <Spore\UTFWin\IText.h>
 
@@ -65,7 +64,7 @@ public:
 	};
 
 private:
-#pragma region constants
+#pragma region Constants
 	static constexpr float GRID_START_X = 0.0f;
 	static constexpr float GRID_START_Y = 0.0f;
 	static constexpr float ITEM_MARGIN = 4.0f; // TBD
@@ -80,17 +79,17 @@ private:
 #pragma endregion
 
 protected:
-	IWindowPtr mpPaletteCategoryWin;
-	IWindowPtr mpPanelWin;
-	IWindowPtr mpScrollFrameVerticalWin;
-	IWindowPtr mpContentClientWin;
-	ITextEditPtr mpSearchboxTextEdit;
-	IWindowPtr mpPaletteTextureBlockWin;
-	IWindowPtr mpPaletteTextureWin;
-	IWindowPtr mpPaletteTextureNameWin;
-	//IWindowPtr mpPaletteEffectBlockWin;
-	//IWindowPtr mpPaletteEffectWin;
-	//ITextPtr mpPaletteEffectName;
+	IWindow* mpPaletteCategoryWin;
+	IWindow* mpPanelWin;
+	IWindow* mpScrollFrameVerticalWin;
+	IWindow* mpContentClientWin;
+	ITextEdit* mpSearchboxTextEdit;
+	IWindow* mpPaletteTextureBlockWin;
+	IWindow* mpPaletteTextureWin;
+	IWindow* mpPaletteTextureNameWin;
+	//IWindow* mpPaletteEffectBlockWin;
+	//IWindow* mpPaletteEffectWin;
+	//IText* mpPaletteEffectName;
 	float mPanelTextureY;
 	//float mPanelEffectY;
 	Simulator::cScenarioTerraformMode* mpScenarioTerraformMode;
@@ -106,9 +105,9 @@ public:
 	static const uint32_t TYPE = id(PrivateName("ScenarioCustomization"));
 	
 	ScenarioCustomization(
-		IWindowPtr pPaletteWin,
-		IWindowPtr pScrollFrameVerticalWin,
-		IWindowPtr pContentClientWin
+		IWindow* pPaletteWin,
+		IWindow* pScrollFrameVerticalWin,
+		IWindow* pContentClientWin
 	);
 	~ScenarioCustomization();
 
@@ -134,6 +133,7 @@ public:
 			? customizationKeyCurrent
 			: EmptyKey;
 	}
+	inline void SwitchPaletteCategory() { HideCustomizationPanel(); }
 
 	int AddRef() override;
 	int Release() override;
@@ -147,8 +147,26 @@ protected:
 	void UpdatePaletteTexture();
 	void ShowCustomizationPanel(CustomizationItemsLookup itemsLookup, float positionY);
 	void HideCustomizationPanel(bool bSilent = false);
-	void CenterUIItem(IWindowPtr pChildWin);
+	void CenterUIItem(IWindow* pChildWin);
+	bool CheckPropertyWhitelistFromDefinition(
+		uint32_t propertyId,
+		PropertyListPtr pDefinitionPropList
+	);
+	bool CheckPropertyBlacklistFromDefinition(
+		uint32_t propertyId,
+		PropertyListPtr pDefinitionPropList
+	);
+	void UpdateSelectedCaption(IWindow* pCaptionWin, string16 pName);
+	string16 ResourceKeyToString(ResourceKey key);
 
+	inline bool IsPropertyAllowedForDefinition(
+		uint32_t propertyId,
+		PropertyListPtr pDefinitionPropList
+	)
+	{
+		return CheckPropertyWhitelistFromDefinition(propertyId, pDefinitionPropList) &&
+			CheckPropertyBlacklistFromDefinition(propertyId, pDefinitionPropList);
+	}
 	inline void ClearSearchbar()
 	{
 		if (mpSearchboxTextEdit)

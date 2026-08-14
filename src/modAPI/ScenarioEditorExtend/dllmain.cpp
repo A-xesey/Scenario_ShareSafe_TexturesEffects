@@ -24,6 +24,8 @@ void Dispose()
 	g_pWinProc = nullptr;
 }
 
+class ScenarioEditorUI {};
+
 member_detour(
 	PaletteCategoryUI_Load,
 	PaletteCategoryUI,
@@ -32,11 +34,10 @@ member_detour(
 {
 	void detoured(PaletteCategory* pCategory, IWindow* pWindow, PaletteInfo* pInfo)
 	{
-		
 		original_function(this, pCategory, pWindow, pInfo);
 
-		IWindowPtr pPaletteCategoryWin = mpLayout->FindWindowByID(CONTROL_ID_PALETTE);
-		IWindowPtr pPanelWin = pPaletteCategoryWin
+		IWindow* pPaletteCategoryWin = mpLayout->FindWindowByID(CONTROL_ID_PALETTE);
+		IWindow* pPanelWin = pPaletteCategoryWin
 			? pPaletteCategoryWin->FindWindowByID(CONTROL_ID_CUSTOMIZATION_PANEL)
 			: nullptr;
 		IWindowPtr pPanelItemsWin = pPanelWin
@@ -47,11 +48,11 @@ member_detour(
 
 		Math::Rectangle panelItemsWinArea = pPanelItemsWin->GetArea();
 		pPanelWin->RemoveWindow(pPanelItemsWin.get());
-		IWindowPtr pScrollFrameVerticalWin = ScrollFrameVertical::Create(
+		IWindow* pScrollFrameVerticalWin = ScrollFrameVertical::Create(
 			ScrollFrameVertical::GENERIC_LAYOUT,
 			pPanelItemsWin
 		);
-		pPanelWin->AddWindow(pScrollFrameVerticalWin.get());
+		pPanelWin->AddWindow(pScrollFrameVerticalWin);
 		pScrollFrameVerticalWin->SetFillColor(Math::Color(0));
 		pScrollFrameVerticalWin->AddWinProc(
 			new SimpleLayout(kAnchorBottom | kAnchorLeft | kAnchorRight | kAnchorTop)
@@ -60,38 +61,62 @@ member_detour(
 		pScrollFrameVerticalWin->SetFlag(kWinFlagIgnoreMouse, true);
 		pScrollFrameVerticalWin->SetFlag(kWinFlagClip, true);
 		pScrollFrameVerticalWin->SetArea(panelItemsWinArea);
-		ScrollFrameVertical::Update(pScrollFrameVerticalWin.get());
+		ScrollFrameVertical::Update(pScrollFrameVerticalWin);
 
 		g_pWinProc = new ScenarioCustomization(
 			pPaletteCategoryWin,
 			pScrollFrameVerticalWin,
-			pPanelItemsWin
+			pPanelItemsWin.get()
 		);
 
 		//TODO: add other buttons here
 		
-		if (IWindowPtr pPaletteCategoryTextureBtn = mpLayout->FindWindowByID(
+		if (IWindow* pPaletteCategoryTextureBtn = mpLayout->FindWindowByID(
 			CONTROL_ID_PALETTE_BTN_TEXTURE
 		))
 			pPaletteCategoryTextureBtn->AddWinProc(g_pWinProc.get());
 
-		if (IWindowPtr pPanelCloseBtn = pPanelWin->FindWindowByID(
+		if (IWindow* pPanelCloseBtn = pPanelWin->FindWindowByID(
 			CONTROL_ID_CUSTOMIZATION_PANEL_CLOSE
 		))
 			pPanelCloseBtn->AddWinProc(g_pWinProc.get());
 
-		if (IWindowPtr pPanelSearchbox = pPanelWin->FindWindowByID(
+		if (IWindow* pPanelSearchbox = pPanelWin->FindWindowByID(
 			CONTROL_ID_CUSTOMIZATION_PANEL_SEARCHBOX
 		))
 			pPanelSearchbox->AddWinProc(g_pWinProc.get());
 
-		if (IWindowPtr pTexturePropertySelect = mpLayout->FindWindowByID(
+		if (IWindow* pTexturePropertySelect = mpLayout->FindWindowByID(
 			CONTROL_ID_PALETTE_PROPERTIES_TEXTURE
 		))
 			for (IWindow* pChildWin : pTexturePropertySelect->children())
 				pTexturePropertySelect->AddWinProc(g_pWinProc.get());
 
 		pPanelWin->AddWinProc(g_pWinProc.get());
+	}
+};
+
+static inline void SwitchPaletteCategory()
+{
+	if (g_pWinProc)
+		g_pWinProc->SwitchPaletteCategory();
+}
+
+member_detour(PaletteUI_SetActiveCategory, PaletteUI, void(int))
+{
+	void detoured(int categoryIndex)
+	{
+		SwitchPaletteCategory();
+		original_function(this, categoryIndex);
+	}
+};
+
+member_detour(ScenarioEditorUI_SetMode, ScenarioEditorUI, void(int))
+{
+	void detoured(int mode)
+	{
+		SwitchPaletteCategory();
+		original_function(this, mode);
 	}
 };
 
@@ -114,9 +139,9 @@ member_detour(
 void AttachDetours()
 {
 	PaletteCategoryUI_Load::attach(GetAddress(PaletteCategoryUI, Load));
+	PaletteUI_SetActiveCategory::attach(GetAddress(PaletteUI, SetActiveCategory));
+	ScenarioEditorUI_SetMode::attach(GetAddress(SSSTE::ScenarioEditorUI, SetMode));
 	//cTerrainStateMgr_UpdateFromDefinition::attach(Address(0xfbc100));
-	// Call the attach() method on any detours you want to add
-	// For example: cViewer_SetRenderType_detour::attach(GetAddress(cViewer, SetRenderType));
 }
 
 
@@ -144,4 +169,3 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 	}
 	return TRUE;
 }
-

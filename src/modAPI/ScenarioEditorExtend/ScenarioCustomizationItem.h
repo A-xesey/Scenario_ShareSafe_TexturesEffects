@@ -1,7 +1,5 @@
 #pragma once
 
-#include <Spore\BasicIncludes.h>
-
 #define ScenarioCustomizationItemPtr intrusive_ptr<ScenarioCustomizationItem>
 
 // To avoid repeating UTFWin:: all the time.
@@ -15,8 +13,8 @@ protected:
 	ResourceKey mThumbnailKey;
 	LocalizedString mName;
 	bool mbIsSelected;
-	IWindowPtr mpButton;
-	SporeTooltipWinProcPtr mpTooltipWinProc;
+	IWindow* mpButton;
+	SporeTooltipWinProc* mpTooltipWinProc;
 public:
 	static const uint32_t TYPE = id("ScenarioCustomizationItem");
 	
@@ -25,10 +23,10 @@ public:
 
 	virtual void SetCustomizationAndImage(const App::PropertyList* pPropList, ResourceKey thumbnailKey, IWinProc* pHandler);
 	virtual void SetSelection(bool bIsSelected);
-	inline ResourceKey* ScenarioCustomizationItem::GetCustomization() { return &mCustomizationKey; }
-	inline ResourceKey* ScenarioCustomizationItem::GetThumbnail() { return &mThumbnailKey; }
+	inline ResourceKey ScenarioCustomizationItem::GetCustomization() { return mCustomizationKey; }
+	inline ResourceKey ScenarioCustomizationItem::GetThumbnail() { return mThumbnailKey; }
 	inline LocalizedString* ScenarioCustomizationItem::GetName() { return &mName; }
-	inline IWindow* ScenarioCustomizationItem::GetButtonWindow() { return mpButton.get(); }
+	inline IWindow* ScenarioCustomizationItem::GetButtonWindow() { return mpButton; }
 	inline bool ScenarioCustomizationItem::IsSelected() const { return mbIsSelected; }
 
 	int AddRef() override;

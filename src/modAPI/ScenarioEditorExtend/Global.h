@@ -4,12 +4,31 @@
 #define PrivateName(name) (ModID "-" name)
 
 #define EmptyKey ResourceKey(0, 0, 0)
+#define EmDashString u"\u2014"
+#define HexFormatString u"0x%08x"
 
 class ScenarioCustomization;
 
 extern intrusive_ptr<ScenarioCustomization> g_pWinProc;
 
-#pragma region constants
+#pragma region Addresses
+namespace SSSTE
+{
+	using namespace ModAPI;
+
+	namespace Addresses(cTerrainStateMgr)
+	{
+		DefineAddress(UpdateFromDefinition, ChooseAddress(0xf902d0, 0xfbc100));
+	}
+
+	namespace Addresses(ScenarioEditorUI)
+	{
+		DefineAddress(SetMode, ChooseAddress(0xeaab10, 0xed6620));
+	}
+}
+#pragma endregion
+
+#pragma region Constants
 static const uint32_t PROPERTY_ID_TERRAIN_ABOVE_DETAIL2 = 0x3b4f7c9;
 static const uint32_t PROPERTY_ID_TERRAIN_ABOVE_DETAIL_NOISE = 0x3b4f7ca;
 static const uint32_t PROPERTY_ID_TERRAIN_BELOW = 0x3b4f7cb;
@@ -19,6 +38,7 @@ static const uint32_t PROPERTY_ID_TERRAIN_PLAYER_GROUND_EFFECTS = 0x56b14f05;
 static const uint32_t PROPERTY_ID_VISUAL_STYLE = id("visualStyle");
 static const uint32_t PROPERTY_ID_CUSTOMIZATION_ITEM_KEY = id("CustomizationItemKey");
 static const uint32_t PROPERTY_ID_CUSTOMIZATION_ITEM_NAME = id("CustomizationItemName");
+static const uint32_t PROPERTY_ID_CUSTOMIZATION_ITEM_WHITELIST = id("CustomizationItemPropertyWhitelist");
 static const uint32_t PROPERTY_ID_CUSTOMIZATION_ITEM_BLACKLIST = id("CustomizationItemPropertyBlacklist");
 
 static const uint32_t GROUP_ID_TEXTURES_DEFINITIONS = id("ScenarioCustomizationTextures");
