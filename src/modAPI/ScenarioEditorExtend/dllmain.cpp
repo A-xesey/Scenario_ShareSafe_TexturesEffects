@@ -70,17 +70,32 @@ member_detour(
 
 		//TODO: add other buttons here
 		
-		if (IWindowPtr pPanelToggleBtn = mpLayout->FindWindowByID(
+		if (IWindowPtr pPaletteCategoryTextureBtn = mpLayout->FindWindowByID(
 			CONTROL_ID_PALETTE_BTN_TEXTURE
 		))
-			pPanelToggleBtn->AddWinProc(g_pWinProc.get());
+			pPaletteCategoryTextureBtn->AddWinProc(g_pWinProc.get());
+
+		if (IWindowPtr pPanelCloseBtn = pPanelWin->FindWindowByID(
+			CONTROL_ID_CUSTOMIZATION_PANEL_CLOSE
+		))
+			pPanelCloseBtn->AddWinProc(g_pWinProc.get());
+
 		if (IWindowPtr pPanelSearchbox = pPanelWin->FindWindowByID(
 			CONTROL_ID_CUSTOMIZATION_PANEL_SEARCHBOX
 		))
 			pPanelSearchbox->AddWinProc(g_pWinProc.get());
+
+		if (IWindowPtr pTexturePropertySelect = mpLayout->FindWindowByID(
+			CONTROL_ID_PALETTE_PROPERTIES_TEXTURE
+		))
+			for (IWindow* pChildWin : pTexturePropertySelect->children())
+				pTexturePropertySelect->AddWinProc(g_pWinProc.get());
+
 		pPanelWin->AddWinProc(g_pWinProc.get());
 	}
 };
+
+// TODO: add detours for undo/redo history entriy
 
 //member_detour(cTerrainStateMgr_UpdateFromDefinition, cTerrainStateMgr, void(PropertyList*))
 //{

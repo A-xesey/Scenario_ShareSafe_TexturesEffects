@@ -3,9 +3,10 @@
 #include <EASTL\sort.h>
 #include <Spore\UI\ScrollFrameVertical.h>
 
+using namespace App;
+using namespace Audio;
 using namespace Simulator;
 using namespace Terrain;
-using namespace App;
 using namespace UI;
 
 ScenarioCustomization::ScenarioCustomization(
@@ -22,29 +23,37 @@ ScenarioCustomization::ScenarioCustomization(
 		(ITextEdit*)mpPanelWin->FindWindowByID(CONTROL_ID_CUSTOMIZATION_PANEL_SEARCHBOX)->
 		Cast(ITextEdit::TYPE)
 	)
-	, mpPaletteTextureWin(mpPaletteCategoryWin->FindWindowByID(CONTROL_ID_PALETTE_BTN_TEXTURE))
+	, mpPaletteTextureBlockWin(
+		mpPaletteCategoryWin->FindWindowByID(CONTROL_ID_PALETTE_BLOCK_TEXTURE)
+	)
+	, mpPaletteTextureWin(mpPaletteTextureBlockWin->FindWindowByID(CONTROL_ID_PALETTE_BTN_TEXTURE))
 	, mpPaletteTextureNameWin(
-		mpPaletteCategoryWin->FindWindowByID(CONTROL_ID_PALETTE_NAME_TEXTURE)
+		mpPaletteTextureBlockWin->FindWindowByID(CONTROL_ID_PALETTE_NAME_TEXTURE)
 	)
 	//, mpPaletteEffectWin(mpPaletteWinq->FindWindowByID(CONTROL_ID_PALETTE_BTN_EFFECT))
-	, mItemsGroup(kCustomizationItemsGroupNone)
+	, mLastLookup(kCustomizationItemsGroupNone, 0)
 	, mPropertyTexture(PROPERTY_DEFAULT_TEXTURE)
 	, mPropertyEffect(PROPERTY_DEFAULT_EFFECT)
+	, mPanelTextureY(
+		mpPaletteTextureBlockWin
+			? mpPaletteTextureBlockWin->GetRealArea().top
+			: 0.0f
+	)
 	, mpSelectedItem(nullptr)
 	, mOpenedPanelItemsGroup(kCustomizationItemsGroupNone)
 {
 	if (mpPaletteTextureWin)
 	{
-		Math::Rectangle areaPaletteTextureWin = mpPaletteTextureWin->GetRealArea();
-		mPanelTextureY = areaPaletteTextureWin.top;
-
+		CenterUIItem(mpPaletteCategoryWin->FindWindowByID(CONTROL_ID_PALETTE_PROPERTIES_TEXTURE));
 		InitItems(
 			mpContentClientWin.get(),
-			kCustomizationItemsGroupTextures,
-			PROPERTY_DEFAULT_TEXTURE
+			CustomizationItemsLookup(kCustomizationItemsGroupTextures, PROPERTY_DEFAULT_TEXTURE)
 		);
 		UpdatePaletteTexture();
 	}
+
+	//if (mpPaletteEffectWin)
+	//...
 	// TODO: add the same thing for effects
 }
 
@@ -52,14 +61,9 @@ ScenarioCustomization::~ScenarioCustomization()
 {
 }
 
-void ScenarioCustomization::InitItems(
-	IWindow* pWindow,
-	CustomizationItemsGroup itemsGroup,
-	uint32_t propertyId,
-	string16 searchString
-)
+void ScenarioCustomization::InitItems(IWindow* pWindow, CustomizationItemsLookup itemsLookup)
 {
-	if ((mItemsGroup != itemsGroup || mSearchString != searchString) && pWindow)
+	if (mLastLookup != itemsLookup && pWindow)
 	{
 		Math::Rectangle winArea = pWindow->GetRealArea();
 		float winWidth = winArea.right - winArea.left;
@@ -69,9 +73,10 @@ void ScenarioCustomization::InitItems(
 			mColumns = 1;
 
 		ClearItems();
-		ResourceKey customizationKeyCurrent = GetCurrentCustomizationKey(propertyId);
+		mpSelectedItem = nullptr;
+		ResourceKey customizationKeyCurrent = GetCurrentCustomizationKey(itemsLookup.mPropertyId);
 		vector<uint32_t> definitionIds;
-		PropManager.GetPropertyListIDs((uint32_t)itemsGroup, definitionIds);
+		PropManager.GetPropertyListIDs(itemsLookup.mItemsGroup, definitionIds);
 		if (!definitionIds.empty())
 		{
 			for (uint32_t definitionId : definitionIds)
@@ -79,9 +84,9 @@ void ScenarioCustomization::InitItems(
 				PropertyListPtr pPropList;
 				if (!PropManager.GetPropertyList(
 					definitionId,
-					(uint32_t)itemsGroup,
+					itemsLookup.mItemsGroup,
 					pPropList)
-					)
+				)
 					continue;
 
 #pragma region Blacklist
@@ -95,9 +100,9 @@ void ScenarioCustomization::InitItems(
 					find(
 						itemPropertyBlacklist.begin(),
 						itemPropertyBlacklist.end(),
-						propertyId
+						itemsLookup.mPropertyId
 					) != itemPropertyBlacklist.end()
-					)
+				)
 					continue;
 #pragma endregion
 
@@ -105,12 +110,12 @@ void ScenarioCustomization::InitItems(
 				ScenarioCustomizationItemPtr pItem = new ScenarioCustomizationItem();
 				pItem->SetCustomizationAndImage(
 					pPropList.get(),
-					ResourceKey(definitionId, TypeIDs::png, (uint32_t)itemsGroup),
+					ResourceKey(definitionId, TypeIDs::png, itemsLookup.mItemsGroup),
 					this
 				);
 				string16 itemName = pItem->GetName()->GetText();
 				itemName.make_lower();
-				if (itemName.find(searchString) == string16::npos)
+				if (itemName.find(itemsLookup.mSearchString) == string16::npos)
 					continue;
 				ResourceKey customizationKey = *pItem->GetCustomization();
 				if (customizationKey == customizationKeyCurrent)
@@ -175,9 +180,9 @@ void ScenarioCustomization::InitItems(
 				float positionX = GRID_START_X + (col * ITEM_WIDTH);
 				float positionY = GRID_START_Y + (row * ITEM_HEIGHT);
 
-				if (IWindowPtr itemWin = pItem->FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM))
+				if (IWindow* pItemWin = pItem->FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM))
 				{
-					Math::Rectangle itemArea = itemWin->GetArea();
+					Math::Rectangle itemArea = pItemWin->GetArea();
 
 					float width = itemArea.right - itemArea.left;
 					float height = itemArea.bottom - itemArea.top;
@@ -186,9 +191,9 @@ void ScenarioCustomization::InitItems(
 					itemArea.right = positionX + width;
 					itemArea.bottom = positionY + height;
 
-					itemWin->SetArea(itemArea);
+					pItemWin->SetArea(itemArea);
 
-					mWinItemMap[itemWin.get()] = pItem;
+					mWinItemMap[pItemWin] = pItem;
 				}
 				index++;
 			}
@@ -196,8 +201,7 @@ void ScenarioCustomization::InitItems(
 #pragma endregion
 
 		ScrollFrameVertical::Update(mpScrollFrameVerticalWin.get());
-		mItemsGroup = itemsGroup;
-		mSearchString = searchString;
+		mLastLookup = itemsLookup;
 	}
 }
 
@@ -211,7 +215,7 @@ void ScenarioCustomization::ClearItems()
 
 void ScenarioCustomization::UpdatePaletteTexture()
 {
-	if (IWindowPtr pPaletteTextureThumbnailWin = mpPaletteTextureWin->
+	if (IWindow* pPaletteTextureThumbnailWin = mpPaletteTextureWin->
 		FindWindowByID(CONTROL_ID_PALETTE_BTN_TEXTURE_THUMBNAIL))
 	{
 		ResourceKey customizationKeyCurrent = mpSelectedItem
@@ -219,7 +223,7 @@ void ScenarioCustomization::UpdatePaletteTexture()
 			: GetCurrentCustomizationKey(mPropertyTexture);
 		if (!customizationKeyCurrent.typeID)
 			customizationKeyCurrent.typeID = TypeIDs::rw4;
-		Image::SetBackgroundByKey(pPaletteTextureThumbnailWin.get(), customizationKeyCurrent);
+		Image::SetBackgroundByKey(pPaletteTextureThumbnailWin, customizationKeyCurrent);
 	}
 	if (mpPaletteTextureNameWin)
 		mpPaletteTextureNameWin->SetCaption(mpSelectedItem
@@ -228,33 +232,59 @@ void ScenarioCustomization::UpdatePaletteTexture()
 		);
 }
 
+void ScenarioCustomization::CenterUIItem(IWindowPtr pChildWin)
+{
+	if (pChildWin)
+	{
+		Math::Rectangle areaParentWin = pChildWin->GetParent()->GetRealArea();
+		Math::Rectangle areaChildWin = pChildWin->GetRealArea();
+		
+		Vector2 sizeParentWin(
+			areaParentWin.GetWidth(),
+			areaParentWin.GetHeight()
+		);
+		Vector2 sizeChildWin(
+			areaChildWin.GetWidth(),
+			areaChildWin.GetHeight()
+		);
+		
+		areaChildWin.left = (sizeParentWin.x - sizeChildWin.x) / 2.0f;
+		areaChildWin.top = (sizeParentWin.y - sizeChildWin.y) / 2.0f;
+		areaChildWin.right = areaChildWin.left + sizeChildWin.x;
+		areaChildWin.bottom = areaChildWin.top + sizeChildWin.y;
+		
+		pChildWin->SetLayoutArea(areaChildWin);
+	}
+}
+
 #pragma region Show & Hide Panel
 void ScenarioCustomization::ShowCustomizationPanel(
-	CustomizationItemsGroup itemsGroup,
-	uint32_t propertyId,
+	CustomizationItemsLookup itemsLookup,
 	float positionY
 )
 {
 	ClearSearchbar();
 	InitItems(
 		mpContentClientWin.get(),
-		itemsGroup,
-		propertyId
+		itemsLookup
 	);
 
 	Math::Rectangle areaPanelWin = mpPanelWin->GetArea();
-	float heightPanelWin = areaPanelWin.bottom - areaPanelWin.top;
+	float heightPanelWin = areaPanelWin.GetHeight();
 	areaPanelWin.top = positionY;
 	areaPanelWin.bottom = areaPanelWin.top + heightPanelWin;
 	mpPanelWin->SetArea(areaPanelWin);
 
 	mpPanelWin->SetVisible(true);
 	mpContentClientWin->SetVisible(true);
-	mOpenedPanelItemsGroup = itemsGroup;
+	mOpenedPanelItemsGroup = itemsLookup.mItemsGroup;
+	PlayAudio(SOUND_ID_CUSTOMIZATION_PANEL_OPEN);
 }
 
-void ScenarioCustomization::HideCustomizationPanel()
+void ScenarioCustomization::HideCustomizationPanel(bool bSilent)
 {
+	if (mpPanelWin->IsVisible() && !bSilent)
+		PlayAudio(SOUND_ID_CUSTOMIZATION_PANEL_CLOSE);
 	mpPanelWin->SetVisible(false);
 	mpContentClientWin->SetVisible(false);
 	mOpenedPanelItemsGroup = kCustomizationItemsGroupNone;
@@ -296,11 +326,13 @@ int ScenarioCustomization::GetEventFlags() const
 // checking what kind of message was sent...
 bool ScenarioCustomization::HandleUIMessage(IWindow* window, const Message& message)
 {
+	uint32_t controlId;
 	switch (message.eventType)
 	{
 	case kMsgButtonClick:
 	{
-		switch (message.source->GetControlID())
+		controlId = message.source->GetControlID();
+		switch (controlId)
 		{
 		case CONTROL_ID_PALETTE_BTN_TEXTURE: //TODO: rewrite for multiple types
 		{
@@ -309,9 +341,7 @@ bool ScenarioCustomization::HandleUIMessage(IWindow* window, const Message& mess
 			else
 			{
 				ShowCustomizationPanel(
-					kCustomizationItemsGroupTextures,
-					// TODO: PLACEHOLDER
-					kCustomizationPropertyTextureDetail,
+					CustomizationItemsLookup(kCustomizationItemsGroupTextures, mPropertyTexture),
 					mPanelTextureY
 				);
 			}
@@ -319,40 +349,35 @@ bool ScenarioCustomization::HandleUIMessage(IWindow* window, const Message& mess
 		}
 		case CONTROL_ID_CUSTOMIZATION_ITEM:
 		{
-			if (mpScenarioTerraformMode)
-			{
-				IWindow* pItemWin = message.source;
-				ScenarioCustomizationItemPtr pItem = mWinItemMap[pItemWin];
-				if (pItem->IsSelected())
-					return true;
-				mpScenarioTerraformMode->StartHistoryEntry();
-				ResourceKey key = *pItem->GetCustomization();
-				PropertyListPtr pTerrainScript = mpScenarioTerraformMode->mpPropList;
-#pragma region TESTS
-				vector<uint32_t> testPropertyIds = {
-					PROPERTY_ID_TERRAIN_CLIFF,
-					PROPERTY_ID_TERRAIN_ABOVE_DETAIL2,
-					PROPERTY_ID_TERRAIN_ABOVE_DETAIL_NOISE,
-					PROPERTY_ID_TERRAIN_BELOW,
-					PROPERTY_ID_TERRAIN_BEACH2
-				};
+			if (!mpScenarioTerraformMode)
+				return true;
+			IWindow* pItemWin = message.source;
+			ScenarioCustomizationItemPtr pItem = mWinItemMap[pItemWin];
+			if (pItem->IsSelected())
+				return true;
+			mpScenarioTerraformMode->StartHistoryEntry();
+			ResourceKey customizationKey = *pItem->GetCustomization();
+			PropertyListPtr pTerrainScript = mpScenarioTerraformMode->mpPropList;
 
-				for (uint32_t propertyId : testPropertyIds)
-					pTerrainScript->SetProperty(propertyId, &Property().SetValueKey(key));
+			pTerrainScript->SetProperty(
+				mLastLookup.mPropertyId,
+				&Property().SetValueKey(customizationKey)
+			);
 
-				//update current textures
-				//cTerrainStateMgr_UpdateFromDefinition
-				CALL(
-					Address(ModAPI::ChooseAddress(0xf902d0, 0xfbc100)),
-					void,
-					Args(cTerrainStateMgr*, PropertyList*),
-					Args(mpScenarioTerraformMode->mpTerrainStateMgr, pTerrainScript.get())
-				);
-#pragma endregion
-				SelectItem(pItem);
-				UpdatePaletteTexture();
-				mpScenarioTerraformMode->CommitHistoryEntry();
-			}
+			//update current textures
+			//cTerrainStateMgr_UpdateFromDefinition
+			CALL(
+				Address(ModAPI::ChooseAddress(0xf902d0, 0xfbc100)),
+				void,
+				Args(cTerrainStateMgr*, PropertyList*),
+				Args(mpScenarioTerraformMode->mpTerrainStateMgr, pTerrainScript.get())
+			);
+			//TODO: find a function that actually updates every texture, not just abovedetail2
+
+			SelectItem(pItem);
+			UpdatePaletteTexture();
+			mpScenarioTerraformMode->CommitHistoryEntry();
+			PlayAudio(SOUND_ID_EDITOR_CLICK_GENERAL);
 			return true;
 		}
 		case CONTROL_ID_CUSTOMIZATION_PANEL_SEARCHBOX_BTN_CLEAR:
@@ -360,27 +385,53 @@ bool ScenarioCustomization::HandleUIMessage(IWindow* window, const Message& mess
 			ClearSearchbar();
 			return true;
 		}
+		case CONTROL_ID_CUSTOMIZATION_PANEL_CLOSE:
+		{
+			HideCustomizationPanel();
+			return true;
+		}
 		default:
 			return false;
 		}
 	}
-	case kMsgTextChanged:
+	case kMsgButtonSelect:
 	{
-		if (message.source->GetControlID() == CONTROL_ID_CUSTOMIZATION_PANEL_SEARCHBOX)
+		controlId = message.source->GetControlID();
+		HideCustomizationPanel(controlId != mPropertyTexture);
+		IWindow* pParentWin = message.source->GetParent();
+		if (
+			pParentWin &&
+			pParentWin->GetControlID() == CONTROL_ID_PALETTE_PROPERTIES_TEXTURE &&
+			controlId != mPropertyTexture
+		)
 		{
-			if (!mpSearchboxTextEdit)
-				return false;
-			string16 searchString = mpSearchboxTextEdit->GetText();
-			searchString.make_lower();
-			if (IWindowPtr pSearchboxClearWin = message.source->GetParent()->
-				FindWindowByID(CONTROL_ID_CUSTOMIZATION_PANEL_SEARCHBOX_BTN_CLEAR))
-				pSearchboxClearWin->SetVisible(!searchString.empty());
+			mPropertyTexture = (CustomizationPropertyTexture)controlId;
 			InitItems(
 				mpContentClientWin.get(),
-				mItemsGroup,
-				//TODO: PLACEHOLDER
-				PROPERTY_ID_TERRAIN_ABOVE_DETAIL2,
-				searchString
+				CustomizationItemsLookup(kCustomizationItemsGroupTextures, mPropertyTexture)
+			);
+			UpdatePaletteTexture();
+			PlayAudio(SOUND_ID_EDITOR_CLICK);
+		}
+		return true;
+	}
+	case kMsgTextChanged:
+	{
+		controlId = message.source->GetControlID();
+		if (controlId == CONTROL_ID_CUSTOMIZATION_PANEL_SEARCHBOX)
+		{
+			if (!mpSearchboxTextEdit)
+				return true;
+			string16 searchString = mpSearchboxTextEdit->GetText();
+			searchString.make_lower();
+			if (IWindow* pSearchboxClearWin = message.source->GetParent()->
+				FindWindowByID(CONTROL_ID_CUSTOMIZATION_PANEL_SEARCHBOX_BTN_CLEAR))
+				pSearchboxClearWin->SetVisible(!searchString.empty());
+			CustomizationItemsLookup itemsLookup = mLastLookup;
+			itemsLookup.mSearchString = searchString;
+			InitItems(
+				mpContentClientWin.get(),
+				itemsLookup
 			);
 			return true;
 		}

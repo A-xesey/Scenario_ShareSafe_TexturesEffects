@@ -7,6 +7,7 @@ PlanetCustomizationChooseTexture
 rlovr_bkgrnd3
 Tech~	0xa5b2d4bf
 PlanetCustomizationItemsFilter
+PlanetCustomizationTextureBlock
 CityPadCurvy03
 global_ui_tribe~	0x11c0c08
 auto_Adventure_brush_palette_pages~_ScenarioCustomization_page
@@ -16,10 +17,13 @@ auto_palette_config~_TemplatePaletteScenarioSculptCategory
 auto_Adventure_brush_palette_category~_SSSTE_ScenarioCustomization_Category
 auto_Adventure_brush_palette_category~_ScenarioCustomization_category
 0
+10000011
 dialog-bkgrnd
 auto_ScenarioCustomizationTextures_Gears
 graphics_atlas~	0x31a44893
+PlanetCustomizationClosePanel
 sporemaster
+PlanetCustomizationTextureSelectProperty
 names
 AssetBrowse
 auto_ScenarioCustomizationTextures_WoodenPlanks
@@ -48,7 +52,6 @@ EP1_draperyBlack
 PlanetCustomizationSelectTexture
 palette_config~	0x406b0100
 AssetBrow
->>>>>>> Stashed changes
 citypad_curvy03
 AssetBr
 terrainThemeCliff~	0x3b4f7c6
@@ -77,6 +80,7 @@ Opt_sectionContainer
 tt_bag_field_01
 be_plate
 auto_ScenarioCustomizationTextures_Paper
+PlanetCustomizationTextureName
 auto_ScenarioCustomizationTextures_WW
 auto_ScenarioCustomizationTextures_Lizard
 AssetB
@@ -92,6 +96,7 @@ Adventure_brush_palette_category~	0x406b6edc
 WW
 SSSTE
 ScenarioEditor
+010000011
 PlanetCustomizationTextureButton
 AssetBro
 common~	0x11c0bde

@@ -18,7 +18,7 @@ public:
 	{
 		kCustomizationItemsGroupNone,
 		kCustomizationItemsGroupTextures = GROUP_ID_TEXTURES_DEFINITIONS,
-		kCustomizationItemsGroupEffects = GROUP_ID_TEXTURES_DEFINITIONS
+		kCustomizationItemsGroupEffects = GROUP_ID_EFFECTS_DEFINITIONS
 	};
 
 	enum CustomizationPropertyTexture : uint32_t
@@ -33,6 +33,35 @@ public:
 	{
 		kCustomizationPropertyEffectGround = PROPERTY_ID_TERRAIN_PLAYER_GROUND_EFFECTS,
 		kCustomizationPropertyEffectVisualStyle = PROPERTY_ID_VISUAL_STYLE
+	};
+
+	struct CustomizationItemsLookup
+	{
+		CustomizationItemsGroup mItemsGroup;
+		uint32_t mPropertyId;
+		string16 mSearchString;
+
+		CustomizationItemsLookup(
+			CustomizationItemsGroup itemsGroup,
+			uint32_t propertyId,
+			string16 searchString = u""
+		)
+			: mItemsGroup(itemsGroup)
+			, mPropertyId(propertyId)
+			, mSearchString(searchString)
+		{ }
+
+		inline bool operator==(const CustomizationItemsLookup& b) const
+		{
+			return mItemsGroup == b.mItemsGroup &&
+				mPropertyId == b.mPropertyId &&
+				mSearchString == b.mSearchString;
+		}
+
+		inline bool operator!=(const CustomizationItemsLookup& b) const
+		{
+			return !(*this == b);
+		}
 	};
 
 private:
@@ -56,8 +85,10 @@ protected:
 	IWindowPtr mpScrollFrameVerticalWin;
 	IWindowPtr mpContentClientWin;
 	ITextEditPtr mpSearchboxTextEdit;
+	IWindowPtr mpPaletteTextureBlockWin;
 	IWindowPtr mpPaletteTextureWin;
 	IWindowPtr mpPaletteTextureNameWin;
+	//IWindowPtr mpPaletteEffectBlockWin;
 	//IWindowPtr mpPaletteEffectWin;
 	//ITextPtr mpPaletteEffectName;
 	float mPanelTextureY;
@@ -66,13 +97,12 @@ protected:
 	vector<ScenarioCustomizationItemPtr> mItems;
 	map<IWindow*, ScenarioCustomizationItemPtr> mWinItemMap;
 	ScenarioCustomizationItemPtr mpSelectedItem;
-	CustomizationItemsGroup mItemsGroup;
+	CustomizationItemsLookup mLastLookup;
 	CustomizationPropertyTexture mPropertyTexture;
 	CustomizationPropertyEffect mPropertyEffect;
 	int mRows = 1;
 	int mColumns = 1;
 	CustomizationItemsGroup mOpenedPanelItemsGroup;
-	string16 mSearchString = u"";
 
 public:
 	static const uint32_t TYPE = id(PrivateName("ScenarioCustomization"));
@@ -84,12 +114,7 @@ public:
 	);
 	~ScenarioCustomization();
 
-	void InitItems(
-		IWindow* pWindow,
-		CustomizationItemsGroup itemsGroup,
-		uint32_t propertyId,
-		string16 searchString = u""
-	);
+	void InitItems(IWindow* pWindow, CustomizationItemsLookup itemsLookup);
 	void ClearItems();
 
 	inline void SelectItem(ScenarioCustomizationItemPtr pItem)
@@ -103,7 +128,7 @@ public:
 	inline ResourceKey GetCurrentCustomizationKey(uint32_t propertyId)
 	{
 		ResourceKey customizationKeyCurrent;
-		return (App::Property::GetKey(
+		return (mpScenarioTerraformMode && App::Property::GetKey(
 			mpScenarioTerraformMode->mpPropList.get(),
 			propertyId,
 			customizationKeyCurrent
@@ -122,12 +147,9 @@ public:
 
 protected:
 	void UpdatePaletteTexture();
-	void ShowCustomizationPanel(
-		CustomizationItemsGroup itemsGroup,
-		uint32_t propertyId,
-		float positionY
-	);
-	void HideCustomizationPanel();
+	void ShowCustomizationPanel(CustomizationItemsLookup itemsLookup, float positionY);
+	void HideCustomizationPanel(bool bSilent = false);
+	void CenterUIItem(IWindowPtr pChildWin);
 
 	inline void ClearSearchbar()
 	{
