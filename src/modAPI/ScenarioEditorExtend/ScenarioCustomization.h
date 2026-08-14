@@ -100,9 +100,7 @@ protected:
 	CustomizationItemsLookup mLastLookup;
 	CustomizationPropertyTexture mPropertyTexture;
 	CustomizationPropertyEffect mPropertyEffect;
-	int mRows = 1;
-	int mColumns = 1;
-	CustomizationItemsGroup mOpenedPanelItemsGroup;
+	bool mbIsPanelShown;
 
 public:
 	static const uint32_t TYPE = id(PrivateName("ScenarioCustomization"));

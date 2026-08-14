@@ -40,7 +40,7 @@ ScenarioCustomization::ScenarioCustomization(
 			: 0.0f
 	)
 	, mpSelectedItem(nullptr)
-	, mOpenedPanelItemsGroup(kCustomizationItemsGroupNone)
+	, mbIsPanelShown(false)
 {
 	if (mpPaletteTextureWin)
 	{
@@ -68,9 +68,9 @@ void ScenarioCustomization::InitItems(IWindow* pWindow, CustomizationItemsLookup
 		Math::Rectangle winArea = pWindow->GetRealArea();
 		float winWidth = winArea.right - winArea.left;
 		float winHeight = winArea.bottom - winArea.top;
-		mColumns = (int)((winWidth + ITEM_MARGIN) / ITEM_WIDTH);
-		if (mColumns < 1)
-			mColumns = 1;
+		int ñolumns = (int)((winWidth + ITEM_MARGIN) / ITEM_WIDTH);
+		if (ñolumns < 1)
+			ñolumns = 1;
 
 		ClearItems();
 		mpSelectedItem = nullptr;
@@ -175,8 +175,8 @@ void ScenarioCustomization::InitItems(IWindow* pWindow, CustomizationItemsLookup
 			for (ScenarioCustomizationItemPtr pItem : mItems)
 			{
 				pItem->SetParentWindow(pWindow);
-				int row = index / mColumns;
-				int col = index % mColumns;
+				int row = index / ñolumns;
+				int col = index % ñolumns;
 				float positionX = GRID_START_X + (col * ITEM_WIDTH);
 				float positionY = GRID_START_Y + (row * ITEM_HEIGHT);
 
@@ -277,7 +277,7 @@ void ScenarioCustomization::ShowCustomizationPanel(
 
 	mpPanelWin->SetVisible(true);
 	mpContentClientWin->SetVisible(true);
-	mOpenedPanelItemsGroup = itemsLookup.mItemsGroup;
+	mbIsPanelShown = true;
 	PlayAudio(SOUND_ID_CUSTOMIZATION_PANEL_OPEN);
 }
 
@@ -287,7 +287,7 @@ void ScenarioCustomization::HideCustomizationPanel(bool bSilent)
 		PlayAudio(SOUND_ID_CUSTOMIZATION_PANEL_CLOSE);
 	mpPanelWin->SetVisible(false);
 	mpContentClientWin->SetVisible(false);
-	mOpenedPanelItemsGroup = kCustomizationItemsGroupNone;
+	mbIsPanelShown = false;
 }
 #pragma endregion
 
@@ -336,7 +336,7 @@ bool ScenarioCustomization::HandleUIMessage(IWindow* window, const Message& mess
 		{
 		case CONTROL_ID_PALETTE_BTN_TEXTURE: //TODO: rewrite for multiple types
 		{
-			if (mOpenedPanelItemsGroup == kCustomizationItemsGroupTextures)
+			if (mbIsPanelShown && mLastLookup.mItemsGroup == kCustomizationItemsGroupTextures)
 				HideCustomizationPanel();
 			else
 			{
