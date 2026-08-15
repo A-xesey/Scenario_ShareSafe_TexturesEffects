@@ -29,6 +29,9 @@
       <Filter>ScenarioEditorExtend</Filter>
     </ClInclude>
     <ClInclude Include="Global.h" />
+    <ClInclude Include="ScenarioFloraGroundCoverLock.h">
+      <Filter>ScenarioEditorExtend</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -44,6 +47,9 @@
       <Filter>ScenarioEditorExtend</Filter>
     </ClCompile>
     <ClCompile Include="TerrainTest.cpp">
+      <Filter>ScenarioEditorExtend</Filter>
+    </ClCompile>
+    <ClCompile Include="ScenarioFloraGroundCoverLock.cpp">
       <Filter>ScenarioEditorExtend</Filter>
     </ClCompile>
   </ItemGroup>

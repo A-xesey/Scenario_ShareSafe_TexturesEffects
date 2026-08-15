@@ -37,10 +37,12 @@ PlanetCustomizationPaletteCategory
 SSSTE_ScenarioCustomization_Pages
 NoGroup_sculpt-PlanetCustomizationPaletteCategory-Scrollbar
 0c1
+InsectVision
 Knots
 PlanetCustomizationItems
 SSS
 auto_ScenarioCustomizationTextures_CityPadCurvy03
+PlanetCustomizationEffectSelectProperty
 As
 NoGroup_sculpt-SculptPaletteCategory-00
 editor_rigblock~	0x40606000
@@ -52,6 +54,7 @@ EP1_draperyBlack
 PlanetCustomizationSelectTexture
 palette_config~	0x406b0100
 AssetBrow
+PlanetCustomizationEffectName
 citypad_curvy03
 AssetBr
 terrainThemeCliff~	0x3b4f7c6
@@ -76,17 +79,22 @@ Tech
 SculptPaletteCategory
 PlanetCustomizationScrollbar
 PlanetCustomizationTextureThumbnail
+visualStyle
 Opt_sectionContainer
+PlanetCustomizationEffectThumbnail
 tt_bag_field_01
 be_plate
 auto_ScenarioCustomizationTextures_Paper
 PlanetCustomizationTextureName
+auto_ScenarioCustomizationEffects_InsectVision
 auto_ScenarioCustomizationTextures_WW
 auto_ScenarioCustomizationTextures_Lizard
 AssetB
 SSST
 auto_ScenarioCustomizationTextures_Tech
+PlanetCustomizationEffectBlock
 Asse
+terrainPlayerGroundEffects~	0x56b14f05
 PlanetCustomizationItemDirectory
 auto_ScenarioCustomizationTextures_Neon
 auto_palette_config~_TemplatePaletteScenarioPaintPage
@@ -131,6 +139,8 @@ TemplatePaletteScenarioPaintPage
 ScenarioCustomizationEffects
 Bumps
 music-background
+PlanetCustomizationSelectEffect
+CR_mouselook_Master
 gear_largeRock1
 auto_ScenarioCustomizationTextures_StaticNoise
 locale~	0x2fabf01

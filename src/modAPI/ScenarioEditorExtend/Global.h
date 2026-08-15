@@ -7,23 +7,37 @@
 #define EmDashString u"\u2014"
 #define HexFormatString u"0x%08x"
 
+#define LookupWindow(pWin, controlId) pWin ? pWin->FindWindowByID(controlId) : nullptr
+#define Attach(pWin) if (pWin) pWin->AddWinProc(this)
+
+class ScenarioEditModeSculptFloraUI {};
+
 class ScenarioCustomization;
+class ScenarioFloraGroundCoverLock;
 
 extern intrusive_ptr<ScenarioCustomization> g_pWinProc;
+extern intrusive_ptr<ScenarioFloraGroundCoverLock> g_pFloraGroundCoverLock;
 
 #pragma region Addresses
 namespace SSSTE
 {
 	using namespace ModAPI;
 
-	namespace Addresses(cTerrainStateMgr)
+	namespace Addresses(cScenarioTerraformMode)
 	{
-		DefineAddress(UpdateFromDefinition, ChooseAddress(0xf902d0, 0xfbc100));
+		DefineAddress(SetVisualStyle, ChooseAddress(0xf079d0, 0xf339f0));
+		DefineAddress(SetGroundEffectId, ChooseAddress(0xf09140, 0xf35160));
+		DefineAddress(ReloadGroundEffect, ChooseAddress(0xf05d70, 0xf31d40));
 	}
-
-	namespace Addresses(ScenarioEditorUI)
+	
+	namespace Addresses(cScenarioEditModeDisplayStrategy)
 	{
 		DefineAddress(SetMode, ChooseAddress(0xeaab10, 0xed6620));
+	}
+
+	namespace Addresses(ScenarioEditModeSculptFloraUI)
+	{
+		DefineAddress(UpdateFloraCategoryUI, ChooseAddress(0xebd020, 0xee8c80));
 	}
 }
 #pragma endregion
@@ -51,7 +65,7 @@ static const uint32_t CONTROL_ID_PALETTE_BTN_TEXTURE_THUMBNAIL = id("PlanetCusto
 static const uint32_t CONTROL_ID_PALETTE_NAME_TEXTURE = id("PlanetCustomizationTextureName");
 static const uint32_t CONTROL_ID_PALETTE_PROPERTIES_TEXTURE = id("PlanetCustomizationTextureSelectProperty");
 static const uint32_t CONTROL_ID_PALETTE_BLOCK_EFFECT = id("PlanetCustomizationEffectBlock");
-static const uint32_t CONTROL_ID_PALETTE_BTN_EFFECT = id("PlanetCustomizationChooseEffect");
+static const uint32_t CONTROL_ID_PALETTE_BTN_EFFECT = id("PlanetCustomizationSelectEffect");
 static const uint32_t CONTROL_ID_PALETTE_BTN_EFFECT_THUMBNAIL = id("PlanetCustomizationEffectThumbnail");
 static const uint32_t CONTROL_ID_PALETTE_NAME_EFFECT = id("PlanetCustomizationEffectName");
 static const uint32_t CONTROL_ID_PALETTE_PROPERTIES_EFFECT = id("PlanetCustomizationEffectSelectProperty");

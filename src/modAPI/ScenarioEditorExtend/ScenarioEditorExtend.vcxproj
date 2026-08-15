@@ -101,6 +101,10 @@
     <ClInclude Include="Global.h" />
     <ClInclude Include="ScenarioCustomization.h" />
     <ClInclude Include="ScenarioCustomizationItem.h" />
+    <ClInclude Include="ScenarioFloraGroundCoverLock.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TerrainTest.h" />
@@ -116,6 +120,10 @@
     </ClCompile>
     <ClCompile Include="ScenarioCustomization.cpp" />
     <ClCompile Include="ScenarioCustomizationItem.cpp" />
+    <ClCompile Include="ScenarioFloraGroundCoverLock.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

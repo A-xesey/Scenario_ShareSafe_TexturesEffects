@@ -13,21 +13,21 @@ protected:
 	ResourceKey mThumbnailKey;
 	LocalizedString mName;
 	bool mbIsSelected;
-	IWindow* mpButton;
+	IWindowPtr mpButton;
 	SporeTooltipWinProc* mpTooltipWinProc;
 public:
-	static const uint32_t TYPE = id("ScenarioCustomizationItem");
+	static const uint32_t TYPE = id(PrivateName("ScenarioCustomizationItem"));
 	
 	ScenarioCustomizationItem();
 	~ScenarioCustomizationItem();
 
 	virtual void SetCustomizationAndImage(const App::PropertyList* pPropList, ResourceKey thumbnailKey, IWinProc* pHandler);
 	virtual void SetSelection(bool bIsSelected);
-	inline ResourceKey ScenarioCustomizationItem::GetCustomization() { return mCustomizationKey; }
-	inline ResourceKey ScenarioCustomizationItem::GetThumbnail() { return mThumbnailKey; }
-	inline LocalizedString* ScenarioCustomizationItem::GetName() { return &mName; }
-	inline IWindow* ScenarioCustomizationItem::GetButtonWindow() { return mpButton; }
-	inline bool ScenarioCustomizationItem::IsSelected() const { return mbIsSelected; }
+	inline ResourceKey GetCustomization() { return mCustomizationKey; }
+	inline ResourceKey GetThumbnail() { return mThumbnailKey; }
+	inline LocalizedString* GetName() { return &mName; }
+	inline IWindow* GetButtonWindow() { return mpButton.get(); }
+	inline bool IsSelected() const { return mbIsSelected; }
 
 	int AddRef() override;
 	int Release() override;

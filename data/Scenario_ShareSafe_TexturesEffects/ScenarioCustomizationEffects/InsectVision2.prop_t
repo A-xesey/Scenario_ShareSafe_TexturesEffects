@@ -1,0 +1,5 @@
+key CustomizationItemKey letterbox_fade_in
+
+texts CustomizationItemName
+	"Letterbox test"
+end

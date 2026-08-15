@@ -3,28 +3,26 @@
 #include "Global.h"
 #include "TerrainTest.h"
 #include "ScenarioCustomization.h"
+#include "ScenarioFloraGroundCoverLock.h"
 #include <Spore\UI\ScrollFrameVertical.h>
 
 //using namespace Terrain;
 using namespace App;
 using namespace Palettes;
+using namespace Simulator;
 using namespace UI;
 using namespace UTFWin;
 
 ScenarioCustomizationPtr g_pWinProc = nullptr;
+ScenarioFloraGroundCoverLockPtr g_pFloraGroundCoverLock = nullptr;
 
-void Initialize()
-{
-	// do we still need this?
-	//CheatManager.AddCheat("terst", new TerrainTest());
-}
+void Initialize() {}
 
 void Dispose()
 {
 	g_pWinProc = nullptr;
+	g_pFloraGroundCoverLock = nullptr;
 }
-
-class ScenarioEditorUI {};
 
 member_detour(
 	PaletteCategoryUI_Load,
@@ -35,6 +33,9 @@ member_detour(
 	void detoured(PaletteCategory* pCategory, IWindow* pWindow, PaletteInfo* pInfo)
 	{
 		original_function(this, pCategory, pWindow, pInfo);
+
+		if (!IsScenarioMode())
+			return;
 
 		IWindow* pPaletteCategoryWin = mpLayout->FindWindowByID(CONTROL_ID_PALETTE);
 		IWindow* pPanelWin = pPaletteCategoryWin
@@ -63,36 +64,13 @@ member_detour(
 		pScrollFrameVerticalWin->SetArea(panelItemsWinArea);
 		ScrollFrameVertical::Update(pScrollFrameVerticalWin);
 
+		g_pFloraGroundCoverLock = new ScenarioFloraGroundCoverLock(nullptr);
+
 		g_pWinProc = new ScenarioCustomization(
 			pPaletteCategoryWin,
 			pScrollFrameVerticalWin,
 			pPanelItemsWin.get()
 		);
-
-		//TODO: add other buttons here
-		
-		if (IWindow* pPaletteCategoryTextureBtn = mpLayout->FindWindowByID(
-			CONTROL_ID_PALETTE_BTN_TEXTURE
-		))
-			pPaletteCategoryTextureBtn->AddWinProc(g_pWinProc.get());
-
-		if (IWindow* pPanelCloseBtn = pPanelWin->FindWindowByID(
-			CONTROL_ID_CUSTOMIZATION_PANEL_CLOSE
-		))
-			pPanelCloseBtn->AddWinProc(g_pWinProc.get());
-
-		if (IWindow* pPanelSearchbox = pPanelWin->FindWindowByID(
-			CONTROL_ID_CUSTOMIZATION_PANEL_SEARCHBOX
-		))
-			pPanelSearchbox->AddWinProc(g_pWinProc.get());
-
-		if (IWindow* pTexturePropertySelect = mpLayout->FindWindowByID(
-			CONTROL_ID_PALETTE_PROPERTIES_TEXTURE
-		))
-			for (IWindow* pChildWin : pTexturePropertySelect->children())
-				pTexturePropertySelect->AddWinProc(g_pWinProc.get());
-
-		pPanelWin->AddWinProc(g_pWinProc.get());
 	}
 };
 
@@ -111,12 +89,28 @@ member_detour(PaletteUI_SetActiveCategory, PaletteUI, void(int))
 	}
 };
 
-member_detour(ScenarioEditorUI_SetMode, ScenarioEditorUI, void(int))
+member_detour(cScenarioEditModeDisplayStrategy_SetMode, cScenarioEditModeDisplayStrategy, void(int))
 {
 	void detoured(int mode)
 	{
 		SwitchPaletteCategory();
 		original_function(this, mode);
+	}
+};
+
+member_detour(
+	ScenarioEditModeSculptFloraUI_UpdateFloraCategoryUI,
+	ScenarioEditModeSculptFloraUI,
+	void()
+)
+{
+	void detoured()
+	{
+		original_function(this);
+		g_pFloraGroundCoverLock = new ScenarioFloraGroundCoverLock(
+			this,
+			g_pFloraGroundCoverLock->IsLocked()
+		);
 	}
 };
 
@@ -140,7 +134,12 @@ void AttachDetours()
 {
 	PaletteCategoryUI_Load::attach(GetAddress(PaletteCategoryUI, Load));
 	PaletteUI_SetActiveCategory::attach(GetAddress(PaletteUI, SetActiveCategory));
-	ScenarioEditorUI_SetMode::attach(GetAddress(SSSTE::ScenarioEditorUI, SetMode));
+	cScenarioEditModeDisplayStrategy_SetMode::attach(
+		GetAddress(SSSTE::cScenarioEditModeDisplayStrategy, SetMode)
+	);
+	ScenarioEditModeSculptFloraUI_UpdateFloraCategoryUI::attach(
+		GetAddress(SSSTE::ScenarioEditModeSculptFloraUI, UpdateFloraCategoryUI)
+	);
 	//cTerrainStateMgr_UpdateFromDefinition::attach(Address(0xfbc100));
 }
 

@@ -79,26 +79,35 @@ private:
 #pragma endregion
 
 protected:
+	Simulator::cScenarioTerraformMode* mpScenarioTerraformMode;
+
 	IWindow* mpPaletteCategoryWin;
 	IWindow* mpPanelWin;
 	IWindow* mpScrollFrameVerticalWin;
 	IWindow* mpContentClientWin;
+	IWindow* mpSearchboxWin;
 	ITextEdit* mpSearchboxTextEdit;
+	IWindow* mpSearchboxClearWin;
+
 	IWindow* mpPaletteTextureBlockWin;
 	IWindow* mpPaletteTextureWin;
 	IWindow* mpPaletteTextureNameWin;
-	//IWindow* mpPaletteEffectBlockWin;
-	//IWindow* mpPaletteEffectWin;
-	//IText* mpPaletteEffectName;
+
+	IWindow* mpPaletteEffectBlockWin;
+	IWindow* mpPaletteEffectWin;
+	IWindow* mpPaletteEffectNameWin;
+
+	CustomizationPropertyTexture mPropertyTexture;
+	CustomizationPropertyEffect mPropertyEffect;
+
 	float mPanelTextureY;
-	//float mPanelEffectY;
-	Simulator::cScenarioTerraformMode* mpScenarioTerraformMode;
+	float mPanelEffectY;
+	int mColumns;
+
 	vector<ScenarioCustomizationItemPtr> mItems;
 	map<IWindow*, ScenarioCustomizationItemPtr> mWinItemMap;
 	ScenarioCustomizationItemPtr mpSelectedItem;
 	CustomizationItemsLookup mLastLookup;
-	CustomizationPropertyTexture mPropertyTexture;
-	CustomizationPropertyEffect mPropertyEffect;
 	bool mbIsPanelShown;
 
 public:
@@ -111,8 +120,9 @@ public:
 	);
 	~ScenarioCustomization();
 
-	void InitItems(IWindow* pWindow, CustomizationItemsLookup itemsLookup);
+	void InitItems(CustomizationItemsLookup itemsLookup);
 	void ClearItems();
+	ResourceKey GetCurrentCustomizationKey(uint32_t propertyId);
 
 	inline void SelectItem(ScenarioCustomizationItemPtr pItem)
 	{
@@ -121,17 +131,6 @@ public:
 		if (pItem)
 			pItem->SetSelection(true);
 		mpSelectedItem = pItem;
-	}
-	inline ResourceKey GetCurrentCustomizationKey(uint32_t propertyId)
-	{
-		ResourceKey customizationKeyCurrent;
-		return (mpScenarioTerraformMode && App::Property::GetKey(
-			mpScenarioTerraformMode->mpPropList.get(),
-			propertyId,
-			customizationKeyCurrent
-		))
-			? customizationKeyCurrent
-			: EmptyKey;
 	}
 	inline void SwitchPaletteCategory() { HideCustomizationPanel(); }
 
@@ -145,6 +144,7 @@ public:
 
 protected:
 	void UpdatePaletteTexture();
+	void UpdatePaletteEffect();
 	void ShowCustomizationPanel(CustomizationItemsLookup itemsLookup, float positionY);
 	void HideCustomizationPanel(bool bSilent = false);
 	void CenterUIItem(IWindow* pChildWin);
