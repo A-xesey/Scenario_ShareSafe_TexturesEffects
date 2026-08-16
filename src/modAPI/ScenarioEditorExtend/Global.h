@@ -15,6 +15,7 @@ class ScenarioEditModeSculptFloraUI {};
 class ScenarioCustomization;
 class ScenarioFloraGroundCoverLock;
 
+extern int g_ScenarioCustomizationCategoryIndex;
 extern intrusive_ptr<ScenarioCustomization> g_pWinProc;
 extern intrusive_ptr<ScenarioFloraGroundCoverLock> g_pFloraGroundCoverLock;
 
@@ -33,6 +34,12 @@ namespace SSSTE
 	namespace Addresses(cScenarioEditModeDisplayStrategy)
 	{
 		DefineAddress(SetMode, ChooseAddress(0xeaab10, 0xed6620));
+	}
+
+	namespace Addresses(cScenarioTerraformHistoryEntry)
+	{
+		DefineAddress(Undo, ChooseAddress(0xf0c450, 0xf383e0));
+		DefineAddress(Redo, ChooseAddress(0xf0c480, 0xf38410));
 	}
 
 	namespace Addresses(ScenarioEditModeSculptFloraUI)
@@ -59,27 +66,8 @@ static const uint32_t GROUP_ID_TEXTURES_DEFINITIONS = id("ScenarioCustomizationT
 static const uint32_t GROUP_ID_EFFECTS_DEFINITIONS = id("ScenarioCustomizationEffects");
 
 static const uint32_t CONTROL_ID_PALETTE = id("PlanetCustomizationPalette");
-static const uint32_t CONTROL_ID_PALETTE_BLOCK_TEXTURE = id("PlanetCustomizationTextureBlock");
-static const uint32_t CONTROL_ID_PALETTE_BTN_TEXTURE = id("PlanetCustomizationSelectTexture");
-static const uint32_t CONTROL_ID_PALETTE_BTN_TEXTURE_THUMBNAIL = id("PlanetCustomizationTextureThumbnail");
-static const uint32_t CONTROL_ID_PALETTE_NAME_TEXTURE = id("PlanetCustomizationTextureName");
-static const uint32_t CONTROL_ID_PALETTE_PROPERTIES_TEXTURE = id("PlanetCustomizationTextureSelectProperty");
-static const uint32_t CONTROL_ID_PALETTE_BLOCK_EFFECT = id("PlanetCustomizationEffectBlock");
-static const uint32_t CONTROL_ID_PALETTE_BTN_EFFECT = id("PlanetCustomizationSelectEffect");
-static const uint32_t CONTROL_ID_PALETTE_BTN_EFFECT_THUMBNAIL = id("PlanetCustomizationEffectThumbnail");
-static const uint32_t CONTROL_ID_PALETTE_NAME_EFFECT = id("PlanetCustomizationEffectName");
-static const uint32_t CONTROL_ID_PALETTE_PROPERTIES_EFFECT = id("PlanetCustomizationEffectSelectProperty");
 static const uint32_t CONTROL_ID_CUSTOMIZATION_PANEL = id("PlanetCustomizationPanel");
-static const uint32_t CONTROL_ID_CUSTOMIZATION_PANEL_CLOSE = id("PlanetCustomizationClosePanel");
-static const uint32_t CONTROL_ID_CUSTOMIZATION_PANEL_SEARCHBOX = id("PlanetCustomizationItemsFilterTE");
-static const uint32_t CONTROL_ID_CUSTOMIZATION_PANEL_SEARCHBOX_BTN_CLEAR = id("PlanetCustomizationItemsFilterClear");
 static const uint32_t CONTROL_ID_CUSTOMIZATION_PANEL_ITEMS = id("PlanetCustomizationItems");
 static const uint32_t CONTROL_ID_CUSTOMIZATION_ITEM = id("PlanetCustomizationItem");
-static const uint32_t CONTROL_ID_CUSTOMIZATION_ITEM_THUMBNAIL = id("PlanetCustomizationItemThumbnail");
-static const uint32_t CONTROL_ID_CUSTOMIZATION_ITEM_CURSOR = id("PlanetCustomizationItemSelected");
-
-static const uint32_t SOUND_ID_EDITOR_CLICK = id("editor_click");
-static const uint32_t SOUND_ID_EDITOR_CLICK_GENERAL = id("editor_general_click");
-static const uint32_t SOUND_ID_CUSTOMIZATION_PANEL_OPEN = id("editor_load");
-static const uint32_t SOUND_ID_CUSTOMIZATION_PANEL_CLOSE = id("editor_picture_close");
+static const uint32_t CONTROL_ID_PALETTE_FLORA_GROUND_COVER = 0x7d61ff2;
 #pragma endregion

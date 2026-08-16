@@ -51,15 +51,16 @@ void ScenarioCustomizationItem::SetSelection(bool bIsSelected)
 }
 
 #pragma region Refcount
-// For internal use, do not modify.
 int ScenarioCustomizationItem::AddRef()
 {
 	return DefaultRefCounted::AddRef();
 }
 
-// For internal use, do not modify.
 int ScenarioCustomizationItem::Release()
 {
-	return DefaultRefCounted::Release();
+	int refCount = DefaultRefCounted::Release();
+	if (!refCount)
+		g_ScenarioCustomizationCategoryIndex = -1;
+	return refCount;
 }
 #pragma endregion

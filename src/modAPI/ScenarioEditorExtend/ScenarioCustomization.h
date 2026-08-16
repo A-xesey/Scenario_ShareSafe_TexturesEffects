@@ -67,15 +67,36 @@ private:
 #pragma region Constants
 	static constexpr float GRID_START_X = 0.0f;
 	static constexpr float GRID_START_Y = 0.0f;
-	static constexpr float ITEM_MARGIN = 4.0f; // TBD
-	static constexpr float ITEM_WIDTH = 64.0f + ITEM_MARGIN; // TBD
-	static constexpr float ITEM_HEIGHT = 64.0f + ITEM_MARGIN; // TBD
+	static constexpr float ITEM_MARGIN = 4.0f;
+	static constexpr float ITEM_WIDTH = 64.0f + ITEM_MARGIN;
+	static constexpr float ITEM_HEIGHT = 64.0f + ITEM_MARGIN;
 
 	static const CustomizationPropertyTexture PROPERTY_DEFAULT_TEXTURE =
 		kCustomizationPropertyTextureDetail;
 
 	static const CustomizationPropertyEffect PROPERTY_DEFAULT_EFFECT =
-		kCustomizationPropertyEffectGround;
+		kCustomizationPropertyEffectVisualStyle;
+
+	static const uint32_t CONTROL_ID_PALETTE_BLOCK_TEXTURE = id("PlanetCustomizationTextureBlock");
+	static const uint32_t CONTROL_ID_PALETTE_BTN_TEXTURE = id("PlanetCustomizationSelectTexture");
+	static const uint32_t CONTROL_ID_PALETTE_BTN_TEXTURE_THUMBNAIL = id("PlanetCustomizationTextureThumbnail");
+	static const uint32_t CONTROL_ID_PALETTE_NAME_TEXTURE = id("PlanetCustomizationTextureName");
+	static const uint32_t CONTROL_ID_PALETTE_PROPERTIES_TEXTURE = id("PlanetCustomizationTextureSelectProperty");
+	static const uint32_t CONTROL_ID_PALETTE_BLOCK_EFFECT = id("PlanetCustomizationEffectBlock");
+	static const uint32_t CONTROL_ID_PALETTE_BTN_EFFECT = id("PlanetCustomizationSelectEffect");
+	static const uint32_t CONTROL_ID_PALETTE_BTN_EFFECT_THUMBNAIL = id("PlanetCustomizationEffectThumbnail");
+	static const uint32_t CONTROL_ID_PALETTE_NAME_EFFECT = id("PlanetCustomizationEffectName");
+	static const uint32_t CONTROL_ID_PALETTE_PROPERTIES_EFFECT = id("PlanetCustomizationEffectSelectProperty");
+	static const uint32_t CONTROL_ID_PALETTE_CLEAR_EFFECT = id("PlanetCustomizationEffectClear");
+	static const uint32_t CONTROL_ID_CUSTOMIZATION_PANEL_CLOSE = id("PlanetCustomizationClosePanel");
+	static const uint32_t CONTROL_ID_CUSTOMIZATION_PANEL_SEARCHBOX = id("PlanetCustomizationItemsFilterTE");
+	static const uint32_t CONTROL_ID_CUSTOMIZATION_PANEL_SEARCHBOX_BTN_CLEAR = id("PlanetCustomizationItemsFilterClear");
+
+	static const uint32_t SOUND_ID_EDITOR_CLICK = id("editor_click");
+	static const uint32_t SOUND_ID_EDITOR_CLICK_GENERAL = id("editor_general_click");
+	static const uint32_t SOUND_ID_EDITOR_TRASH = id("editor_trash");
+	static const uint32_t SOUND_ID_CUSTOMIZATION_PANEL_OPEN = id("editor_load");
+	static const uint32_t SOUND_ID_CUSTOMIZATION_PANEL_CLOSE = id("editor_picture_close");
 #pragma endregion
 
 protected:
@@ -96,6 +117,7 @@ protected:
 	IWindow* mpPaletteEffectBlockWin;
 	IWindow* mpPaletteEffectWin;
 	IWindow* mpPaletteEffectNameWin;
+	IWindow* mpPaletteEffectClearWin;
 
 	CustomizationPropertyTexture mPropertyTexture;
 	CustomizationPropertyEffect mPropertyEffect;
@@ -104,7 +126,6 @@ protected:
 	float mPanelEffectY;
 	int mColumns;
 
-	vector<ScenarioCustomizationItemPtr> mItems;
 	map<IWindow*, ScenarioCustomizationItemPtr> mWinItemMap;
 	ScenarioCustomizationItemPtr mpSelectedItem;
 	CustomizationItemsLookup mLastLookup;
@@ -120,10 +141,23 @@ public:
 	);
 	~ScenarioCustomization();
 
-	void InitItems(CustomizationItemsLookup itemsLookup);
-	void ClearItems();
 	ResourceKey GetCurrentCustomizationKey(uint32_t propertyId);
 
+	inline void InitTextures(bool bFillPanelWin = true)
+	{
+		InitItems({ kCustomizationItemsGroupTextures, mPropertyTexture }, bFillPanelWin);
+		UpdatePaletteTexture();
+	}
+	inline void InitEffects(bool bFillPanelWin = true)
+	{
+		InitItems({ kCustomizationItemsGroupEffects, mPropertyEffect }, bFillPanelWin);
+		UpdatePaletteEffect();
+	}
+	inline void Init(bool bFillPanelWin = true)
+	{
+		InitTextures(bFillPanelWin);
+		InitEffects(bFillPanelWin);
+	}
 	inline void SelectItem(ScenarioCustomizationItemPtr pItem)
 	{
 		if (mpSelectedItem)
@@ -133,6 +167,7 @@ public:
 		mpSelectedItem = pItem;
 	}
 	inline void SwitchPaletteCategory() { HideCustomizationPanel(); }
+	inline IWindow* GetCategoryWindow() { return mpPaletteCategoryWin; }
 
 	int AddRef() override;
 	int Release() override;
@@ -143,6 +178,8 @@ public:
 	bool HandleUIMessage(IWindow* pWindow, const Message& message) override;
 
 protected:
+	void InitItems(CustomizationItemsLookup itemsLookup, bool bFillPanelWin = true);
+	void ClearItems();
 	void UpdatePaletteTexture();
 	void UpdatePaletteEffect();
 	void ShowCustomizationPanel(CustomizationItemsLookup itemsLookup, float positionY);
@@ -158,6 +195,7 @@ protected:
 	);
 	void UpdateSelectedCaption(IWindow* pCaptionWin, string16 pName);
 	string16 ResourceKeyToString(ResourceKey key);
+	void SetProperty(uint32_t propertyId, ResourceKey customizationKey);
 
 	inline bool IsPropertyAllowedForDefinition(
 		uint32_t propertyId,

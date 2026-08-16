@@ -11,14 +11,15 @@ class ScenarioFloraGroundCoverLock
 	, public DefaultRefCounted
 {
 protected:
+	IWindow* mpWindow;
 	map<IWindow*, bool> mWinLockMap;
 	bool mbIsLocked;
 
 private:
 #pragma region Constants
-	static const uint32_t CONTROL_ID_PALETTE_FLORA_GROUND_COVER = 0x7d61ff2;
+	static constexpr float COLOR_VALUE_DISABLED = 0.7f;
 
-	static constexpr float COLOR_VALUE_DISABLED = 0.75f;
+	static const uint32_t CONTROL_ID_PALETTE_FLORA_FLOWERS_CHECKBOX = 0x16b1858d;
 #pragma endregion
 
 public:
@@ -32,6 +33,7 @@ public:
 
 	void SetLock(bool bLock);
 
+	inline IWindow* GetInitializedWindow() { return mpWindow; }
 	inline void Lock() { SetLock(true); }
 	inline void Unlock() { SetLock(false); }
 	inline bool IsLocked() { return mbIsLocked; }

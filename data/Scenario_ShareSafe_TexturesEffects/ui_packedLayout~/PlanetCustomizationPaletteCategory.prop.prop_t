@@ -1,3 +1,5 @@
 keys preloadTextures
 	graphics_atlas~!NoGroup_sculpt-SculptPaletteCategory-00
+	graphics_atlas~!PlanetCustomizationPaletteCategory-BinarySelector-00
+	graphics_atlas~!PlanetCustomizationPaletteCategory-SearchBar-00
 end

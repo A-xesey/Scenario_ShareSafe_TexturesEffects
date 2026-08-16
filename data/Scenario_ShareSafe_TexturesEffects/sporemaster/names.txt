@@ -2,6 +2,7 @@ root~	0x0
 SS
 Gears
 auto_ScenarioCustomizationTextures_Knots
+PlanetCustomizationPaletteCategory-BinarySelector-00
 auto_Adventure_brush_palette~_SSSTE_ScenarioCustomization_Pages
 PlanetCustomizationChooseTexture
 rlovr_bkgrnd3
@@ -24,10 +25,13 @@ graphics_atlas~	0x31a44893
 PlanetCustomizationClosePanel
 sporemaster
 PlanetCustomizationTextureSelectProperty
+1000002
 names
 AssetBrowse
 auto_ScenarioCustomizationTextures_WoodenPlanks
+010000021
 Drapery
+010000022
 bubble-caption
 Paper
 sg_solar_surface_a
@@ -42,6 +46,7 @@ Knots
 PlanetCustomizationItems
 SSS
 auto_ScenarioCustomizationTextures_CityPadCurvy03
+NoGroup_ScenarioEditModeScriptActsBarUI-00
 PlanetCustomizationEffectSelectProperty
 As
 NoGroup_sculpt-SculptPaletteCategory-00
@@ -88,6 +93,7 @@ auto_ScenarioCustomizationTextures_Paper
 PlanetCustomizationTextureName
 auto_ScenarioCustomizationEffects_InsectVision
 auto_ScenarioCustomizationTextures_WW
+PlanetCustomizationEffectClear
 auto_ScenarioCustomizationTextures_Lizard
 AssetB
 SSST
@@ -102,6 +108,7 @@ Adventure_brush_palette~	0x406b6bdc
 Adventure_brush_palette_pages~	0x406b6cdc
 Adventure_brush_palette_category~	0x406b6edc
 WW
+InsectVision2
 SSSTE
 ScenarioEditor
 010000011
@@ -138,8 +145,10 @@ FrameBorders
 TemplatePaletteScenarioPaintPage
 ScenarioCustomizationEffects
 Bumps
+10000022
 music-background
 PlanetCustomizationSelectEffect
+10000021
 CR_mouselook_Master
 gear_largeRock1
 auto_ScenarioCustomizationTextures_StaticNoise

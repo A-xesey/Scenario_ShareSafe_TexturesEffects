@@ -6,13 +6,13 @@
 #include "ScenarioFloraGroundCoverLock.h"
 #include <Spore\UI\ScrollFrameVertical.h>
 
-//using namespace Terrain;
 using namespace App;
 using namespace Palettes;
 using namespace Simulator;
 using namespace UI;
 using namespace UTFWin;
 
+int g_ScenarioCustomizationCategoryIndex = -1;
 ScenarioCustomizationPtr g_pWinProc = nullptr;
 ScenarioFloraGroundCoverLockPtr g_pFloraGroundCoverLock = nullptr;
 
@@ -24,6 +24,7 @@ void Dispose()
 	g_pFloraGroundCoverLock = nullptr;
 }
 
+#pragma region Detours
 member_detour(
 	PaletteCategoryUI_Load,
 	PaletteCategoryUI,
@@ -60,11 +61,12 @@ member_detour(
 		);
 		pScrollFrameVerticalWin->SetEnabled(true);
 		pScrollFrameVerticalWin->SetFlag(kWinFlagIgnoreMouse, true);
-		pScrollFrameVerticalWin->SetFlag(kWinFlagClip, true);
+		//pScrollFrameVerticalWin->SetFlag(kWinFlagClip, true);
 		pScrollFrameVerticalWin->SetArea(panelItemsWinArea);
 		ScrollFrameVertical::Update(pScrollFrameVerticalWin);
 
-		g_pFloraGroundCoverLock = new ScenarioFloraGroundCoverLock(nullptr);
+		if (!g_pFloraGroundCoverLock)
+			g_pFloraGroundCoverLock = new ScenarioFloraGroundCoverLock(nullptr);
 
 		g_pWinProc = new ScenarioCustomization(
 			pPaletteCategoryWin,
@@ -74,6 +76,7 @@ member_detour(
 	}
 };
 
+#pragma region Switch Palette Category
 static inline void SwitchPaletteCategory()
 {
 	if (g_pWinProc)
@@ -84,7 +87,24 @@ member_detour(PaletteUI_SetActiveCategory, PaletteUI, void(int))
 {
 	void detoured(int categoryIndex)
 	{
+		if (g_pWinProc && g_ScenarioCustomizationCategoryIndex == -1)
+			for (int categoryIndexCheck = 0;
+				categoryIndexCheck < this->mCategories.size();
+				++categoryIndexCheck
+			)
+			{
+				IWindow* pPaletteCategoryWin = this->mCategories[categoryIndexCheck]->
+					mpLayout->FindWindowByID(CONTROL_ID_PALETTE);
+				if (pPaletteCategoryWin == g_pWinProc->GetCategoryWindow())
+				{
+					g_ScenarioCustomizationCategoryIndex = categoryIndexCheck;
+					break;
+				}
+			}
+
 		SwitchPaletteCategory();
+		if (g_pWinProc && categoryIndex == g_ScenarioCustomizationCategoryIndex)
+			g_pWinProc->Init(false);
 		original_function(this, categoryIndex);
 	}
 };
@@ -97,6 +117,40 @@ member_detour(cScenarioEditModeDisplayStrategy_SetMode, cScenarioEditModeDisplay
 		original_function(this, mode);
 	}
 };
+#pragma endregion
+
+#pragma region Undo & Redo
+virtual_detour(
+	cScenarioTerraformHistoryEntry_Undo,
+	cScenarioTerraformHistoryEntry,
+	IScenarioEditHistoryEntry,
+	void()
+)
+{
+	void detoured()
+	{
+		original_function(this);
+		SwitchPaletteCategory();
+		if (g_pWinProc)
+			g_pWinProc->Init(false);
+	}
+};
+
+virtual_detour(
+	cScenarioTerraformHistoryEntry_Redo,
+	cScenarioTerraformHistoryEntry,
+	IScenarioEditHistoryEntry,
+	void()
+)
+{
+	void detoured()
+	{
+		original_function(this);
+		if (g_pWinProc)
+			g_pWinProc->Init(false);
+	}
+};
+#pragma endregion
 
 member_detour(
 	ScenarioEditModeSculptFloraUI_UpdateFloraCategoryUI,
@@ -107,28 +161,21 @@ member_detour(
 	void detoured()
 	{
 		original_function(this);
+		IWindow* pFloraGroundCoverWin = nullptr;
+		if (UILayout* pLayout = (UILayout*)field(this, 0x168))
+			pFloraGroundCoverWin = pLayout->FindWindowByID(CONTROL_ID_PALETTE_FLORA_GROUND_COVER);
+		if (g_pFloraGroundCoverLock &&
+			g_pFloraGroundCoverLock->GetInitializedWindow() == pFloraGroundCoverWin
+		)
+			return;
+
 		g_pFloraGroundCoverLock = new ScenarioFloraGroundCoverLock(
 			this,
 			g_pFloraGroundCoverLock->IsLocked()
 		);
 	}
 };
-
-// TODO: add detours for undo/redo history entriy
-
-//member_detour(cTerrainStateMgr_UpdateFromDefinition, cTerrainStateMgr, void(PropertyList*))
-//{
-//	void detoured(PropertyList* propList)
-//	{
-//		if (propList != nullptr)
-//		{
-//			ResourceKey terrainThemeWaterFoam;
-//			if (Property::GetKey(propList, id("TerrainThemeWaterFoam"), terrainThemeWaterFoam))
-//				this->mTextures.mpWaterFoamCutMap = TextureManager.GetTexture(terrainThemeWaterFoam);
-//		}
-//		return original_function(this, propList);
-//	}
-//};
+#pragma endregion
 
 void AttachDetours()
 {
@@ -137,14 +184,18 @@ void AttachDetours()
 	cScenarioEditModeDisplayStrategy_SetMode::attach(
 		GetAddress(SSSTE::cScenarioEditModeDisplayStrategy, SetMode)
 	);
+	cScenarioTerraformHistoryEntry_Undo::attach(
+		GetAddress(SSSTE::cScenarioTerraformHistoryEntry, Undo)
+	);
+	cScenarioTerraformHistoryEntry_Redo::attach(
+		GetAddress(SSSTE::cScenarioTerraformHistoryEntry, Redo)
+	);
 	ScenarioEditModeSculptFloraUI_UpdateFloraCategoryUI::attach(
 		GetAddress(SSSTE::ScenarioEditModeSculptFloraUI, UpdateFloraCategoryUI)
 	);
-	//cTerrainStateMgr_UpdateFromDefinition::attach(Address(0xfbc100));
 }
 
 
-// Generally, you don't need to touch any code here
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
                        LPVOID lpReserved

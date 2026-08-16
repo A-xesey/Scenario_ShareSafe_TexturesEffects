@@ -8,6 +8,12 @@ using namespace UTFWin;
 class ScenarioCustomizationItem 
 	: public UILayout
 {
+private:
+#pragma region Constants
+	static const uint32_t CONTROL_ID_CUSTOMIZATION_ITEM_THUMBNAIL = id("PlanetCustomizationItemThumbnail");
+	static const uint32_t CONTROL_ID_CUSTOMIZATION_ITEM_CURSOR = id("PlanetCustomizationItemSelected");
+#pragma endregion
+
 protected:
 	ResourceKey mCustomizationKey;
 	ResourceKey mThumbnailKey;
@@ -15,6 +21,7 @@ protected:
 	bool mbIsSelected;
 	IWindowPtr mpButton;
 	SporeTooltipWinProc* mpTooltipWinProc;
+
 public:
 	static const uint32_t TYPE = id(PrivateName("ScenarioCustomizationItem"));
 	

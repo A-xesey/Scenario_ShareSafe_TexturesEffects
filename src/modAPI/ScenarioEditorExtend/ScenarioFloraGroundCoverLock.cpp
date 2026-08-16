@@ -3,20 +3,22 @@
 
 ScenarioFloraGroundCoverLock::ScenarioFloraGroundCoverLock(
 	ScenarioEditModeSculptFloraUI* pEditModeSculptFloraUI,
-	bool mIsLocked
+	bool bIsLocked
 )
-	: mbIsLocked(mIsLocked)
+	: mpWindow(nullptr)
+	, mbIsLocked(false)
 {
 	if (pEditModeSculptFloraUI)
 	{
-		uintptr_t ptr = (uintptr_t)pEditModeSculptFloraUI;
-		UILayout* pLayout = (UILayout*)field(ptr, 0x168);
-		IWindow* pFloraGroundCoverWin = pLayout->
-			FindWindowByID(CONTROL_ID_PALETTE_FLORA_GROUND_COVER);
-		if (pFloraGroundCoverWin)
-			for (IWindow* pChildWin : pFloraGroundCoverWin->children())
-				if (IButton* pChildBtn = ((IButton*)pChildWin->Cast(IButton::TYPE)))
+		if (UILayout* pLayout = (UILayout*)field(pEditModeSculptFloraUI, 0x168))
+		{
+			if (IWindow* pFloraGroundCoverWin = pLayout->
+				FindWindowByID(CONTROL_ID_PALETTE_FLORA_GROUND_COVER))
+			{
+				for (IWindow* pChildWin : pFloraGroundCoverWin->children())
 				{
+					if (!pChildWin->Cast(IButton::TYPE))
+						continue;
 					mWinLockMap[pChildWin] = !pChildWin->IsEnabled();
 					if (SporeStdDrawable* pDrawable = (SporeStdDrawable*)(pChildWin->
 						GetDrawable()->Cast(SporeStdDrawable::TYPE)))
@@ -36,7 +38,15 @@ ScenarioFloraGroundCoverLock::ScenarioFloraGroundCoverLock(
 						pDrawableImageInfo->SetIconColor(iconColor);
 					}
 				}
+				mpWindow = pFloraGroundCoverWin;
+			}
+			IWindow* pFloraFlowersCheckboxWin = pLayout->
+				FindWindowByID(CONTROL_ID_PALETTE_FLORA_FLOWERS_CHECKBOX);
+			if (pFloraFlowersCheckboxWin && pFloraFlowersCheckboxWin->Cast(IButton::TYPE))
+				mWinLockMap[pFloraFlowersCheckboxWin] = true;
+		}
 	}
+	SetLock(bIsLocked);
 }
 
 
@@ -52,8 +62,7 @@ void ScenarioFloraGroundCoverLock::SetLock(bool bLock)
 		return;
 	for (pair<IWindow* const, bool>& pairWinLock : mWinLockMap)
 	{
-		bool bIsEnabled = !bLock && !pairWinLock.second;
-		pairWinLock.first->SetEnabled(bIsEnabled);
+		pairWinLock.first->SetEnabled(!bLock && !pairWinLock.second);
 		if (IButton* pBtn = ((IButton*)pairWinLock.first->Cast(IButton::TYPE)))
 			pBtn->SetButtonPressed(false);
 	}

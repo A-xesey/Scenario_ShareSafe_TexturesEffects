@@ -39,6 +39,10 @@ ScenarioCustomization::ScenarioCustomization(
 	, mpPaletteEffectBlockWin(LookupWindow(mpPaletteCategoryWin,CONTROL_ID_PALETTE_BLOCK_EFFECT))
 	, mpPaletteEffectWin(LookupWindow(mpPaletteEffectBlockWin, CONTROL_ID_PALETTE_BTN_EFFECT))
 	, mpPaletteEffectNameWin(LookupWindow(mpPaletteEffectBlockWin, CONTROL_ID_PALETTE_NAME_EFFECT))
+	, mpPaletteEffectClearWin(LookupWindow(
+		mpPaletteEffectBlockWin,
+		CONTROL_ID_PALETTE_CLEAR_EFFECT)
+	)
 	, mPropertyTexture(PROPERTY_DEFAULT_TEXTURE)
 	, mPropertyEffect(PROPERTY_DEFAULT_EFFECT)
 	, mPanelTextureY(mpPaletteTextureBlockWin
@@ -66,15 +70,11 @@ ScenarioCustomization::ScenarioCustomization(
 	if (mpPaletteTextureWin)
 	{
 		CenterUIItem(mpPaletteCategoryWin->FindWindowByID(CONTROL_ID_PALETTE_PROPERTIES_TEXTURE));
-		InitItems({ kCustomizationItemsGroupTextures, mPropertyTexture });
-		UpdatePaletteTexture();
+		InitTextures(false);
 	}
 	Attach(mpPaletteEffectWin);
 	if (mpPaletteEffectWin)
-	{
-		InitItems({ kCustomizationItemsGroupEffects, mPropertyEffect });
-		UpdatePaletteEffect();
-	}
+		InitEffects(false);
 
 	Attach(mpPanelWin);
 	Attach(mpSearchboxWin);
@@ -90,15 +90,16 @@ ScenarioCustomization::ScenarioCustomization(
 		CONTROL_ID_PALETTE_PROPERTIES_EFFECT
 	);
 	Attach(pPaletteEffectPropertySelectWin);
+	Attach(mpPaletteEffectClearWin);
 }
 
 ScenarioCustomization::~ScenarioCustomization()
 {
 }
 
-void ScenarioCustomization::InitItems(CustomizationItemsLookup itemsLookup)
+void ScenarioCustomization::InitItems(CustomizationItemsLookup itemsLookup, bool bFillPanelWin)
 {
-	if (mLastLookup != itemsLookup && mpContentClientWin && mColumns)
+	if ((mLastLookup != itemsLookup || !mWinItemMap.size()) && mpContentClientWin && mColumns)
 	{
 		ClearItems();
 		mpSelectedItem = nullptr;
@@ -107,6 +108,7 @@ void ScenarioCustomization::InitItems(CustomizationItemsLookup itemsLookup)
 		PropManager.GetPropertyListIDs(itemsLookup.mItemsGroup, definitionIds);
 		if (!definitionIds.empty())
 		{
+			vector<ScenarioCustomizationItemPtr> items;
 			for (uint32_t definitionId : definitionIds)
 			{
 				PropertyListPtr pDefinitionPropList;
@@ -134,39 +136,47 @@ void ScenarioCustomization::InitItems(CustomizationItemsLookup itemsLookup)
 				if (pItem->GetCustomization() == customizationKeyCurrent)
 				{
 					pItem->SetSelection(true);
+					if (IWindow* pItemWin = pItem->FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM))
+						pItemWin->SetVisible(false);
 					mpSelectedItem = pItem;
 				}
-				mItems.push_back(pItem);
+				items.push_back(pItem);
 #pragma endregion
 
 			}
 
+			if (!bFillPanelWin)
+			{
+				mLastLookup = itemsLookup;
+				return;
+			}
+
 #pragma region Sort
 			stable_sort(
-				mItems.begin(),
-				mItems.end(),
+				items.begin(),
+				items.end(),
 				[](
 					const ScenarioCustomizationItemPtr& a,
 					const ScenarioCustomizationItemPtr& b
 				)
 				{ return a->GetCustomization() < b->GetCustomization(); }
 			);
-			mItems.erase(
+			items.erase(
 				unique(
-					mItems.rbegin(),
-					mItems.rend(),
+					items.rbegin(),
+					items.rend(),
 					[](
 						const ScenarioCustomizationItemPtr& a,
 						const ScenarioCustomizationItemPtr& b
 					)
 					{ return a->GetCustomization() == b->GetCustomization(); }
 				),
-				mItems.rend()
+				items.rend()
 			);
 
 			quick_sort(
-				mItems.begin(),
-				mItems.end(),
+				items.begin(),
+				items.end(),
 				[](
 					const ScenarioCustomizationItemPtr& a,
 					const ScenarioCustomizationItemPtr& b
@@ -185,31 +195,33 @@ void ScenarioCustomization::InitItems(CustomizationItemsLookup itemsLookup)
 #pragma region Register Windows for Items
 
 			size_t index = 0;
-			for (ScenarioCustomizationItemPtr pItem : mItems)
-			{
-				pItem->SetParentWindow(mpContentClientWin);
-				int row = index / mColumns;
-				int col = index % mColumns;
-				float positionX = GRID_START_X + (col * ITEM_WIDTH);
-				float positionY = GRID_START_Y + (row * ITEM_HEIGHT);
-
-				if (IWindow* pItemWin = pItem->FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM))
+			if (mColumns)
+				for (ScenarioCustomizationItemPtr pItem : items)
 				{
-					Math::Rectangle itemArea = pItemWin->GetArea();
+					pItem->SetParentWindow(mpContentClientWin);
+					int row = index / mColumns;
+					int col = index % mColumns;
+					float positionX = GRID_START_X + (col * ITEM_WIDTH);
+					float positionY = GRID_START_Y + (row * ITEM_HEIGHT);
 
-					float width = itemArea.right - itemArea.left;
-					float height = itemArea.bottom - itemArea.top;
-					itemArea.left = positionX;
-					itemArea.top = positionY;
-					itemArea.right = positionX + width;
-					itemArea.bottom = positionY + height;
+					if (IWindow* pItemWin = pItem->FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM))
+					{
+						Math::Rectangle itemArea = pItemWin->GetArea();
 
-					pItemWin->SetArea(itemArea);
+						float width = itemArea.right - itemArea.left;
+						float height = itemArea.bottom - itemArea.top;
+						itemArea.left = positionX;
+						itemArea.top = positionY;
+						itemArea.right = positionX + width;
+						itemArea.bottom = positionY + height;
 
-					mWinItemMap[pItemWin] = pItem;
+						pItemWin->SetArea(itemArea);
+						if (pItem == mpSelectedItem)
+							pItemWin->SetVisible(true);
+						mWinItemMap[pItemWin] = pItem;
+					}
+					index++;
 				}
-				index++;
-			}
 		}
 #pragma endregion
 
@@ -262,7 +274,6 @@ void ScenarioCustomization::ClearItems()
 	for (pair<IWindow* const, ScenarioCustomizationItemPtr>& pairWinItem : mWinItemMap)
 		mpContentClientWin->RemoveWindow(pairWinItem.first);
 	mWinItemMap.clear();
-	mItems.clear();
 }
 
 string16 ScenarioCustomization::ResourceKeyToString(ResourceKey key)
@@ -313,12 +324,13 @@ void ScenarioCustomization::UpdatePaletteTexture()
 // TODO: simplify (merge with UpdatePaletteTexture() somehow???)
 void ScenarioCustomization::UpdatePaletteEffect()
 {
+	ResourceKey customizationKeyCurrent = mpSelectedItem
+		? mpSelectedItem->GetThumbnail()
+		: GetCurrentCustomizationKey(mPropertyEffect);
+	mpPaletteEffectClearWin->SetEnabled(customizationKeyCurrent != EmptyKey);
 	if (IWindow* pPaletteEffectThumbnailWin = mpPaletteEffectWin->
 		FindWindowByID(CONTROL_ID_PALETTE_BTN_EFFECT_THUMBNAIL))
 	{
-		ResourceKey customizationKeyCurrent = mpSelectedItem
-			? mpSelectedItem->GetThumbnail()
-			: GetCurrentCustomizationKey(mPropertyEffect);
 		// TODO: add placeholder icon for existing effects that aren't in items (a separate window would be fine)
 		Image::SetBackgroundByKey(pPaletteEffectThumbnailWin, customizationKeyCurrent);
 	}
@@ -332,44 +344,42 @@ void ScenarioCustomization::UpdatePaletteEffect()
 
 void ScenarioCustomization::UpdateSelectedCaption(IWindow* pCaptionWin, string16 pName)
 {
-	if (pCaptionWin)
-	{
-		pCaptionWin->SetCaption(pName.data());
-		if (IWindow* pCaptionChildWin = *pCaptionWin->children().begin())
-			if (SporeTooltipWinProc* pTooltipWinProc = (SporeTooltipWinProc*)pCaptionChildWin->
-				GetNextWinProc()->Cast(SporeTooltipWinProc::TYPE))
-				if (pName != EmDashString)
-					pTooltipWinProc->mText = pName;
-				else
-					pCaptionChildWin->RemoveWinProc(pTooltipWinProc);
+	if (!pCaptionWin)
+		return;
+	pCaptionWin->SetCaption(pName.data());
+	if (IWindow* pCaptionChildWin = *pCaptionWin->children().begin())
+		if (SporeTooltipWinProc* pTooltipWinProc = (SporeTooltipWinProc*)pCaptionChildWin->
+			GetNextWinProc()->Cast(SporeTooltipWinProc::TYPE))
+			if (pName != EmDashString)
+				pTooltipWinProc->mText = pName;
 			else
-				pCaptionChildWin->AddWinProc(CreateTooltip(pName.data()));
-	}
+				pCaptionChildWin->RemoveWinProc(pTooltipWinProc);
+		else
+			pCaptionChildWin->AddWinProc(CreateTooltip(pName.data()));
 }
 
 void ScenarioCustomization::CenterUIItem(IWindow* pChildWin)
 {
-	if (pChildWin)
-	{
-		Math::Rectangle areaParentWin = pChildWin->GetParent()->GetRealArea();
-		Math::Rectangle areaChildWin = pChildWin->GetRealArea();
+	if (!pChildWin)
+		return;
+	Math::Rectangle areaParentWin = pChildWin->GetParent()->GetRealArea();
+	Math::Rectangle areaChildWin = pChildWin->GetRealArea();
 		
-		Vector2 sizeParentWin(
-			areaParentWin.GetWidth(),
-			areaParentWin.GetHeight()
-		);
-		Vector2 sizeChildWin(
-			areaChildWin.GetWidth(),
-			areaChildWin.GetHeight()
-		);
+	Vector2 sizeParentWin(
+		areaParentWin.GetWidth(),
+		areaParentWin.GetHeight()
+	);
+	Vector2 sizeChildWin(
+		areaChildWin.GetWidth(),
+		areaChildWin.GetHeight()
+	);
 		
-		areaChildWin.left = (sizeParentWin.x - sizeChildWin.x) / 2.0f;
-		areaChildWin.top = (sizeParentWin.y - sizeChildWin.y) / 2.0f;
-		areaChildWin.right = areaChildWin.left + sizeChildWin.x;
-		areaChildWin.bottom = areaChildWin.top + sizeChildWin.y;
+	areaChildWin.left = (sizeParentWin.x - sizeChildWin.x) / 2.0f;
+	areaChildWin.top = (sizeParentWin.y - sizeChildWin.y) / 2.0f;
+	areaChildWin.right = areaChildWin.left + sizeChildWin.x;
+	areaChildWin.bottom = areaChildWin.top + sizeChildWin.y;
 		
-		pChildWin->SetLayoutArea(areaChildWin);
-	}
+	pChildWin->SetLayoutArea(areaChildWin);
 }
 
 #pragma region Show & Hide Panel
@@ -405,6 +415,38 @@ void ScenarioCustomization::HideCustomizationPanel(bool bSilent)
 	}
 }
 #pragma endregion
+
+void ScenarioCustomization::SetProperty(uint32_t propertyId, ResourceKey customizationKey)
+{
+	switch (propertyId)
+	{
+	case kCustomizationPropertyEffectVisualStyle:
+		CALL(
+			GetAddress(SSSTE::cScenarioTerraformMode, SetVisualStyle),
+			void,
+			Args(cScenarioTerraformMode*, ResourceKey*),
+			Args(mpScenarioTerraformMode, &customizationKey)
+		);
+		break;
+	case kCustomizationPropertyEffectGround:
+		CALL(
+			GetAddress(SSSTE::cScenarioTerraformMode, SetGroundEffectId),
+			void,
+			Args(cScenarioTerraformMode*, uint32_t),
+			Args(mpScenarioTerraformMode, customizationKey.instanceID)
+		);
+		STATIC_CALL_(GetAddress(SSSTE::cScenarioTerraformMode, ReloadGroundEffect), void);
+		break;
+	default:
+		PropertyListPtr pTerrainScript = mpScenarioTerraformMode->mpPropList;
+		pTerrainScript->SetProperty(
+			propertyId,
+			&Property().SetValueKey(customizationKey)
+		);
+		PlanetModel.mpSphere->ParseProp(pTerrainScript.get());
+		break;
+	}
+}
 
 #pragma region Refcount
 // For internal use, do not modify.
@@ -486,35 +528,7 @@ bool ScenarioCustomization::HandleUIMessage(IWindow* window, const Message& mess
 			ResourceKey customizationKey = pItem->GetCustomization();
 
 			mpScenarioTerraformMode->StartHistoryEntry();
-			ResourceKey tmp;
-			switch (mLastLookup.mPropertyId)
-			{
-			case kCustomizationPropertyEffectVisualStyle:
-				CALL(
-					GetAddress(SSSTE::cScenarioTerraformMode, SetVisualStyle),
-					void,
-					Args(cScenarioTerraformMode*, ResourceKey*),
-					Args(mpScenarioTerraformMode, &customizationKey)
-				);
-				break;
-			case kCustomizationPropertyEffectGround:
-				CALL(
-					GetAddress(SSSTE::cScenarioTerraformMode, SetGroundEffectId),
-					void,
-					Args(cScenarioTerraformMode*, uint32_t),
-					Args(mpScenarioTerraformMode, customizationKey.instanceID)
-				);
-				STATIC_CALL_(GetAddress(SSSTE::cScenarioTerraformMode, ReloadGroundEffect), void);
-				break;
-			default:
-				PropertyListPtr pTerrainScript = mpScenarioTerraformMode->mpPropList;
-				pTerrainScript->SetProperty(
-					mLastLookup.mPropertyId,
-					&Property().SetValueKey(customizationKey)
-				);
-				PlanetModel.mpSphere->ParseProp(pTerrainScript.get());
-				break;
-			}
+			SetProperty(mLastLookup.mPropertyId, customizationKey);
 			mpScenarioTerraformMode->CommitHistoryEntry();
 
 			SelectItem(pItem);
@@ -540,6 +554,30 @@ bool ScenarioCustomization::HandleUIMessage(IWindow* window, const Message& mess
 			HideCustomizationPanel();
 			return true;
 		}
+		case CONTROL_ID_PALETTE_CLEAR_EFFECT:
+		{
+			ResourceKey customizationKey = GetCurrentCustomizationKey(mPropertyEffect);
+			if (customizationKey == EmptyKey)
+				return true;
+
+			mpScenarioTerraformMode->StartHistoryEntry();
+			SetProperty(mPropertyEffect, EmptyKey);
+			mpScenarioTerraformMode->CommitHistoryEntry();
+			if (mpSelectedItem &&
+				(mLastLookup.mPropertyId != mPropertyEffect ||
+				mpSelectedItem->GetCustomization() == customizationKey)
+			)
+			{
+				mpSelectedItem->SetSelection(false);
+				mpSelectedItem = nullptr;
+			}
+
+			if (mPropertyEffect == kCustomizationPropertyEffectGround && g_pFloraGroundCoverLock)
+				g_pFloraGroundCoverLock->Unlock();
+			UpdatePaletteEffect();
+			PlayAudio(SOUND_ID_EDITOR_TRASH);
+			return true;
+		}
 		default:
 			return false;
 		}
@@ -558,16 +596,14 @@ bool ScenarioCustomization::HandleUIMessage(IWindow* window, const Message& mess
 			if (controlId == mPropertyTexture)
 				return true;
 			mPropertyTexture = (CustomizationPropertyTexture)controlId;
-			InitItems({ kCustomizationItemsGroupTextures, mPropertyTexture });
-			UpdatePaletteTexture();
+			InitTextures(false);
 			break;
 		case CONTROL_ID_PALETTE_PROPERTIES_EFFECT:
 			HideCustomizationPanel(controlId != mPropertyEffect);
 			if (controlId == mPropertyEffect)
 				return true;
 			mPropertyEffect = (CustomizationPropertyEffect)controlId;
-			InitItems({ kCustomizationItemsGroupEffects, mPropertyEffect });
-			UpdatePaletteEffect();
+			InitEffects(false);
 		}
 		PlayAudio(SOUND_ID_EDITOR_CLICK);
 		return true;
