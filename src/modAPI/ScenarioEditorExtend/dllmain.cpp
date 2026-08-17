@@ -164,15 +164,16 @@ member_detour(
 		IWindow* pFloraGroundCoverWin = nullptr;
 		if (UILayout* pLayout = (UILayout*)field(this, 0x168))
 			pFloraGroundCoverWin = pLayout->FindWindowByID(CONTROL_ID_PALETTE_FLORA_GROUND_COVER);
+
 		if (g_pFloraGroundCoverLock &&
 			g_pFloraGroundCoverLock->GetInitializedWindow() == pFloraGroundCoverWin
 		)
-			return;
-
-		g_pFloraGroundCoverLock = new ScenarioFloraGroundCoverLock(
-			this,
-			g_pFloraGroundCoverLock->IsLocked()
-		);
+			g_pFloraGroundCoverLock->Update();
+		else
+			g_pFloraGroundCoverLock = new ScenarioFloraGroundCoverLock(
+				this,
+				g_pFloraGroundCoverLock->IsLocked()
+			);
 	}
 };
 #pragma endregion

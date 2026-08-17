@@ -85,6 +85,7 @@ private:
 	static const uint32_t CONTROL_ID_PALETTE_BLOCK_EFFECT = id("PlanetCustomizationEffectBlock");
 	static const uint32_t CONTROL_ID_PALETTE_BTN_EFFECT = id("PlanetCustomizationSelectEffect");
 	static const uint32_t CONTROL_ID_PALETTE_BTN_EFFECT_THUMBNAIL = id("PlanetCustomizationEffectThumbnail");
+	static const uint32_t CONTROL_ID_PALETTE_BTN_EFFECT_ICON = id("PlanetCustomizationEffectIcon");
 	static const uint32_t CONTROL_ID_PALETTE_NAME_EFFECT = id("PlanetCustomizationEffectName");
 	static const uint32_t CONTROL_ID_PALETTE_PROPERTIES_EFFECT = id("PlanetCustomizationEffectSelectProperty");
 	static const uint32_t CONTROL_ID_PALETTE_CLEAR_EFFECT = id("PlanetCustomizationEffectClear");
@@ -112,10 +113,13 @@ protected:
 
 	IWindow* mpPaletteTextureBlockWin;
 	IWindow* mpPaletteTextureWin;
+	IWindow* mpPaletteTextureThumbnailWin;
 	IWindow* mpPaletteTextureNameWin;
 
 	IWindow* mpPaletteEffectBlockWin;
 	IWindow* mpPaletteEffectWin;
+	IWindow* mpPaletteEffectThumbnailWin;
+	IWindow* mpPaletteEffectIconWin;
 	IWindow* mpPaletteEffectNameWin;
 	IWindow* mpPaletteEffectClearWin;
 

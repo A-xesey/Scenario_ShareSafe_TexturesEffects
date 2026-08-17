@@ -5,7 +5,8 @@ ScenarioFloraGroundCoverLock::ScenarioFloraGroundCoverLock(
 	ScenarioEditModeSculptFloraUI* pEditModeSculptFloraUI,
 	bool bIsLocked
 )
-	: mpWindow(nullptr)
+	: mpWin(nullptr)
+	, mpFloraFlowersCheckboxWin(nullptr)
 	, mbIsLocked(false)
 {
 	if (pEditModeSculptFloraUI)
@@ -38,12 +39,15 @@ ScenarioFloraGroundCoverLock::ScenarioFloraGroundCoverLock(
 						pDrawableImageInfo->SetIconColor(iconColor);
 					}
 				}
-				mpWindow = pFloraGroundCoverWin;
+				mpWin = pFloraGroundCoverWin;
 			}
 			IWindow* pFloraFlowersCheckboxWin = pLayout->
 				FindWindowByID(CONTROL_ID_PALETTE_FLORA_FLOWERS_CHECKBOX);
 			if (pFloraFlowersCheckboxWin && pFloraFlowersCheckboxWin->Cast(IButton::TYPE))
+			{
+				mpFloraFlowersCheckboxWin = pFloraFlowersCheckboxWin;
 				mWinLockMap[pFloraFlowersCheckboxWin] = true;
+			}
 		}
 	}
 	SetLock(bIsLocked);
@@ -63,10 +67,18 @@ void ScenarioFloraGroundCoverLock::SetLock(bool bLock)
 	for (pair<IWindow* const, bool>& pairWinLock : mWinLockMap)
 	{
 		pairWinLock.first->SetEnabled(!bLock && !pairWinLock.second);
-		if (IButton* pBtn = ((IButton*)pairWinLock.first->Cast(IButton::TYPE)))
-			pBtn->SetButtonPressed(false);
+		((IButton*)pairWinLock.first->Cast(IButton::TYPE))->SetButtonPressed(false);
 	}
 	mbIsLocked = bLock;
+}
+
+void ScenarioFloraGroundCoverLock::Update()
+{
+	if (mpFloraFlowersCheckboxWin)
+		mpFloraFlowersCheckboxWin->SetEnabled(
+			!mbIsLocked &&
+			!mWinLockMap[mpFloraFlowersCheckboxWin]
+		);
 }
 
 #pragma region Refcount

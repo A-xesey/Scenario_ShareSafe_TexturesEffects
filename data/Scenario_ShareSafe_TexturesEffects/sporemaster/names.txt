@@ -81,6 +81,7 @@ ScenarioCustomizationTextures
 PlanetCustomizationItemsFilterClear
 AssetBrowserGraphics
 Tech
+PlanetCustomizationEffectIcon
 SculptPaletteCategory
 PlanetCustomizationScrollbar
 PlanetCustomizationTextureThumbnail
@@ -119,6 +120,7 @@ auto_ScenarioCustomizationTextures_Drapery
 PlanetCustomizationItemsFilterTE
 AssetBrowser
 test
+icn-effects
 PlanetCustomizationItem
 ScenarioCustomization_category
 ScenarioCustomization_pagescore

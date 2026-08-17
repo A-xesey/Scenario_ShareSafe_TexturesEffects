@@ -32,12 +32,24 @@ ScenarioCustomization::ScenarioCustomization(
 	)
 	, mpPaletteTextureBlockWin(LookupWindow(mpPaletteCategoryWin, CONTROL_ID_PALETTE_BLOCK_TEXTURE))
 	, mpPaletteTextureWin(LookupWindow(mpPaletteTextureBlockWin, CONTROL_ID_PALETTE_BTN_TEXTURE))
+	, mpPaletteTextureThumbnailWin(LookupWindow(
+		mpPaletteTextureWin,
+		CONTROL_ID_PALETTE_BTN_TEXTURE_THUMBNAIL)
+	)
 	, mpPaletteTextureNameWin(LookupWindow(
 		mpPaletteTextureBlockWin,
 		CONTROL_ID_PALETTE_NAME_TEXTURE)
 	)
 	, mpPaletteEffectBlockWin(LookupWindow(mpPaletteCategoryWin,CONTROL_ID_PALETTE_BLOCK_EFFECT))
 	, mpPaletteEffectWin(LookupWindow(mpPaletteEffectBlockWin, CONTROL_ID_PALETTE_BTN_EFFECT))
+	, mpPaletteEffectThumbnailWin(LookupWindow(
+		mpPaletteEffectWin,
+		CONTROL_ID_PALETTE_BTN_EFFECT_THUMBNAIL)
+	)
+	, mpPaletteEffectIconWin(LookupWindow(
+		mpPaletteEffectThumbnailWin,
+		CONTROL_ID_PALETTE_BTN_EFFECT_ICON)
+	)
 	, mpPaletteEffectNameWin(LookupWindow(mpPaletteEffectBlockWin, CONTROL_ID_PALETTE_NAME_EFFECT))
 	, mpPaletteEffectClearWin(LookupWindow(
 		mpPaletteEffectBlockWin,
@@ -305,15 +317,14 @@ ResourceKey ScenarioCustomization::GetCurrentCustomizationKey(uint32_t propertyI
 
 void ScenarioCustomization::UpdatePaletteTexture()
 {
-	if (IWindow* pPaletteTextureThumbnailWin = mpPaletteTextureWin->
-		FindWindowByID(CONTROL_ID_PALETTE_BTN_TEXTURE_THUMBNAIL))
+	if (mpPaletteTextureThumbnailWin)
 	{
 		ResourceKey customizationKeyCurrent = mpSelectedItem
 			? mpSelectedItem->GetThumbnail()
 			: GetCurrentCustomizationKey(mPropertyTexture);
 		if (!customizationKeyCurrent.typeID)
 			customizationKeyCurrent.typeID = TypeIDs::rw4;
-		Image::SetBackgroundByKey(pPaletteTextureThumbnailWin, customizationKeyCurrent);
+		Image::SetBackgroundByKey(mpPaletteTextureThumbnailWin, customizationKeyCurrent);
 	}
 	UpdateSelectedCaption(mpPaletteTextureNameWin, mpSelectedItem
 		? mpSelectedItem->GetName()->GetText()
@@ -327,12 +338,13 @@ void ScenarioCustomization::UpdatePaletteEffect()
 	ResourceKey customizationKeyCurrent = mpSelectedItem
 		? mpSelectedItem->GetThumbnail()
 		: GetCurrentCustomizationKey(mPropertyEffect);
-	mpPaletteEffectClearWin->SetEnabled(customizationKeyCurrent != EmptyKey);
-	if (IWindow* pPaletteEffectThumbnailWin = mpPaletteEffectWin->
-		FindWindowByID(CONTROL_ID_PALETTE_BTN_EFFECT_THUMBNAIL))
+	bool bIsCustomized = customizationKeyCurrent != EmptyKey;
+	mpPaletteEffectClearWin->SetEnabled(bIsCustomized);
+	if (mpPaletteEffectThumbnailWin)
 	{
-		// TODO: add placeholder icon for existing effects that aren't in items (a separate window would be fine)
-		Image::SetBackgroundByKey(pPaletteEffectThumbnailWin, customizationKeyCurrent);
+		if (mpPaletteEffectIconWin)
+			mpPaletteEffectIconWin->SetVisible(bIsCustomized);
+		Image::SetBackgroundByKey(mpPaletteEffectThumbnailWin, customizationKeyCurrent);
 	}
 	UpdateSelectedCaption(mpPaletteEffectNameWin, mpSelectedItem
 		? mpSelectedItem->GetName()->GetText()
@@ -604,6 +616,8 @@ bool ScenarioCustomization::HandleUIMessage(IWindow* window, const Message& mess
 				return true;
 			mPropertyEffect = (CustomizationPropertyEffect)controlId;
 			InitEffects(false);
+		default:
+			return false;
 		}
 		PlayAudio(SOUND_ID_EDITOR_CLICK);
 		return true;
