@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateEffectGroundCover
+
+key CustomizationItemKey 0x74c0e257
+
+texts CustomizationItemName
+	(ScenarioBuildMode!0x56afce76) "Organic + Flowers"
+end

@@ -19,6 +19,7 @@ protected:
 	ResourceKey mThumbnailKey;
 	LocalizedString mName;
 	bool mbIsSelected;
+	bool mbIgnoreGroundCoverLock;
 	IWindowPtr mpButton;
 	SporeTooltipWinProc* mpTooltipWinProc;
 
@@ -28,11 +29,12 @@ public:
 	ScenarioCustomizationItem();
 	~ScenarioCustomizationItem();
 
-	virtual void SetCustomizationAndImage(const App::PropertyList* pPropList, ResourceKey thumbnailKey, IWinProc* pHandler);
-	virtual void SetSelection(bool bIsSelected);
+	bool SetCustomizationAndImage(const App::PropertyList* pPropList, ResourceKey thumbnailKey, IWinProc* pHandler);
+	void SetSelection(bool bIsSelected);
 	inline ResourceKey GetCustomization() { return mCustomizationKey; }
 	inline ResourceKey GetThumbnail() { return mThumbnailKey; }
 	inline LocalizedString* GetName() { return &mName; }
+	inline bool IsGroundCoverLockIgnored() { return mbIgnoreGroundCoverLock; }
 	inline IWindow* GetButtonWindow() { return mpButton.get(); }
 	inline bool IsSelected() const { return mbIsSelected; }
 

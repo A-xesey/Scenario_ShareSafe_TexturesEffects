@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateEffectGroundCover
+
+key CustomizationItemKey 0xa315e7d1
+
+texts CustomizationItemName
+	(ScenarioBuildMode!0x56afce78) "Sandstone + Flowers"
+end

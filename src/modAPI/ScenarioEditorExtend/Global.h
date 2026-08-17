@@ -50,17 +50,19 @@ namespace SSSTE
 #pragma endregion
 
 #pragma region Constants
-static const uint32_t PROPERTY_ID_TERRAIN_ABOVE_DETAIL2 = 0x3b4f7c9;
-static const uint32_t PROPERTY_ID_TERRAIN_ABOVE_DETAIL_NOISE = 0x3b4f7ca;
-static const uint32_t PROPERTY_ID_TERRAIN_BELOW = 0x3b4f7cb;
-static const uint32_t PROPERTY_ID_TERRAIN_CLIFF = 0x3b4f7c6;
-static const uint32_t PROPERTY_ID_TERRAIN_BEACH2 = 0x3b4f7cd;
-static const uint32_t PROPERTY_ID_TERRAIN_PLAYER_GROUND_EFFECTS = id("groundCoverLiningsGUIDs");
-static const uint32_t PROPERTY_ID_VISUAL_STYLE = id("visualStyle");
+static const uint32_t PROPERTY_ID_TERRAIN_ABOVE_DETAIL2 = 0x3b4f7c9; // terrainThemeAboveDetail2
+static const uint32_t PROPERTY_ID_TERRAIN_ABOVE_DETAIL_NOISE = 0x3b4f7ca; // terrainThemeAboveDetailNoise
+static const uint32_t PROPERTY_ID_TERRAIN_BELOW = 0x3b4f7cb; // terrainThemeBelow
+static const uint32_t PROPERTY_ID_TERRAIN_CLIFF = 0x3b4f7c6; // terrainThemeCliff
+static const uint32_t PROPERTY_ID_TERRAIN_BEACH2 = 0x3b4f7cd; // terrainThemeBeach2
+static const uint32_t PROPERTY_ID_TERRAIN_PLAYER_GROUND_EFFECTS = id("groundCoverLiningsGUIDs"); // terrainPlayerGroundEffects
+static const uint32_t PROPERTY_ID_VISUAL_STYLE = id("visualStyle"); // visualStyle
+
 static const uint32_t PROPERTY_ID_CUSTOMIZATION_ITEM_KEY = id("CustomizationItemKey");
 static const uint32_t PROPERTY_ID_CUSTOMIZATION_ITEM_NAME = id("CustomizationItemName");
 static const uint32_t PROPERTY_ID_CUSTOMIZATION_ITEM_WHITELIST = id("CustomizationItemPropertyWhitelist");
 static const uint32_t PROPERTY_ID_CUSTOMIZATION_ITEM_BLACKLIST = id("CustomizationItemPropertyBlacklist");
+static const uint32_t PROPERTY_ID_CUSTOMIZATION_ITEM_IS_GROUND_COVER = id("CustomizationItemIsGroundCover");
 
 static const uint32_t GROUP_ID_TEXTURES_DEFINITIONS = id("ScenarioCustomizationTextures");
 static const uint32_t GROUP_ID_EFFECTS_DEFINITIONS = id("ScenarioCustomizationEffects");

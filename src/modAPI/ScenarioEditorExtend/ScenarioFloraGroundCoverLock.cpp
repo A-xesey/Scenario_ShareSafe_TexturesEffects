@@ -21,6 +21,8 @@ ScenarioFloraGroundCoverLock::ScenarioFloraGroundCoverLock(
 					if (!pChildWin->Cast(IButton::TYPE))
 						continue;
 					mWinLockMap[pChildWin] = !pChildWin->IsEnabled();
+
+#pragma region SporeStdDrawable Fix for Buttons
 					if (SporeStdDrawable* pDrawable = (SporeStdDrawable*)(pChildWin->
 						GetDrawable()->Cast(SporeStdDrawable::TYPE)))
 					{
@@ -38,6 +40,8 @@ ScenarioFloraGroundCoverLock::ScenarioFloraGroundCoverLock(
 						);
 						pDrawableImageInfo->SetIconColor(iconColor);
 					}
+#pragma endregion The reason for this is a bug in "ScenarioEditModeFloraPage.spui".
+
 				}
 				mpWin = pFloraGroundCoverWin;
 			}
@@ -74,11 +78,8 @@ void ScenarioFloraGroundCoverLock::SetLock(bool bLock)
 
 void ScenarioFloraGroundCoverLock::Update()
 {
-	if (mpFloraFlowersCheckboxWin)
-		mpFloraFlowersCheckboxWin->SetEnabled(
-			!mbIsLocked &&
-			!mWinLockMap[mpFloraFlowersCheckboxWin]
-		);
+	if (mpFloraFlowersCheckboxWin && mbIsLocked && mpFloraFlowersCheckboxWin->IsEnabled())
+		mpFloraFlowersCheckboxWin->SetEnabled(false);
 }
 
 #pragma region Refcount

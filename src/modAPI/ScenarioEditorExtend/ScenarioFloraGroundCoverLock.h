@@ -38,7 +38,7 @@ public:
 	inline IWindow* GetInitializedWindow() { return mpWin; }
 	inline void Lock() { SetLock(true); }
 	inline void Unlock() { SetLock(false); }
-	inline bool IsLocked() { return mbIsLocked; }
+	inline bool IsLocked() const { return mbIsLocked; }
 
 	int AddRef() override;
 	int Release() override;

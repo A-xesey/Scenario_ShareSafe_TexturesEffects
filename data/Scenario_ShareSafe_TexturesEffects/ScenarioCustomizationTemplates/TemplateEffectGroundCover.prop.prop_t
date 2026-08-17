@@ -1,0 +1,9 @@
+#
+# This is used for vanilla GA ground covers (both default and flowers) that can be found and applied on the "Flora" category page.
+# (see: ScenarioEditModeFloraPage.spui)
+#
+
+uint32s CustomizationItemPropertyWhitelist
+end
+
+bool CustomizationItemIsGroundCover true

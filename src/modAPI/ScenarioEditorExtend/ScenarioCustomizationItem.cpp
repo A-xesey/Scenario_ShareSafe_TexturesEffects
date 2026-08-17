@@ -5,9 +5,10 @@
 using namespace App;
 
 ScenarioCustomizationItem::ScenarioCustomizationItem()
-	: mpButton(nullptr)
+	: mbIsSelected(false)
+	, mbIgnoreGroundCoverLock(false)
+	, mpButton(nullptr)
 	, mpTooltipWinProc(nullptr)
-	, mbIsSelected(false)
 {
 }
 
@@ -16,7 +17,7 @@ ScenarioCustomizationItem::~ScenarioCustomizationItem()
 {
 }
 
-void ScenarioCustomizationItem::SetCustomizationAndImage(
+bool ScenarioCustomizationItem::SetCustomizationAndImage(
 	const PropertyList* pPropList,
 	ResourceKey thumbnailKey,
 	IWinProc* pHandler
@@ -24,9 +25,16 @@ void ScenarioCustomizationItem::SetCustomizationAndImage(
 {
 	LoadByID(CONTROL_ID_CUSTOMIZATION_ITEM);
 
-	Property::GetKey(pPropList, PROPERTY_ID_CUSTOMIZATION_ITEM_KEY, mCustomizationKey);
+	if (!Property::GetKey(pPropList, PROPERTY_ID_CUSTOMIZATION_ITEM_KEY, mCustomizationKey))
+		return false;
 	mThumbnailKey = thumbnailKey;
-	Property::GetText(pPropList, PROPERTY_ID_CUSTOMIZATION_ITEM_NAME, mName);
+	if (!Property::GetText(pPropList, PROPERTY_ID_CUSTOMIZATION_ITEM_NAME, mName))
+		mName.SetText(0x0, 0x0);
+	Property::GetBool(
+		pPropList,
+		PROPERTY_ID_CUSTOMIZATION_ITEM_IS_GROUND_COVER,
+		mbIgnoreGroundCoverLock
+	);
 	IWindow* pButton = FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM);
 	IWindow* pThumbnailWin = pButton->FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM_THUMBNAIL);
 	if (pThumbnailWin) //ResourceManager.FindRecord(mThumbnailKey)

@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateEffectGroundCover
+
+key CustomizationItemKey 0xea122472
+
+texts CustomizationItemName
+	(ScenarioBuildMode!0x56afce72) "Conglomerate"
+end

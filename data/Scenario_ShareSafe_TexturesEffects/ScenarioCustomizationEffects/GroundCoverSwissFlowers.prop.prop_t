@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateEffectGroundCover
+
+key CustomizationItemKey 0xa9e85a91
+
+texts CustomizationItemName
+	(ScenarioBuildMode!0x56afce79) "Swiss + Flowers"
+end

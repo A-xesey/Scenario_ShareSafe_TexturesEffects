@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateEffectGroundCover
+
+key CustomizationItemKey 0xd17d4d88
+
+texts CustomizationItemName
+	(ScenarioBuildMode!0x56afce72) "Conglomerate + Flowers"
+end

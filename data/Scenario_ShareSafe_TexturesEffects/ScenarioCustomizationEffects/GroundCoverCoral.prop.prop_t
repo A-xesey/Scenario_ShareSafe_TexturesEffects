@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateEffectGroundCover
+
+key CustomizationItemKey 0x4b032971
+
+texts CustomizationItemName
+	(ScenarioBuildMode!0x56afce73) "Coral"
+end

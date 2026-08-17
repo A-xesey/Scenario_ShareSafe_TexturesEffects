@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateEffectGroundCover
+
+key CustomizationItemKey 0x98efc43f
+
+texts CustomizationItemName
+	(ScenarioBuildMode!0x56afce7a) "Ice Rocks"
+end

@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateEffectGroundCover
+
+key CustomizationItemKey 0x09dbe7d6
+
+texts CustomizationItemName
+	(ScenarioBuildMode!0x56afce7d) "Shitaake"
+end

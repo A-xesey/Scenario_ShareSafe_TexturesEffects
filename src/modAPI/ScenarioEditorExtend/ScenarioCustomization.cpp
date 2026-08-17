@@ -142,11 +142,12 @@ void ScenarioCustomization::InitItems(
 
 #pragma region Add Item
 				ScenarioCustomizationItemPtr pItem = new ScenarioCustomizationItem();
-				pItem->SetCustomizationAndImage(
+				if (!pItem->SetCustomizationAndImage(
 					pDefinitionPropList.get(),
 					ResourceKey(definitionId, TypeIDs::png, itemsLookup.mItemsGroup),
-					this
-				);
+					this)
+				)
+					continue;
 				string16 itemName = pItem->GetName()->GetText();
 				itemName.make_lower();
 				if (itemName.find(itemsLookup.mSearchString) == string16::npos)
@@ -254,18 +255,13 @@ bool ScenarioCustomization::CheckPropertyWhitelistFromDefinition(
 	PropertyListPtr pDefinitionPropList
 )
 {
-	vector<uint32_t> definitionPropertyWhitelist;
-	Property::GetArrayUInt32(
+	vector<uint32_t> whitelist;
+	bool bExists = Property::GetArrayUInt32(
 		pDefinitionPropList.get(),
 		PROPERTY_ID_CUSTOMIZATION_ITEM_WHITELIST,
-		definitionPropertyWhitelist
+		whitelist
 	);
-	return !definitionPropertyWhitelist.size() ||
-		find(
-			definitionPropertyWhitelist.begin(),
-			definitionPropertyWhitelist.end(),
-			propertyId
-		) != definitionPropertyWhitelist.end();
+	return !bExists || find(whitelist.begin(), whitelist.end(), propertyId) != whitelist.end();
 }
 
 bool ScenarioCustomization::CheckPropertyBlacklistFromDefinition(
@@ -273,17 +269,13 @@ bool ScenarioCustomization::CheckPropertyBlacklistFromDefinition(
 	PropertyListPtr pDefinitionPropList
 )
 {
-	vector<uint32_t> definitionPropertyBlacklist;
-	Property::GetArrayUInt32(
+	vector<uint32_t> blacklist;
+	bool bExists = Property::GetArrayUInt32(
 		pDefinitionPropList.get(),
 		PROPERTY_ID_CUSTOMIZATION_ITEM_BLACKLIST,
-		definitionPropertyBlacklist
+		blacklist
 	);
-	return find(
-		definitionPropertyBlacklist.begin(),
-		definitionPropertyBlacklist.end(),
-		propertyId
-	) == definitionPropertyBlacklist.end();
+	return !bExists || find(blacklist.begin(), blacklist.end(), propertyId) == blacklist.end();
 }
 #pragma endregion
 
@@ -325,12 +317,12 @@ void ScenarioCustomization::UpdatePaletteTexture()
 {
 	if (mpPaletteTextureThumbnailWin)
 	{
-		ResourceKey customizationKeyCurrent = mpSelectedItem
+		ResourceKey thumbnailKey = mpSelectedItem
 			? mpSelectedItem->GetThumbnail()
 			: GetCurrentCustomizationKey(mPropertyTexture);
-		if (!customizationKeyCurrent.typeID)
-			customizationKeyCurrent.typeID = TypeIDs::rw4;
-		Image::SetBackgroundByKey(mpPaletteTextureThumbnailWin, customizationKeyCurrent);
+		if (!thumbnailKey.typeID)
+			thumbnailKey.typeID = TypeIDs::rw4;
+		Image::SetBackgroundByKey(mpPaletteTextureThumbnailWin, thumbnailKey);
 	}
 	UpdateSelectedCaption(mpPaletteTextureNameWin, mpSelectedItem
 		? mpSelectedItem->GetName()->GetText()
@@ -338,26 +330,29 @@ void ScenarioCustomization::UpdatePaletteTexture()
 	);
 }
 
-// TODO: simplify (merge with UpdatePaletteTexture() somehow???)
 void ScenarioCustomization::UpdatePaletteEffect()
 {
-	ResourceKey customizationKeyCurrent = mpSelectedItem
-		? mpSelectedItem->GetThumbnail()
-		: GetCurrentCustomizationKey(mPropertyEffect);
-	bool bIsCustomized = customizationKeyCurrent != EmptyKey;
-	mpPaletteEffectClearWin->SetEnabled(bIsCustomized);
+	ResourceKey thumbnailKey;
+	bool bThumbnailFound = mpSelectedItem;
+	if (mpSelectedItem)
+		thumbnailKey = mpSelectedItem->GetThumbnail();
+	ResourceKey customizationKeyCurrent = GetCurrentCustomizationKey(mPropertyEffect);
+	bool bCustomizationApplied = customizationKeyCurrent != EmptyKey;
+	mpPaletteEffectClearWin->SetEnabled(bCustomizationApplied);
 	if (mpPaletteEffectThumbnailWin)
 	{
 		if (mpPaletteEffectIconWin)
-			mpPaletteEffectIconWin->SetVisible(bIsCustomized);
-		Image::SetBackgroundByKey(mpPaletteEffectThumbnailWin, customizationKeyCurrent);
+			mpPaletteEffectIconWin->SetVisible(!bThumbnailFound && bCustomizationApplied);
+		Image::SetBackgroundByKey(mpPaletteEffectThumbnailWin, thumbnailKey);
 	}
 	UpdateSelectedCaption(mpPaletteEffectNameWin, mpSelectedItem
 		? mpSelectedItem->GetName()->GetText()
-		: ResourceKeyToString(instance_id(GetCurrentCustomizationKey(mPropertyEffect).instanceID))
+		: ResourceKeyToString(instance_id(customizationKeyCurrent.instanceID))
 	);
 	if (mPropertyEffect == kCustomizationPropertyEffectGround)
-		g_pFloraGroundCoverLock->SetLock(mpSelectedItem);
+		g_pFloraGroundCoverLock->SetLock(mpSelectedItem
+			? !mpSelectedItem->IsGroundCoverLockIgnored()
+			: false);
 }
 
 void ScenarioCustomization::UpdateSelectedCaption(IWindow* pCaptionWin, string16 pName)
