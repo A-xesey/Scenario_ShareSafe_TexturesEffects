@@ -89,7 +89,7 @@ member_detour(PaletteUI_SetActiveCategory, PaletteUI, void(int))
 	{
 		if (g_pWinProc && g_ScenarioCustomizationCategoryIndex == -1)
 			for (int categoryIndexCheck = 0;
-				categoryIndexCheck < this->mCategories.size();
+				categoryIndexCheck < (int)this->mCategories.size();
 				++categoryIndexCheck
 			)
 			{

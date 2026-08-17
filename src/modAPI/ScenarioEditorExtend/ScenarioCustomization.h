@@ -149,12 +149,12 @@ public:
 
 	inline void InitTextures(bool bFillPanelWin = true)
 	{
-		InitItems({ kCustomizationItemsGroupTextures, mPropertyTexture }, bFillPanelWin);
+		InitItems({ kCustomizationItemsGroupTextures, mPropertyTexture }, bFillPanelWin, true);
 		UpdatePaletteTexture();
 	}
 	inline void InitEffects(bool bFillPanelWin = true)
 	{
-		InitItems({ kCustomizationItemsGroupEffects, mPropertyEffect }, bFillPanelWin);
+		InitItems({ kCustomizationItemsGroupEffects, mPropertyEffect }, bFillPanelWin, true);
 		UpdatePaletteEffect();
 	}
 	inline void Init(bool bFillPanelWin = true)
@@ -182,7 +182,11 @@ public:
 	bool HandleUIMessage(IWindow* pWindow, const Message& message) override;
 
 protected:
-	void InitItems(CustomizationItemsLookup itemsLookup, bool bFillPanelWin = true);
+	void InitItems(
+		CustomizationItemsLookup itemsLookup,
+		bool bFillPanelWin = true,
+		bool bIgnoreBlacklists = false
+	);
 	void ClearItems();
 	void UpdatePaletteTexture();
 	void UpdatePaletteEffect();

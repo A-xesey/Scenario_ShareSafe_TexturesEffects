@@ -109,7 +109,11 @@ ScenarioCustomization::~ScenarioCustomization()
 {
 }
 
-void ScenarioCustomization::InitItems(CustomizationItemsLookup itemsLookup, bool bFillPanelWin)
+void ScenarioCustomization::InitItems(
+	CustomizationItemsLookup itemsLookup,
+	bool bFillPanelWin,
+	bool bIgnoreBlacklists
+)
 {
 	if ((mLastLookup != itemsLookup || !mWinItemMap.size()) && mpContentClientWin && mColumns)
 	{
@@ -131,7 +135,9 @@ void ScenarioCustomization::InitItems(CustomizationItemsLookup itemsLookup, bool
 				)
 					continue;
 
-				if (!IsPropertyAllowedForDefinition(itemsLookup.mPropertyId, pDefinitionPropList))
+				if (!bIgnoreBlacklists &&
+					!IsPropertyAllowedForDefinition(itemsLookup.mPropertyId, pDefinitionPropList)
+				)
 					continue;
 
 #pragma region Add Item
@@ -575,14 +581,13 @@ bool ScenarioCustomization::HandleUIMessage(IWindow* window, const Message& mess
 			mpScenarioTerraformMode->StartHistoryEntry();
 			SetProperty(mPropertyEffect, EmptyKey);
 			mpScenarioTerraformMode->CommitHistoryEntry();
+
 			if (mpSelectedItem &&
 				(mLastLookup.mPropertyId != mPropertyEffect ||
-				mpSelectedItem->GetCustomization() == customizationKey)
+					mpSelectedItem->GetCustomization() == customizationKey
+				)
 			)
-			{
-				mpSelectedItem->SetSelection(false);
-				mpSelectedItem = nullptr;
-			}
+				SelectItem(nullptr);
 
 			if (mPropertyEffect == kCustomizationPropertyEffectGround && g_pFloraGroundCoverLock)
 				g_pFloraGroundCoverLock->Unlock();
