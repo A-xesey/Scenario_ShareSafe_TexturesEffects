@@ -1,5 +1,5 @@
 key CustomizationItemKey microscopeShipFilter
 
 texts CustomizationItemName
-	"Microscope"
+	(SSSTE-ScenarioCustomizationEffects!Microscope)	"Microscope"
 end

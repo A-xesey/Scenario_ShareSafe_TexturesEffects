@@ -1,5 +1,6 @@
 key paletteCategoryLayoutFile PlanetCustomizationPaletteCategory
 keys paletteCategoryIconList
+	# TODO: add a proper mod-specific category icon
 	ScenarioEditor!0x1380D080.png
 	ScenarioEditor!0x40EB7459.png
 	ScenarioEditor!0xBFD4264E.png
@@ -11,6 +12,6 @@ keys paletteCategoryIconList
 	ScenarioEditor!0x40EB7459.png
 end
 texts paletteCategoryName
-	"Planet Custom"
+	(SSSTE!0x1) "Customization"
 end
 uint32 paletteCategorySequenceNumber 500

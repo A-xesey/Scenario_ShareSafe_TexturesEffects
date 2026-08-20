@@ -1,5 +1,5 @@
 key CustomizationItemKey GGE_galaxy_skybox
 
 texts CustomizationItemName
-	"Starry Sky"
+	(SSSTE-ScenarioCustomizationEffects!StarrySky)	"Starry Sky"
 end

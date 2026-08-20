@@ -1,5 +1,5 @@
 key CustomizationItemKey EP1_InkFilter
 
 texts CustomizationItemName
-	"Ink Filter"
+	(SSSTE-ScenarioCustomizationEffects!InkFilter)	"Ink"
 end

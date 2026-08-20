@@ -1,5 +1,5 @@
 key CustomizationItemKey EP18bit
 
 texts CustomizationItemName
-	"8-Bit"
+	(SSSTE-ScenarioCustomizationEffects!8bit)	"8-Bit"
 end

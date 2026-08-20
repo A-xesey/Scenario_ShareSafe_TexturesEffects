@@ -1,5 +1,5 @@
 key CustomizationItemKey EP116bit
 
 texts CustomizationItemName
-	"16-Bit"
+	(SSSTE-ScenarioCustomizationEffects!16bit)	"16-Bit"
 end

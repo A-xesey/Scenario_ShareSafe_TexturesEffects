@@ -1,7 +1,7 @@
 
 # Palette Page
 
-0x00000001 Customization
+0x00000001 Planet Customization
 
 
 # Palette Category
@@ -24,6 +24,8 @@
 0x10000021 Planet
 # visualStyle
 0x10000022 Screen
+
+0x100000A0 Selected:
 
 0x100000C1 Select Texture
 0x100000C2 Select Effect

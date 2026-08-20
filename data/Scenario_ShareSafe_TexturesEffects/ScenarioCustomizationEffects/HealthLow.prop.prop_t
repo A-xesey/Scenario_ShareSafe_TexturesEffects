@@ -1,5 +1,5 @@
 key CustomizationItemKey CR_UI_borderAlert_healthLow
 
 texts CustomizationItemName
-	"Bleeding"
+	(SSSTE-ScenarioCustomizationEffects!HealthLow)	"Bleeding"
 end

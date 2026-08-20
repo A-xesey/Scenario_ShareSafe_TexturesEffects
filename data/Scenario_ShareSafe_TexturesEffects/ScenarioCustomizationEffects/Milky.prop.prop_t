@@ -1,5 +1,5 @@
 key CustomizationItemKey cell_background_color
 
 texts CustomizationItemName
-	"Milky"
+	(SSSTE-ScenarioCustomizationEffects!Milky)	"Milky"
 end

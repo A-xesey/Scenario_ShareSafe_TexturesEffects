@@ -1,5 +1,5 @@
 key CustomizationItemKey EP1filmnoir
 
 texts CustomizationItemName
-	"Film Noir"
+	(SSSTE-ScenarioCustomizationEffects!FilmNoir)	"Film Noir"
 end

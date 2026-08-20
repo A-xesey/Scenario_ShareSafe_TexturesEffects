@@ -1,0 +1,33 @@
+
+# Palette Page
+
+0x00000001 Отображение планеты
+
+
+# Palette Category
+
+0x10000001 Текстуры поверхности
+0x10000002 Визуальные эффекты
+
+# terrainThemeAboveDetail2
+0x10000011 Детализация
+# terrainThemeAboveDetailNoise
+0x10000012 Шум детализации
+# terrainThemeBelow
+0x10000013 Поверхность дна
+# terrainThemeCliff
+0x10000014 Скалы
+# terrainThemeBeach2
+0x10000015 Берега
+
+# terrainPlayerGroundEffects
+0x10000021 Планета
+# visualStyle
+0x10000022 Экран
+
+0x100000A0 Выбрано:
+
+0x100000C1 Выбор текстуры
+0x100000C2 Выбор эффекта
+
+0x100000D2 Очистка эффекта

@@ -1,5 +1,5 @@
 key CustomizationItemKey cell_vinette
 
 texts CustomizationItemName
-	"Spyglass"
+	(SSSTE-ScenarioCustomizationEffects!Spyglass)	"Spyglass"
 end

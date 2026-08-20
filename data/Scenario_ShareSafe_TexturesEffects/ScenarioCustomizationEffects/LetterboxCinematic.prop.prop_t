@@ -1,5 +1,5 @@
 key CustomizationItemKey cinematic_letterbox_on
 
 texts CustomizationItemName
-	"Letterbox Cinematic"
+	(SSSTE-ScenarioCustomizationEffects!LetterboxCinematic)	"Letterbox Cinematic"
 end
