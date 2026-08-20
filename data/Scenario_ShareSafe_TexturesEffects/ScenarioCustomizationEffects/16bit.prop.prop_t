@@ -1,0 +1,5 @@
+key CustomizationItemKey EP116bit
+
+texts CustomizationItemName
+	"16-Bit"
+end

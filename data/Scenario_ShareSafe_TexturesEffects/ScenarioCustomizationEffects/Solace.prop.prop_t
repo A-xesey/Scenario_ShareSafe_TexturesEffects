@@ -1,0 +1,5 @@
+key CustomizationItemKey sg_galaxy_screen
+
+texts CustomizationItemName
+	"Solace"
+end

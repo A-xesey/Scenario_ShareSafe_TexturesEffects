@@ -1,0 +1,5 @@
+key CustomizationItemKey EP1_SinCityFilter
+
+texts CustomizationItemName
+	"Sin City"
+end

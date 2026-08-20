@@ -1,0 +1,5 @@
+key CustomizationItemKey CR_UI_borderAlert_healthCritical
+
+texts CustomizationItemName
+	"Bleeding Critical"
+end

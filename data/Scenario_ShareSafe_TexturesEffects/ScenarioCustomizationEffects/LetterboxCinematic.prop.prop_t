@@ -1,0 +1,5 @@
+key CustomizationItemKey cinematic_letterbox_on
+
+texts CustomizationItemName
+	"Letterbox Cinematic"
+end

@@ -1,0 +1,5 @@
+key CustomizationItemKey filmNoirShipFilter
+
+texts CustomizationItemName
+	"Film Noir (No Rain)"
+end

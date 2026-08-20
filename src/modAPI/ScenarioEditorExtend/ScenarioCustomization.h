@@ -39,22 +39,39 @@ public:
 		CustomizationItemsGroup mItemsGroup;
 		uint32_t mPropertyId;
 		string16 mSearchString;
+		bool mbFillPanelWin;
+		bool mbIgnoreBlacklists;
 
 		CustomizationItemsLookup(
 			CustomizationItemsGroup itemsGroup,
 			uint32_t propertyId,
-			string16 searchString = u""
+			string16 searchString = u"",
+			bool bFillPanelWin = true,
+			bool bIgnoreBlacklists = false
 		)
 			: mItemsGroup(itemsGroup)
 			, mPropertyId(propertyId)
 			, mSearchString(searchString)
+			, mbFillPanelWin(bFillPanelWin)
+			, mbIgnoreBlacklists(bIgnoreBlacklists)
+		{ }
+
+		CustomizationItemsLookup(
+			CustomizationItemsGroup itemsGroup,
+			uint32_t propertyId,
+			bool bFillPanelWin,
+			bool bIgnoreBlacklists
+		)
+			: CustomizationItemsLookup(itemsGroup, propertyId, u"", bFillPanelWin, bIgnoreBlacklists)
 		{ }
 
 		inline bool operator==(const CustomizationItemsLookup& b) const
 		{
 			return mItemsGroup == b.mItemsGroup &&
 				mPropertyId == b.mPropertyId &&
-				mSearchString == b.mSearchString;
+				mSearchString == b.mSearchString &&
+				mbFillPanelWin == b.mbFillPanelWin &&
+				mbIgnoreBlacklists == b.mbIgnoreBlacklists;
 		}
 
 		inline bool operator!=(const CustomizationItemsLookup& b) const
@@ -147,16 +164,8 @@ public:
 
 	ResourceKey GetCurrentCustomizationKey(uint32_t propertyId);
 
-	inline void InitTextures(bool bFillPanelWin = true)
-	{
-		InitItems({ kCustomizationItemsGroupTextures, mPropertyTexture }, bFillPanelWin, true);
-		UpdatePaletteTexture();
-	}
-	inline void InitEffects(bool bFillPanelWin = true)
-	{
-		InitItems({ kCustomizationItemsGroupEffects, mPropertyEffect }, bFillPanelWin, true);
-		UpdatePaletteEffect();
-	}
+	void InitTextures(bool bFillPanelWin = true);
+	void InitEffects(bool bFillPanelWin = true);
 	inline void Init(bool bFillPanelWin = true)
 	{
 		InitTextures(bFillPanelWin);
@@ -178,15 +187,11 @@ public:
 	void* Cast(uint32_t type) const override;
 	
 	int GetEventFlags() const override;
-	// This is the function you have to implement, called when a window you added this winproc to received an event
+
 	bool HandleUIMessage(IWindow* pWindow, const Message& message) override;
 
 protected:
-	void InitItems(
-		CustomizationItemsLookup itemsLookup,
-		bool bFillPanelWin = true,
-		bool bIgnoreBlacklists = false
-	);
+	void InitItems(CustomizationItemsLookup itemsLookup);
 	void ClearItems();
 	void UpdatePaletteTexture();
 	void UpdatePaletteEffect();

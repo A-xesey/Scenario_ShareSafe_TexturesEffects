@@ -1,0 +1,5 @@
+key CustomizationItemKey cell_creature_L0_death
+
+texts CustomizationItemName
+	"Half Brightness"
+end

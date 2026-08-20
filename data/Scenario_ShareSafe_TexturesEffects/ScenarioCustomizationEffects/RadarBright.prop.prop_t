@@ -1,0 +1,5 @@
+key CustomizationItemKey radarModeFreeze
+
+texts CustomizationItemName
+	"Radar Bright"
+end

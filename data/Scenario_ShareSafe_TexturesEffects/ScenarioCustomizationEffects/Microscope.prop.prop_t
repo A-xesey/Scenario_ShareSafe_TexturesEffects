@@ -1,0 +1,5 @@
+key CustomizationItemKey microscopeShipFilter
+
+texts CustomizationItemName
+	"Microscope"
+end

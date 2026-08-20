@@ -1,0 +1,5 @@
+key CustomizationItemKey cell_vinette
+
+texts CustomizationItemName
+	"Spyglass"
+end

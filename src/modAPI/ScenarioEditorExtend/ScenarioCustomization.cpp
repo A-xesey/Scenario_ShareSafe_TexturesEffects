@@ -109,11 +109,7 @@ ScenarioCustomization::~ScenarioCustomization()
 {
 }
 
-void ScenarioCustomization::InitItems(
-	CustomizationItemsLookup itemsLookup,
-	bool bFillPanelWin,
-	bool bIgnoreBlacklists
-)
+void ScenarioCustomization::InitItems(CustomizationItemsLookup itemsLookup)
 {
 	if ((mLastLookup != itemsLookup || !mWinItemMap.size()) && mpContentClientWin && mColumns)
 	{
@@ -135,7 +131,7 @@ void ScenarioCustomization::InitItems(
 				)
 					continue;
 
-				if (!bIgnoreBlacklists &&
+				if (!itemsLookup.mbIgnoreBlacklists &&
 					!IsPropertyAllowedForDefinition(itemsLookup.mPropertyId, pDefinitionPropList)
 				)
 					continue;
@@ -164,8 +160,14 @@ void ScenarioCustomization::InitItems(
 
 			}
 
-			if (!bFillPanelWin)
+			if (!itemsLookup.mbFillPanelWin)
 			{
+				for (ScenarioCustomizationItemPtr pItem : items)
+					if (IWindow* pItemWin = pItem->FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM))
+					{
+						pItemWin->SetVisible(false);
+						mWinItemMap[pItemWin] = pItem;
+					}
 				mLastLookup = itemsLookup;
 				return;
 			}
@@ -249,6 +251,26 @@ void ScenarioCustomization::InitItems(
 	}
 }
 
+#pragma region Inits for Textures & Effects
+void ScenarioCustomization::InitTextures(bool bFillPanelWin)
+{
+	InitItems({ kCustomizationItemsGroupTextures, mPropertyTexture, bFillPanelWin, true });
+	UpdatePaletteTexture();
+}
+
+// The reason for this additional reinit is that, unlike to InitTextures(), this one can be called with "adventureLook" in vanilla.
+void ScenarioCustomization::InitEffects(bool bFillPanelWin)
+{
+	CustomizationItemsLookup lastLookup = { kCustomizationItemsGroupNone, 0 };
+	if (mbIsPanelShown)
+		lastLookup = mLastLookup;
+	InitItems({ kCustomizationItemsGroupEffects, mPropertyEffect, bFillPanelWin, true });
+	UpdatePaletteEffect();
+	if (lastLookup.mItemsGroup != kCustomizationItemsGroupNone)
+		InitItems(lastLookup);
+}
+#pragma endregion
+
 #pragma region Whitelist & Blacklist
 bool ScenarioCustomization::CheckPropertyWhitelistFromDefinition(
 	uint32_t propertyId,
@@ -310,6 +332,15 @@ ResourceKey ScenarioCustomization::GetCurrentCustomizationKey(uint32_t propertyI
 	PropertyList* pPropList = mpScenarioTerraformMode->mpPropList.get();
 	if (!Property::GetKey(pPropList, propertyId, customizationKeyCurrent))
 		Property::GetUInt32(pPropList, propertyId, customizationKeyCurrent.instanceID);
+	switch (propertyId)
+	{
+	case kCustomizationPropertyEffectGround:
+		customizationKeyCurrent = instance_id(mpScenarioTerraformMode->mGroundEffectId);
+		break;
+	case kCustomizationPropertyEffectVisualStyle:
+		customizationKeyCurrent = mpScenarioTerraformMode->mVisualStyleId;
+		break;
+	}
 	return customizationKeyCurrent;
 }
 
@@ -332,18 +363,37 @@ void ScenarioCustomization::UpdatePaletteTexture()
 
 void ScenarioCustomization::UpdatePaletteEffect()
 {
-	ResourceKey thumbnailKey;
-	bool bThumbnailFound = mpSelectedItem;
-	if (mpSelectedItem)
-		thumbnailKey = mpSelectedItem->GetThumbnail();
 	ResourceKey customizationKeyCurrent = GetCurrentCustomizationKey(mPropertyEffect);
 	bool bCustomizationApplied = customizationKeyCurrent != EmptyKey;
-	mpPaletteEffectClearWin->SetEnabled(bCustomizationApplied);
+
+	CustomizationItemsLookup lastLookup = { kCustomizationItemsGroupNone, 0 };
+	if (mpSelectedItem && mpSelectedItem->GetCustomization() != customizationKeyCurrent)
+		SelectItem(nullptr);
+	if (!mpSelectedItem && bCustomizationApplied)
+	{
+		for (pair<IWindow* const, ScenarioCustomizationItemPtr>& pairWinItem : mWinItemMap)
+			if (pairWinItem.second->GetCustomization() == customizationKeyCurrent)
+			{
+				SelectItem(pairWinItem.second);
+				break;
+			}
+		if (!mpSelectedItem)
+		{
+			lastLookup = mLastLookup;
+			InitItems({ kCustomizationItemsGroupEffects, mPropertyEffect, false, true });
+		}
+	}
+
+	if (mpPaletteEffectClearWin)
+		mpPaletteEffectClearWin->SetEnabled(bCustomizationApplied);
 	if (mpPaletteEffectThumbnailWin)
 	{
 		if (mpPaletteEffectIconWin)
-			mpPaletteEffectIconWin->SetVisible(!bThumbnailFound && bCustomizationApplied);
-		Image::SetBackgroundByKey(mpPaletteEffectThumbnailWin, thumbnailKey);
+			mpPaletteEffectIconWin->SetVisible(!mpSelectedItem && bCustomizationApplied);
+		Image::SetBackgroundByKey(mpPaletteEffectThumbnailWin, mpSelectedItem
+			? mpSelectedItem->GetThumbnail()
+			: EmptyKey
+		);
 	}
 	UpdateSelectedCaption(mpPaletteEffectNameWin, mpSelectedItem
 		? mpSelectedItem->GetName()->GetText()
@@ -352,7 +402,10 @@ void ScenarioCustomization::UpdatePaletteEffect()
 	if (mPropertyEffect == kCustomizationPropertyEffectGround)
 		g_pFloraGroundCoverLock->SetLock(mpSelectedItem
 			? !mpSelectedItem->IsGroundCoverLockIgnored()
-			: false);
+			: false
+		);
+	if (lastLookup.mItemsGroup != kCustomizationItemsGroupNone)
+		InitItems(lastLookup);
 }
 
 void ScenarioCustomization::UpdateSelectedCaption(IWindow* pCaptionWin, string16 pName)
@@ -538,20 +591,22 @@ bool ScenarioCustomization::HandleUIMessage(IWindow* window, const Message& mess
 			ScenarioCustomizationItemPtr pItem = mWinItemMap[pItemWin];
 			if (pItem->IsSelected())
 				return true;
+			SelectItem(pItem);
+
 			ResourceKey customizationKey = pItem->GetCustomization();
 
 			mpScenarioTerraformMode->StartHistoryEntry();
 			SetProperty(mLastLookup.mPropertyId, customizationKey);
 			mpScenarioTerraformMode->CommitHistoryEntry();
 
-			SelectItem(pItem);
 			switch (mLastLookup.mItemsGroup)
 			{
 			case kCustomizationItemsGroupTextures:
 				UpdatePaletteTexture();
 				break;
 			case kCustomizationItemsGroupEffects:
-				UpdatePaletteEffect();
+				if (mLastLookup.mPropertyId != kCustomizationPropertyEffectVisualStyle)
+					UpdatePaletteEffect();
 				break;
 			}
 			PlayAudio(SOUND_ID_EDITOR_CLICK_GENERAL);
@@ -582,7 +637,10 @@ bool ScenarioCustomization::HandleUIMessage(IWindow* window, const Message& mess
 					mpSelectedItem->GetCustomization() == customizationKey
 				)
 			)
+			{
 				SelectItem(nullptr);
+				mLastLookup.mItemsGroup = kCustomizationItemsGroupNone;
+			}
 
 			if (mPropertyEffect == kCustomizationPropertyEffectGround && g_pFloraGroundCoverLock)
 				g_pFloraGroundCoverLock->Unlock();

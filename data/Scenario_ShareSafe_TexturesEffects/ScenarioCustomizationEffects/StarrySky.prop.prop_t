@@ -1,0 +1,5 @@
+key CustomizationItemKey GGE_galaxy_skybox
+
+texts CustomizationItemName
+	"Starry Sky"
+end

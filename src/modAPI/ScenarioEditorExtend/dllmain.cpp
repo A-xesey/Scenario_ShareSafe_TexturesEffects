@@ -7,6 +7,7 @@
 #include <Spore\UI\ScrollFrameVertical.h>
 
 using namespace App;
+using namespace ArgScript;
 using namespace Palettes;
 using namespace Simulator;
 using namespace UI;
@@ -16,7 +17,57 @@ int g_ScenarioCustomizationCategoryIndex = -1;
 ScenarioCustomizationPtr g_pWinProc = nullptr;
 ScenarioFloraGroundCoverLockPtr g_pFloraGroundCoverLock = nullptr;
 
+
+#ifdef _DEBUG
+class VisualEffectTestCheat
+	: public ICommand
+{
+public:
+	VisualEffectTestCheat() {}
+	~VisualEffectTestCheat() {}
+
+	uint32_t ParseUniversal(const char* pArgument)
+	{
+		bool bIsInteger = true;
+		if (pArgument[0] == '0' && pArgument[1] == 'x')
+			return mpFormatParser->ParseUInt(pArgument);
+		for (const char* pChar = pArgument; *pChar != '\0'; ++pChar)
+			if (*pChar < '0' || *pChar > '9')
+			{
+				bIsInteger = false;
+				break;
+			}
+		return bIsInteger
+			? mpFormatParser->ParseInt(pArgument)
+			: id(pArgument);
+	}
+
+	void ParseLine(const Line& line) override
+	{
+		if (!IsScenarioMode() ||
+			ScenarioMode.GetMode() != cScenarioMode::Mode::EditMode ||
+			line.GetArgumentsCount() - 1 < 1
+			)
+			return;
+		ResourceKey visualEffectId = instance_id(ParseUniversal(line.GetArguments(1)[0]));
+		CALL(
+			GetAddress(SSSTE::cScenarioTerraformMode, SetVisualStyle),
+			void,
+			Args(cScenarioTerraformMode*, ResourceKey*),
+			Args(ScenarioMode.GetTerraformMode(), &visualEffectId)
+		);
+	}
+
+	const char* GetDescription(DescriptionMode mode) const override { return "meow"; }
+};
+
+void Initialize()
+{
+	CheatManager.AddCheat("sssteSetVisualStyle", new VisualEffectTestCheat());
+}
+#else
 void Initialize() {}
+#endif
 
 void Dispose()
 {
@@ -176,7 +227,22 @@ member_detour(
 			);
 	}
 };
-#pragma endregion
+
+member_detour(
+	cScenarioTerraformMode_SetVisualStyle,
+	cScenarioTerraformMode,
+	void(ResourceKey*)
+)
+{
+	void detoured(ResourceKey* pKey)
+	{
+		original_function(this, pKey);
+		cScenarioMode& rScenarioMode = ScenarioMode;
+		if (g_pWinProc && rScenarioMode.GetMode() == cScenarioMode::Mode::EditMode)
+			g_pWinProc->InitEffects(true);
+	}
+};
+
 
 void AttachDetours()
 {
@@ -193,6 +259,9 @@ void AttachDetours()
 	);
 	ScenarioEditModeSculptFloraUI_UpdateFloraCategoryUI::attach(
 		GetAddress(SSSTE::ScenarioEditModeSculptFloraUI, UpdateFloraCategoryUI)
+	);
+	cScenarioTerraformMode_SetVisualStyle::attach(
+		GetAddress(SSSTE::cScenarioTerraformMode, SetVisualStyle)
 	);
 }
 
