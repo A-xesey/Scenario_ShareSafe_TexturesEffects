@@ -1,0 +1,5 @@
+key CustomizationItemKey SG_localPlanetRing_06~
+
+texts CustomizationItemName
+	"Planetary Ring "
+end

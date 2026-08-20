@@ -1,0 +1,5 @@
+key CustomizationItemKey cell_backgrounds_L50_tracers
+
+texts CustomizationItemName
+	(AssembledContentStrs~!Chomper_@cell_editorModel!0x00d63aa9.cll) "Chomper"
+end
