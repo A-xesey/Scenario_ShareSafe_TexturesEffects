@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureDetail
+
+key CustomizationItemKey dillpickle_detail_intertiling
+
+texts CustomizationItemName
+	"Detail Dill Pickle"
+end

@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureSeabed
+
+key CustomizationItemKey seabed_grand_shallow
+
+texts CustomizationItemName
+	"Seabed Grand Shallow"
+end

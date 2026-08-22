@@ -1,5 +1,5 @@
 key CustomizationItemKey EP1_SinCityFilter
 
 texts CustomizationItemName
-	(SSSTE-ScenarioCustomizationEffects!SinCity)	"Sin City"
+	(SSSTE-ScenarioCustomizationEffects!SinCity) "Sin City"
 end

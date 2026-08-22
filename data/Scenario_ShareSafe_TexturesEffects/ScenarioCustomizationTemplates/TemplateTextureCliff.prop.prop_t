@@ -1,0 +1,7 @@
+#
+# Used for "cliff_*" textures.
+#
+
+uint32s CustomizationItemPropertyWhitelist
+	hash(terrainThemeCliff~)
+end

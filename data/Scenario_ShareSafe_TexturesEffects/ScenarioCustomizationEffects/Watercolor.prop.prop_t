@@ -1,5 +1,5 @@
 key CustomizationItemKey EP1watercolor
 
 texts CustomizationItemName
-	(SSSTE-ScenarioCustomizationEffects!Watercolor)	"Watercolor"
+	(SSSTE-ScenarioCustomizationEffects!Watercolor) "Watercolor"
 end

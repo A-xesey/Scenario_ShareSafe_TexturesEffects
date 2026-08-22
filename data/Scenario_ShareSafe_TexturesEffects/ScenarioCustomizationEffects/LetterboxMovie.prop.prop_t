@@ -1,5 +1,5 @@
 key CustomizationItemKey letterbox_fade_in
 
 texts CustomizationItemName
-	(SSSTE-ScenarioCustomizationEffects!LetterboxMovie)	"Letterbox Movie"
+	(SSSTE-ScenarioCustomizationEffects!LetterboxMovie) "Letterbox Movie"
 end

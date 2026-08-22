@@ -1,0 +1,7 @@
+#
+# Used for other textures that weren't intended to be used for terrain by Maxis.
+#
+
+uint32s CustomizationItemPropertyBlacklist
+	hash(terrainThemeAboveDetailNoise~)
+end

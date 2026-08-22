@@ -1,3 +1,5 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureCustom
+
 key CustomizationItemKey editor_rigblock~!be_plate
 
 texts CustomizationItemName

@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureCustom
+
+key CustomizationItemKey dead_moon_terraformed_texture
+
+texts CustomizationItemName
+	"Dead Moon Terraformed"
+end

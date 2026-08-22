@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureBeach
+
+key CustomizationItemKey beach_brown_light
+
+texts CustomizationItemName
+	"Beach Brown Light"
+end

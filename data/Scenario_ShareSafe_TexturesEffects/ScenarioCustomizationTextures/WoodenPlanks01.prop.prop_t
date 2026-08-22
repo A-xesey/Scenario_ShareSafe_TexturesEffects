@@ -1,6 +1,8 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureCustom
+
 key CustomizationItemKey global_ui_tribe~!dialog-bkgrnd.png
 
 texts CustomizationItemName
-	"Wooden Planks"
+	"Wooden Planks 1"
 end
 

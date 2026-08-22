@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureDetail
+
+key CustomizationItemKey tribal_detail_intertiling
+
+texts CustomizationItemName
+	"Detail Tribal"
+end

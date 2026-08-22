@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureDetail
+
+key CustomizationItemKey craters_detail_intertiling
+
+texts CustomizationItemName
+	"Detail Craters"
+end

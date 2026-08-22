@@ -1,5 +1,5 @@
 key CustomizationItemKey filmNoirShipFilter
 
 texts CustomizationItemName
-	(SSSTE-ScenarioCustomizationEffects!SinCityNoRain)	"Film Noir (No Rain)"
+	(SSSTE-ScenarioCustomizationEffects!SinCityNoRain) "Film Noir (No Rain)"
 end

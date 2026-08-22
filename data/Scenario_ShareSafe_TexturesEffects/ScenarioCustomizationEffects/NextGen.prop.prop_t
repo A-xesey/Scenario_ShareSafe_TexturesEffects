@@ -1,5 +1,5 @@
 key CustomizationItemKey nextgenShipFilter
 
 texts CustomizationItemName
-	(SSSTE-ScenarioCustomizationEffects!NextGen)	"Next-gen"
+	(SSSTE-ScenarioCustomizationEffects!NextGen) "Next-gen"
 end

@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureDetail
+
+key CustomizationItemKey packed_detail_texture_intertiling
+
+texts CustomizationItemName
+	"Detail Plain"
+end

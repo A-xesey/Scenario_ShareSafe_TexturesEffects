@@ -1,3 +1,5 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureCustom
+
 key CustomizationItemKey global_ui_creature~!cr-mission-description-win.png
 
 texts CustomizationItemName

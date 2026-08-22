@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureCustom
+
+key CustomizationItemKey amoeba_cell_rigid_translucent
+
+texts CustomizationItemName
+	"Cell Pointy"
+end

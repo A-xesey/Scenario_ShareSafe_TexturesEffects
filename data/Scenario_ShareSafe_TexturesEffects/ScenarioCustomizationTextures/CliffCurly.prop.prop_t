@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureCliff
+
+key CustomizationItemKey cliff_curly
+
+texts CustomizationItemName
+	"Cliff Curly"
+end

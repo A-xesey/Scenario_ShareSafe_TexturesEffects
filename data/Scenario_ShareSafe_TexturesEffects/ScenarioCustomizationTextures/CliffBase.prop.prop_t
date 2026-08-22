@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureCliff
+
+key CustomizationItemKey cliff_base
+
+texts CustomizationItemName
+	"Cliff Base"
+end

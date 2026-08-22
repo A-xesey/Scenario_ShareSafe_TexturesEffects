@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureDetail
+
+key CustomizationItemKey e3_home_tiling
+
+texts CustomizationItemName
+	"Detail Bitzac"
+end

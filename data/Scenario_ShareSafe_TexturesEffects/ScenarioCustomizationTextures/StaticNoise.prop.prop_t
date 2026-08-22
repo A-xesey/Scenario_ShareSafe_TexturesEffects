@@ -1,3 +1,5 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureCustom
+
 key CustomizationItemKey tv_static
 
 texts CustomizationItemName

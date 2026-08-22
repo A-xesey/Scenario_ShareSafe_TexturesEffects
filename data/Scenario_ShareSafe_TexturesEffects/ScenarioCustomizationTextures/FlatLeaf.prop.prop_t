@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureCustom
+
+key CustomizationItemKey skinPaint_texture~!FE_flatleaf_05__specBump
+
+texts CustomizationItemName
+	"Flat Leaf"
+end

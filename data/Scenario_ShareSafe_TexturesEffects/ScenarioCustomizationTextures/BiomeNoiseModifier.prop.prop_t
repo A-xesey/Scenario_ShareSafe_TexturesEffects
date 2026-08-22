@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureDetailNoise
+
+key CustomizationItemKey biome_noise_modifier
+
+texts CustomizationItemName
+	"Biome Noise Modifier"
+end

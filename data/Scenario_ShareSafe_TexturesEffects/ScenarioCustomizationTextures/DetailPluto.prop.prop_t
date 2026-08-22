@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureDetail
+
+key CustomizationItemKey solar_system_pluto_skin
+
+texts CustomizationItemName
+	"Detail Pluto"
+end

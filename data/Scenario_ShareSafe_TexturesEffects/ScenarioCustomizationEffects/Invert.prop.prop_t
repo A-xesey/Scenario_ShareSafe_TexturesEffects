@@ -1,5 +1,5 @@
 key CustomizationItemKey 0x04f3c81f
 
 texts CustomizationItemName
-	(SSSTE-ScenarioCustomizationEffects!Invert)	"Invert"
+	(SSSTE-ScenarioCustomizationEffects!Invert) "Invert"
 end

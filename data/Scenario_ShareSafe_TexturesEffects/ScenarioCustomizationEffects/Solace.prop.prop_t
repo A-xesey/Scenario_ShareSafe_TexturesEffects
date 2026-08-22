@@ -1,5 +1,5 @@
 key CustomizationItemKey sg_galaxy_screen
 
 texts CustomizationItemName
-	(SSSTE-ScenarioCustomizationEffects!Solace)	"Solace"
+	(SSSTE-ScenarioCustomizationEffects!Solace) "Solace"
 end

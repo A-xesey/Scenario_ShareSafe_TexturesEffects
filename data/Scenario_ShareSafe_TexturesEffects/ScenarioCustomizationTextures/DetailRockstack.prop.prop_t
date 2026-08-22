@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureDetail
+
+key CustomizationItemKey rockstack_detail_intertiling
+
+texts CustomizationItemName
+	"Detail Rock Stack"
+end

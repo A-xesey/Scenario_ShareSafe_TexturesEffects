@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureDetail
+
+key CustomizationItemKey crystals_detail_intertiling
+
+texts CustomizationItemName
+	"Detail Crystals"
+end

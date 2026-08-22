@@ -1,0 +1,7 @@
+#
+# Used for "biome_noise_modifier" textures.
+#
+
+uint32s CustomizationItemPropertyWhitelist
+	hash(terrainThemeAboveDetailNoise~)
+end

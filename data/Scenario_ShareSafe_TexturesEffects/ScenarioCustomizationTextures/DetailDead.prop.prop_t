@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureDetail
+
+key CustomizationItemKey packed_detail_texture_intertiling_detail
+
+texts CustomizationItemName
+	"Detail Dead"
+end

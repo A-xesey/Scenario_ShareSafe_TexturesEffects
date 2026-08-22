@@ -1,5 +1,5 @@
 key CustomizationItemKey EP1sepia
 
 texts CustomizationItemName
-	(SSSTE-ScenarioCustomizationEffects!Sepia)	"Sepia"
+	(SSSTE-ScenarioCustomizationEffects!Sepia) "Sepia"
 end

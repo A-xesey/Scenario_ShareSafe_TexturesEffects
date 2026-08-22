@@ -1,0 +1,7 @@
+#
+# Used mostly for "*_detail_intertiling" textures.
+#
+
+uint32s CustomizationItemPropertyWhitelist
+	hash(terrainThemeAboveDetail2~)
+end

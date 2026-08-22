@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureCustom
+
+key CustomizationItemKey amoeba_cell_rigid
+
+texts CustomizationItemName
+	"Cell Amoeba"
+end

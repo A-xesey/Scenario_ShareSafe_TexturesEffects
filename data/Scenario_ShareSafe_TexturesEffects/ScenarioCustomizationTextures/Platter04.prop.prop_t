@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureCustom
+
+key CustomizationItemKey be_basic_bamboo_08__diffuse
+
+texts CustomizationItemName
+	"Platter 4"
+end

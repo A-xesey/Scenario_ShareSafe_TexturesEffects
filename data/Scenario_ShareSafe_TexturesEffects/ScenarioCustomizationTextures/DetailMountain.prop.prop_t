@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureDetail
+
+key CustomizationItemKey tiling_groundcover_a
+
+texts CustomizationItemName
+	"Detail Mountain"
+end

@@ -1,5 +1,5 @@
 key CustomizationItemKey SG_localPlanetRing_02~
 
 texts CustomizationItemName
-	(SSSTE-ScenarioCustomizationEffects!PlanetaryRing02)	"Planetary Ring Copper"
+	(SSSTE-ScenarioCustomizationEffects!PlanetaryRing02) "Planetary Ring Copper"
 end

@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureDetail
+
+key CustomizationItemKey swiss_detail_intertiling
+
+texts CustomizationItemName
+	"Detail Swiss 1"
+end

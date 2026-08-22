@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureCustom
+
+key CustomizationItemKey algae_cell
+
+texts CustomizationItemName
+	"Cabbage"
+end

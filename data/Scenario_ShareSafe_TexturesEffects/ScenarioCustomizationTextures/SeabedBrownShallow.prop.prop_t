@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureSeabed
+
+key CustomizationItemKey seabed_brown_shallow
+
+texts CustomizationItemName
+	"Seabed Brown Shallow"
+end

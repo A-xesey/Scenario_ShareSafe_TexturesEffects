@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureCustom
+
+key CustomizationItemKey sg_journey_ribbon_llama2
+
+texts CustomizationItemName
+	"Llamas"
+end

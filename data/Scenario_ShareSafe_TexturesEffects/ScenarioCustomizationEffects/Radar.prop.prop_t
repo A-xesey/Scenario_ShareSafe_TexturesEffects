@@ -1,5 +1,5 @@
 key CustomizationItemKey radarMode
 
 texts CustomizationItemName
-	(SSSTE-ScenarioCustomizationEffects!Radar)	"Radar"
+	(SSSTE-ScenarioCustomizationEffects!Radar) "Radar"
 end

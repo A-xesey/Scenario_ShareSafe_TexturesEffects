@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureDetail
+
+key CustomizationItemKey arizona_detail_intertiling
+
+texts CustomizationItemName
+	"Detail Arizona"
+end

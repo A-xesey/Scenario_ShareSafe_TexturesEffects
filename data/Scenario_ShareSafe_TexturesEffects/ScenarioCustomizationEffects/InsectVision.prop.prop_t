@@ -1,5 +1,5 @@
 key CustomizationItemKey CR_mouselook_Master
 
 texts CustomizationItemName
-	(SSSTE-ScenarioCustomizationEffects!InsectVision)	"Insect Vision"
+	(SSSTE-ScenarioCustomizationEffects!InsectVision) "Insect Vision"
 end

@@ -1,5 +1,5 @@
 key CustomizationItemKey radarModeFreeze
 
 texts CustomizationItemName
-	(SSSTE-ScenarioCustomizationEffects!RadarBright)	"Radar Bright"
+	(SSSTE-ScenarioCustomizationEffects!RadarBright) "Radar Bright"
 end

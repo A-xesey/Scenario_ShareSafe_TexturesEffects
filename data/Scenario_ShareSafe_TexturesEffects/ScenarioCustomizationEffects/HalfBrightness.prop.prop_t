@@ -1,5 +1,5 @@
 key CustomizationItemKey cell_creature_L0_death
 
 texts CustomizationItemName
-	(SSSTE-ScenarioCustomizationEffects!HalfBrightness)	"Half Brightness"
+	(SSSTE-ScenarioCustomizationEffects!HalfBrightness) "Half Brightness"
 end

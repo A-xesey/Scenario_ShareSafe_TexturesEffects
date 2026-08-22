@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureCustom
+
+key CustomizationItemKey citypad_modern03
+
+texts CustomizationItemName
+	"City Pad - Modern 3"
+end

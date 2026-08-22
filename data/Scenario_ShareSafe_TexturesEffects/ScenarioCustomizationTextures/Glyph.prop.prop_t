@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureCustom
+
+key CustomizationItemKey AssetBrowserGraphics!spd-card-glyph.png
+
+texts CustomizationItemName
+	"Spore Glyph"
+end

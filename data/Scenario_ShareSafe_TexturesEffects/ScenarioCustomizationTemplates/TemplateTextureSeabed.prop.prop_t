@@ -1,0 +1,7 @@
+#
+# Used for "seabed_*_medium/shallow" textures.
+#
+
+uint32s CustomizationItemPropertyWhitelist
+	hash(terrainThemeBelow~)
+end

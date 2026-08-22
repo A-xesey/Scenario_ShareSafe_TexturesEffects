@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureDetail
+
+key CustomizationItemKey gear_detail_intertiling
+
+texts CustomizationItemName
+	"Detail Gear"
+end

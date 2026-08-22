@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureDetail
+
+key CustomizationItemKey melon_detail_tiling
+
+texts CustomizationItemName
+	"Detail Melon"
+end

@@ -1,3 +1,5 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureCustom
+
 key CustomizationItemKey citypad_curvy03
 
 texts CustomizationItemName

@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureBeach
+
+key CustomizationItemKey beach_curly_dark
+
+texts CustomizationItemName
+	"Beach Curly Dark"
+end

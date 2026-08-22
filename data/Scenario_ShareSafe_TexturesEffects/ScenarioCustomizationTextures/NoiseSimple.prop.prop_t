@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureCustom
+
+key CustomizationItemKey noise_tex
+
+texts CustomizationItemName
+	"Noise Simple"
+end

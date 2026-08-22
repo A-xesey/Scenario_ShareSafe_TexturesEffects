@@ -1,3 +1,5 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureCustom
+
 key CustomizationItemKey ToolBag!tt_bag_field_01
 
 texts CustomizationItemName

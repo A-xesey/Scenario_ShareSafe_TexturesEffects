@@ -1,5 +1,5 @@
 key CustomizationItemKey 0xdfe90cad
 
 texts CustomizationItemName
-	(SSSTE-ScenarioCustomizationEffects!CinematicFreeze)	"Time Stop"
+	(SSSTE-ScenarioCustomizationEffects!CinematicFreeze) "Time Stop"
 end

@@ -1,5 +1,5 @@
 key CustomizationItemKey EP1anguish
 
 texts CustomizationItemName
-	(SSSTE-ScenarioCustomizationEffects!Anguish)	"Anguish"
+	(SSSTE-ScenarioCustomizationEffects!Anguish) "Anguish"
 end

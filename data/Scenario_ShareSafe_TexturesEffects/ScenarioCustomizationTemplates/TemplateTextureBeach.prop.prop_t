@@ -1,0 +1,7 @@
+#
+# Used for "beach_*_light/dark" textures.
+#
+
+uint32s CustomizationItemPropertyWhitelist
+	hash(terrainThemeBeach2~)
+end

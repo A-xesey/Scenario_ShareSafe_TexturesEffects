@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureDetail
+
+key CustomizationItemKey tentacles_detail_intertiling
+
+texts CustomizationItemName
+	"Detail Tentacles"
+end

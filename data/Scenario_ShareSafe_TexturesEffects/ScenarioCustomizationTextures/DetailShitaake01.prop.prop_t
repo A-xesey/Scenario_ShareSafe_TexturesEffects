@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureDetail
+
+key CustomizationItemKey shitaake_detail_intertiling
+
+texts CustomizationItemName
+	"Detail Shitaake 1"
+end

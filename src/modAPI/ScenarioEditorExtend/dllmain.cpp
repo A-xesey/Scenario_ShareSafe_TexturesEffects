@@ -47,7 +47,7 @@ public:
 		if (!IsScenarioMode() ||
 			ScenarioMode.GetMode() != cScenarioMode::Mode::EditMode ||
 			line.GetArgumentsCount() - 1 < 1
-			)
+		)
 			return;
 		ResourceKey visualEffectId = instance_id(ParseUniversal(line.GetArguments(1)[0]));
 		CALL(
