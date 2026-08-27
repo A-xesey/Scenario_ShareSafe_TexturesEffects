@@ -151,7 +151,7 @@ void ScenarioCustomization::InitItems(CustomizationItemsLookup itemsLookup)
 				if (pItem->GetCustomization() == customizationKeyCurrent)
 				{
 					pItem->SetSelection(true);
-					if (IWindow* pItemWin = pItem->FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM))
+					if (IWindow* pItemWin = pItem->GetButtonWindow())
 						pItemWin->SetVisible(false);
 					mpSelectedItem = pItem;
 				}
@@ -163,7 +163,7 @@ void ScenarioCustomization::InitItems(CustomizationItemsLookup itemsLookup)
 			if (!itemsLookup.mbFillPanelWin)
 			{
 				for (ScenarioCustomizationItemPtr pItem : items)
-					if (IWindow* pItemWin = pItem->FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM))
+					if (IWindow* pItemWin = pItem->GetButtonWindow())
 					{
 						pItemWin->SetVisible(false);
 						mWinItemMap[pItemWin] = pItem;
@@ -258,14 +258,21 @@ void ScenarioCustomization::InitTextures(bool bFillPanelWin)
 	UpdatePaletteTexture();
 }
 
-// The reason for this additional reinit is that, unlike to InitTextures(), this one can be called with "adventureLook" in vanilla.
 void ScenarioCustomization::InitEffects(bool bFillPanelWin)
 {
+	if (mbIsPanelShown && mLastLookup.mItemsGroup == kCustomizationItemsGroupEffects)
+	{
+		InitItems(mLastLookup);
+		UpdatePaletteEffect();
+		return;
+	}
+	
 	CustomizationItemsLookup lastLookup = { kCustomizationItemsGroupNone, 0 };
 	if (mbIsPanelShown)
 		lastLookup = mLastLookup;
 	InitItems({ kCustomizationItemsGroupEffects, mPropertyEffect, bFillPanelWin, true });
 	UpdatePaletteEffect();
+	// The reason for this additional reinit is that, unlike to InitTextures(), this one can be called with "adventureLook" in vanilla.
 	if (lastLookup.mItemsGroup != kCustomizationItemsGroupNone)
 		InitItems(lastLookup);
 }
@@ -632,8 +639,10 @@ bool ScenarioCustomization::HandleUIMessage(IWindow* window, const Message& mess
 			SetProperty(mPropertyEffect, EmptyKey);
 			mpScenarioTerraformMode->CommitHistoryEntry();
 
+			bool bIsTexturePanelShown = mbIsPanelShown &&
+				mLastLookup.mPropertyId != mPropertyEffect;
 			if (mpSelectedItem &&
-				(mLastLookup.mPropertyId != mPropertyEffect ||
+				((!mbIsPanelShown && mLastLookup.mPropertyId != mPropertyEffect) ||
 					mpSelectedItem->GetCustomization() == customizationKey
 				)
 			)
@@ -674,6 +683,7 @@ bool ScenarioCustomization::HandleUIMessage(IWindow* window, const Message& mess
 				return true;
 			mPropertyEffect = (CustomizationPropertyEffect)controlId;
 			InitEffects(false);
+			break;
 		default:
 			return false;
 		}
