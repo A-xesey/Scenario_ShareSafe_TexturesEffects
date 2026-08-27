@@ -143,9 +143,9 @@ protected:
 	CustomizationPropertyTexture mPropertyTexture;
 	CustomizationPropertyEffect mPropertyEffect;
 
-	float mPanelTextureY;
-	float mPanelEffectY;
-	int mColumns;
+	float mfPanelTextureY;
+	float mfPanelEffectY;
+	int mnColumns;
 
 	map<IWindow*, ScenarioCustomizationItemPtr> mWinItemMap;
 	ScenarioCustomizationItemPtr mpSelectedItem;

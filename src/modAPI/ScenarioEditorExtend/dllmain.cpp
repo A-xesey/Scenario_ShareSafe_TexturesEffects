@@ -13,7 +13,7 @@ using namespace Simulator;
 using namespace UI;
 using namespace UTFWin;
 
-int g_ScenarioCustomizationCategoryIndex = -1;
+int g_nScenarioCustomizationCategoryIndex = -1;
 ScenarioCustomizationPtr g_pWinProc = nullptr;
 ScenarioFloraGroundCoverLockPtr g_pFloraGroundCoverLock = nullptr;
 
@@ -26,20 +26,20 @@ public:
 	VisualEffectTestCheat() {}
 	~VisualEffectTestCheat() {}
 
-	uint32_t ParseUniversal(const char* pArgument)
+	uint32_t ParseUniversal(const char* szArgument)
 	{
 		bool bIsInteger = true;
-		if (pArgument[0] == '0' && pArgument[1] == 'x')
-			return mpFormatParser->ParseUInt(pArgument);
-		for (const char* pChar = pArgument; *pChar != '\0'; ++pChar)
-			if (*pChar < '0' || *pChar > '9')
+		if (szArgument[0] == '0' && szArgument[1] == 'x')
+			return mpFormatParser->ParseUInt(szArgument);
+		for (const char* ch = szArgument; *ch != '\0'; ++ch)
+			if (*ch < '0' || *ch > '9')
 			{
 				bIsInteger = false;
 				break;
 			}
 		return bIsInteger
-			? mpFormatParser->ParseInt(pArgument)
-			: id(pArgument);
+			? mpFormatParser->ParseInt(szArgument)
+			: id(szArgument);
 	}
 
 	void ParseLine(const Line& line) override
@@ -136,36 +136,36 @@ static inline void SwitchPaletteCategory()
 
 member_detour(PaletteUI_SetActiveCategory, PaletteUI, void(int))
 {
-	void detoured(int categoryIndex)
+	void detoured(int nCategoryIndex)
 	{
-		if (g_pWinProc && g_ScenarioCustomizationCategoryIndex == -1)
-			for (int categoryIndexCheck = 0;
-				categoryIndexCheck < (int)this->mCategories.size();
-				++categoryIndexCheck
+		if (g_pWinProc && g_nScenarioCustomizationCategoryIndex == -1)
+			for (int nCategoryIndexCheck = 0;
+				nCategoryIndexCheck < (int)this->mCategories.size();
+				++nCategoryIndexCheck
 			)
 			{
-				IWindow* pPaletteCategoryWin = this->mCategories[categoryIndexCheck]->
+				IWindow* pPaletteCategoryWin = this->mCategories[nCategoryIndexCheck]->
 					mpLayout->FindWindowByID(CONTROL_ID_PALETTE);
 				if (pPaletteCategoryWin == g_pWinProc->GetCategoryWindow())
 				{
-					g_ScenarioCustomizationCategoryIndex = categoryIndexCheck;
+					g_nScenarioCustomizationCategoryIndex = nCategoryIndexCheck;
 					break;
 				}
 			}
 
 		SwitchPaletteCategory();
-		if (g_pWinProc && categoryIndex == g_ScenarioCustomizationCategoryIndex)
+		if (g_pWinProc && nCategoryIndex == g_nScenarioCustomizationCategoryIndex)
 			g_pWinProc->Init(false);
-		original_function(this, categoryIndex);
+		original_function(this, nCategoryIndex);
 	}
 };
 
 member_detour(cScenarioEditModeDisplayStrategy_SetMode, cScenarioEditModeDisplayStrategy, void(int))
 {
-	void detoured(int mode)
+	void detoured(int nMode)
 	{
 		SwitchPaletteCategory();
-		original_function(this, mode);
+		original_function(this, nMode);
 	}
 };
 #pragma endregion

@@ -28,7 +28,7 @@ public:
 	
 	ScenarioFloraGroundCoverLock(
 		ScenarioEditModeSculptFloraUI* pEditModeSculptFloraUI,
-		bool mIsLocked = false
+		bool bIsLocked = false
 	);
 	~ScenarioFloraGroundCoverLock();
 

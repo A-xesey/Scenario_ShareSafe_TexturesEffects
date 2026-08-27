@@ -57,15 +57,15 @@ ScenarioCustomization::ScenarioCustomization(
 	)
 	, mPropertyTexture(PROPERTY_DEFAULT_TEXTURE)
 	, mPropertyEffect(PROPERTY_DEFAULT_EFFECT)
-	, mPanelTextureY(mpPaletteTextureBlockWin
+	, mfPanelTextureY(mpPaletteTextureBlockWin
 		? mpPaletteTextureBlockWin->GetRealArea().top
 		: 0.0f
 	)
-	, mPanelEffectY(mpPaletteEffectBlockWin
+	, mfPanelEffectY(mpPaletteEffectBlockWin
 		? mpPaletteEffectBlockWin->GetRealArea().top
 		: 0.0f
 	)
-	, mColumns(0)
+	, mnColumns(0)
 	, mpSelectedItem(nullptr)
 	, mLastLookup(kCustomizationItemsGroupNone, 0)
 	, mbIsPanelShown(false)
@@ -73,9 +73,9 @@ ScenarioCustomization::ScenarioCustomization(
 	if (mpContentClientWin)
 	{
 		Math::Rectangle areaContentClientWin = mpContentClientWin->GetRealArea();
-		mColumns = (int)((areaContentClientWin.GetWidth() + ITEM_MARGIN) / ITEM_WIDTH);
-		if (mColumns < 1)
-			mColumns = 1;
+		mnColumns = (int)((areaContentClientWin.GetWidth() + ITEM_MARGIN) / ITEM_WIDTH);
+		if (mnColumns < 1)
+			mnColumns = 1;
 	}
 
 	Attach(mpPaletteTextureWin);
@@ -111,7 +111,7 @@ ScenarioCustomization::~ScenarioCustomization()
 
 void ScenarioCustomization::InitItems(CustomizationItemsLookup itemsLookup)
 {
-	if ((mLastLookup != itemsLookup || !mWinItemMap.size()) && mpContentClientWin && mColumns)
+	if ((mLastLookup != itemsLookup || !mWinItemMap.size()) && mpContentClientWin && mnColumns)
 	{
 		ClearItems();
 		mpSelectedItem = nullptr;
@@ -203,11 +203,11 @@ void ScenarioCustomization::InitItems(CustomizationItemsLookup itemsLookup)
 					const ScenarioCustomizationItemPtr& b
 				)
 				{
-					const char16_t* pTextA = a->GetName()->GetText();
-					const char16_t* pTextB = b->GetName()->GetText();
+					const char16_t* szTextA = a->GetName()->GetText();
+					const char16_t* szTextB = b->GetName()->GetText();
 					return string16::comparei(
-						pTextA, pTextA + CharStrlen(pTextA),
-						pTextB, pTextB + CharStrlen(pTextB)
+						szTextA, szTextA + CharStrlen(szTextA),
+						szTextB, szTextB + CharStrlen(szTextB)
 					) < 0;
 				}
 			);
@@ -216,25 +216,25 @@ void ScenarioCustomization::InitItems(CustomizationItemsLookup itemsLookup)
 #pragma region Register Windows for Items
 
 			size_t index = 0;
-			if (mColumns)
+			if (mnColumns)
 				for (ScenarioCustomizationItemPtr pItem : items)
 				{
 					pItem->SetParentWindow(mpContentClientWin);
-					int row = index / mColumns;
-					int col = index % mColumns;
-					float positionX = GRID_START_X + (col * ITEM_WIDTH);
-					float positionY = GRID_START_Y + (row * ITEM_HEIGHT);
+					int nRow = index / mnColumns;
+					int nCol = index % mnColumns;
+					float fPositionX = GRID_START_X + (nCol * ITEM_WIDTH);
+					float fPositionY = GRID_START_Y + (nRow * ITEM_HEIGHT);
 
 					if (IWindow* pItemWin = pItem->FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM))
 					{
 						Math::Rectangle itemArea = pItemWin->GetArea();
 
-						float width = itemArea.right - itemArea.left;
-						float height = itemArea.bottom - itemArea.top;
-						itemArea.left = positionX;
-						itemArea.top = positionY;
-						itemArea.right = positionX + width;
-						itemArea.bottom = positionY + height;
+						float fWidth = itemArea.right - itemArea.left;
+						float fHeight = itemArea.bottom - itemArea.top;
+						itemArea.left = fPositionX;
+						itemArea.top = fPositionY;
+						itemArea.right = fPositionX + fWidth;
+						itemArea.bottom = fPositionY + fHeight;
 
 						pItemWin->SetArea(itemArea);
 						if (pItem == mpSelectedItem)
@@ -451,16 +451,16 @@ void ScenarioCustomization::CenterUIItem(IWindow* pChildWin)
 #pragma region Show & Hide Panel
 void ScenarioCustomization::ShowCustomizationPanel(
 	CustomizationItemsLookup itemsLookup,
-	float positionY
+	float fPositionY
 )
 {
 	ClearSearchbar();
 	InitItems(itemsLookup);
 
 	Math::Rectangle areaPanelWin = mpPanelWin->GetArea();
-	float heightPanelWin = areaPanelWin.GetHeight();
-	areaPanelWin.top = positionY;
-	areaPanelWin.bottom = areaPanelWin.top + heightPanelWin;
+	float fHeightPanelWin = areaPanelWin.GetHeight();
+	areaPanelWin.top = fPositionY;
+	areaPanelWin.bottom = areaPanelWin.top + fHeightPanelWin;
 	mpPanelWin->SetArea(areaPanelWin);
 
 	mpPanelWin->SetVisible(true);
@@ -565,7 +565,7 @@ bool ScenarioCustomization::HandleUIMessage(IWindow* window, const Message& mess
 			{
 				ShowCustomizationPanel(
 					CustomizationItemsLookup(kCustomizationItemsGroupTextures, mPropertyTexture),
-					mPanelTextureY
+					mfPanelTextureY
 				);
 			}
 			return true;
@@ -578,7 +578,7 @@ bool ScenarioCustomization::HandleUIMessage(IWindow* window, const Message& mess
 			{
 				ShowCustomizationPanel(
 					CustomizationItemsLookup(kCustomizationItemsGroupEffects, mPropertyEffect),
-					mPanelEffectY
+					mfPanelEffectY
 				);
 			}
 			return true;

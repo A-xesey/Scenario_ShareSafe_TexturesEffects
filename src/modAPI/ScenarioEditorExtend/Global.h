@@ -15,7 +15,7 @@ class ScenarioEditModeSculptFloraUI {};
 class ScenarioCustomization;
 class ScenarioFloraGroundCoverLock;
 
-extern int g_ScenarioCustomizationCategoryIndex;
+extern int g_nScenarioCustomizationCategoryIndex;
 extern intrusive_ptr<ScenarioCustomization> g_pWinProc;
 extern intrusive_ptr<ScenarioFloraGroundCoverLock> g_pFloraGroundCoverLock;
 

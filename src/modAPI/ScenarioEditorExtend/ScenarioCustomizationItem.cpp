@@ -68,7 +68,7 @@ int ScenarioCustomizationItem::Release()
 {
 	int refCount = DefaultRefCounted::Release();
 	if (!refCount)
-		g_ScenarioCustomizationCategoryIndex = -1;
+		g_nScenarioCustomizationCategoryIndex = -1;
 	return refCount;
 }
 #pragma endregion
