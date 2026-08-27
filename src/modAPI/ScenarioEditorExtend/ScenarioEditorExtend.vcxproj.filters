@@ -25,9 +25,6 @@
     <ClInclude Include="ScenarioCustomizationItem.h">
       <Filter>ScenarioEditorExtend</Filter>
     </ClInclude>
-    <ClInclude Include="TerrainTest.h">
-      <Filter>ScenarioEditorExtend</Filter>
-    </ClInclude>
     <ClInclude Include="Global.h" />
     <ClInclude Include="ScenarioFloraGroundCoverLock.h">
       <Filter>ScenarioEditorExtend</Filter>
@@ -44,9 +41,6 @@
       <Filter>ScenarioEditorExtend</Filter>
     </ClCompile>
     <ClCompile Include="ScenarioCustomizationItem.cpp">
-      <Filter>ScenarioEditorExtend</Filter>
-    </ClCompile>
-    <ClCompile Include="TerrainTest.cpp">
       <Filter>ScenarioEditorExtend</Filter>
     </ClCompile>
     <ClCompile Include="ScenarioFloraGroundCoverLock.cpp">

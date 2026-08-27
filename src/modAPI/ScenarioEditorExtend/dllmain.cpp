@@ -1,7 +1,6 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "stdafx.h"
 #include "Global.h"
-#include "TerrainTest.h"
 #include "ScenarioCustomization.h"
 #include "ScenarioFloraGroundCoverLock.h"
 #include <Spore\UI\ScrollFrameVertical.h>
