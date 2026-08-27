@@ -1,15 +1,14 @@
 key paletteCategoryLayoutFile PlanetCustomizationPaletteCategory
 keys paletteCategoryIconList
-	# TODO: add a proper mod-specific category icon
-	ScenarioEditor!0x1380D080.png
-	ScenarioEditor!0x40EB7459.png
-	ScenarioEditor!0xBFD4264E.png
-	ScenarioEditor!0x1380D080.png
-	ScenarioEditor!0xBAD41E2D.png
-	ScenarioEditor!0x40EB7459.png
-	ScenarioEditor!0x9A03957E.png
-	ScenarioEditor!0xBAD41E2D.png
-	ScenarioEditor!0x40EB7459.png
+	ScenarioEditor!SSSTE-EDT_terra_customization-norm.png
+	ScenarioEditor!SSSTE-EDT_terra_customization-off.png
+	ScenarioEditor!SSSTE-EDT_terra_customization-hl.png
+	ScenarioEditor!SSSTE-EDT_terra_customization-norm.png
+	ScenarioEditor!SSSTE-EDT_terra_customization-on.png
+	ScenarioEditor!SSSTE-EDT_terra_customization-off.png
+	ScenarioEditor!SSSTE-EDT_terra_customization-on-hl.png
+	ScenarioEditor!SSSTE-EDT_terra_customization-on.png
+	ScenarioEditor!SSSTE-EDT_terra_customization-off.png
 end
 texts paletteCategoryName
 	(SSSTE!0x1) "Customization"
