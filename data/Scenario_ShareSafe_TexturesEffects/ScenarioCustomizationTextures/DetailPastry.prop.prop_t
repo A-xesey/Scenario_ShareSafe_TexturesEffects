@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureDetail
 key CustomizationItemKey pastry_detail_intertiling
 
 texts CustomizationItemName
-	"Detail Pastry"
+	(SSSTE-ScenarioCustomizationTextures!DetailPastry) "Detail Pastry"
 end

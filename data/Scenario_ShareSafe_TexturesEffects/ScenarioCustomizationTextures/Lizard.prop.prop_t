@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureCustom
 key CustomizationItemKey sg_solar_surface_a
 
 texts CustomizationItemName
-	"Lizard"
+	(SSSTE-ScenarioCustomizationTextures!Lizard) "Lizard"
 end

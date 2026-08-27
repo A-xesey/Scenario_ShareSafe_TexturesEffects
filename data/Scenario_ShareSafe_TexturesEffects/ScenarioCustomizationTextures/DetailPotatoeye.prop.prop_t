@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureDetail
 key CustomizationItemKey potatoeye_detail_intertiling
 
 texts CustomizationItemName
-	"Detail Potato Eye"
+	(SSSTE-ScenarioCustomizationTextures!DetailPotatoeye) "Detail Potato Eye"
 end

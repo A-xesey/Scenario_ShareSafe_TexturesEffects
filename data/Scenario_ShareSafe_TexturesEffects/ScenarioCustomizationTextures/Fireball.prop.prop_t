@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureCustom
 key CustomizationItemKey sg_bomb_sphere
 
 texts CustomizationItemName
-	"Fireball"
+	(SSSTE-ScenarioCustomizationTextures!Fireball) "Fireball"
 end

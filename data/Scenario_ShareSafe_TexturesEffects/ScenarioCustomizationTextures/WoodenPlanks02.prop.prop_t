@@ -3,6 +3,6 @@ key parent ScenarioCustomizationTemplates!TemplateTextureCustom
 key CustomizationItemKey be_basic_bamboo_13__diffuse
 
 texts CustomizationItemName
-	"Wooden Planks 2"
+	(SSSTE-ScenarioCustomizationTextures!WoodenPlanks02) "Wooden Planks 2"
 end
 

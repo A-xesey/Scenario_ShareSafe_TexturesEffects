@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureCustom
 key CustomizationItemKey ww
 
 texts CustomizationItemName
-	"Will"
+	(SSSTE-ScenarioCustomizationTextures!WW) "Will"
 end

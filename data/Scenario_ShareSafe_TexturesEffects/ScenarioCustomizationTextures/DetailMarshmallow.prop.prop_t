@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureDetail
 key CustomizationItemKey marshmallow_detail_intertiling
 
 texts CustomizationItemName
-	"Detail Marshmallow"
+	(SSSTE-ScenarioCustomizationTextures!DetailMarshmallow) "Detail Marshmallow"
 end

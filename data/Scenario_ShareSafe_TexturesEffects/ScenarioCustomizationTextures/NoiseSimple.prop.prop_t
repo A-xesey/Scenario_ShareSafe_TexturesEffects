@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureCustom
 key CustomizationItemKey noise_tex
 
 texts CustomizationItemName
-	"Noise Simple"
+	(SSSTE-ScenarioCustomizationTextures!NoiseSimple) "Noise Simple"
 end

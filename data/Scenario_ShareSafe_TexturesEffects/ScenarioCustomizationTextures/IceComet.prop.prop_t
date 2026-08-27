@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureCustom
 key CustomizationItemKey sg_ufo_ice_comet
 
 texts CustomizationItemName
-	"Ice Comet"
+	(SSSTE-ScenarioCustomizationTextures!IceComet) "Ice Comet"
 end

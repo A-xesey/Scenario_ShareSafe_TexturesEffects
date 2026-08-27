@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureDetail # Intended
 key CustomizationItemKey editor_rigblock~!ve_aircraft_01
 
 texts CustomizationItemName
-	"Checkerboard"
+	(SSSTE-ScenarioCustomizationTextures!Checkerboard) "Checkerboard"
 end

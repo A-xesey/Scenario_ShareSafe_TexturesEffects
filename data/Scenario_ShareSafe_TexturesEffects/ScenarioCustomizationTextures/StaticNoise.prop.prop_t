@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureCustom
 key CustomizationItemKey tv_static
 
 texts CustomizationItemName
-	"Static Noise"
+	(SSSTE-ScenarioCustomizationTextures!StaticNoise) "Static Noise"
 end

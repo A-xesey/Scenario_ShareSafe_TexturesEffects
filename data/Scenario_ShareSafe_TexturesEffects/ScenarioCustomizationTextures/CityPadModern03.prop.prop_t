@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureCustom
 key CustomizationItemKey citypad_modern03
 
 texts CustomizationItemName
-	"City Pad - Modern 3"
+	(SSSTE-ScenarioCustomizationTextures!CityPadModern03) "City Pad - Modern 3"
 end

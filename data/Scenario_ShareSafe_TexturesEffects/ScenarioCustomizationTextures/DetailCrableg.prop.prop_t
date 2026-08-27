@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureDetail
 key CustomizationItemKey crableg_detail_intertiling
 
 texts CustomizationItemName
-	"Detail Crableg"
+	(SSSTE-ScenarioCustomizationTextures!DetailCrableg) "Detail Crableg"
 end

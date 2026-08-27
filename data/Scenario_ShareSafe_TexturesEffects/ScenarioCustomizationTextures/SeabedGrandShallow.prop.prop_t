@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureSeabed
 key CustomizationItemKey seabed_grand_shallow
 
 texts CustomizationItemName
-	"Seabed Grand Shallow"
+	(SSSTE-ScenarioCustomizationTextures!SeabedGrandShallow) "Seabed Grand Shallow"
 end

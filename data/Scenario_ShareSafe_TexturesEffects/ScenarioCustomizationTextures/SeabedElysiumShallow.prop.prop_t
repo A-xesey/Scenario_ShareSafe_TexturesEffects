@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureSeabed
 key CustomizationItemKey seabed_elysium_shallow
 
 texts CustomizationItemName
-	"Seabed Elysium Shallow"
+	(SSSTE-ScenarioCustomizationTextures!SeabedElysiumShallow) "Seabed Elysium Shallow"
 end

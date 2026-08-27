@@ -3,6 +3,6 @@ key parent ScenarioCustomizationTemplates!TemplateTextureCustom
 key CustomizationItemKey ve_airship_01__diffuse
 
 texts CustomizationItemName
-	"Wooden Planks 3"
+	(SSSTE-ScenarioCustomizationTextures!WoodenPlanks03) "Wooden Planks 3"
 end
 

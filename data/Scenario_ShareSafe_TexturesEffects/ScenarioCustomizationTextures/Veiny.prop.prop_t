@@ -3,6 +3,6 @@ key parent ScenarioCustomizationTemplates!TemplateTextureCustom
 key CustomizationItemKey ice_highfrequency
 
 texts CustomizationItemName
-	"Veiny"
+	(SSSTE-ScenarioCustomizationTextures!Veiny) "Veiny"
 end
 

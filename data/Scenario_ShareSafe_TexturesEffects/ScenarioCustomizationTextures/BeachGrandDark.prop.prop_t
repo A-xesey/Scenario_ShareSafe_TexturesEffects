@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureBeach
 key CustomizationItemKey beach_grand_dark
 
 texts CustomizationItemName
-	"Beach Grand Dark"
+	(SSSTE-ScenarioCustomizationTextures!BeachGrandDark) "Beach Grand Dark"
 end

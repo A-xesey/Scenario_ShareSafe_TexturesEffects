@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureDetail
 key CustomizationItemKey PCAwater2_0
 
 texts CustomizationItemName
-	"Detail Bumpy"
+	(SSSTE-ScenarioCustomizationTextures!DetailBumpy) "Detail Bumpy"
 end

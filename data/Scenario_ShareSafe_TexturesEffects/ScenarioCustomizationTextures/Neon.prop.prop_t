@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureCustom
 key CustomizationItemKey AssetBrowserGraphics!music-background.png
 
 texts CustomizationItemName
-	"Neon"
+	(SSSTE-ScenarioCustomizationTextures!Neon) "Neon"
 end

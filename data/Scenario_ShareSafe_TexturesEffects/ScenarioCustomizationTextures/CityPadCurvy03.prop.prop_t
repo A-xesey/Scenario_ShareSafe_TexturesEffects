@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureCustom
 key CustomizationItemKey citypad_curvy03
 
 texts CustomizationItemName
-	"City Pad - Curvy 3"
+	(SSSTE-ScenarioCustomizationTextures!CityPadCurvy03) "City Pad - Curvy 3"
 end

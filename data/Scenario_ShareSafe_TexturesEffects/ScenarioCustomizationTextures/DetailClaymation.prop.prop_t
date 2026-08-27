@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureDetail
 key CustomizationItemKey claymation_detail_intertiling
 
 texts CustomizationItemName
-	"Detail Claymation"
+	(SSSTE-ScenarioCustomizationTextures!DetailClaymation) "Detail Claymation"
 end

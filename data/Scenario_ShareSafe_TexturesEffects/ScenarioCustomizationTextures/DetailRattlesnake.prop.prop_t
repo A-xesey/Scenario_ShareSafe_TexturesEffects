@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureDetail
 key CustomizationItemKey rattlesnake_detail_intertiling
 
 texts CustomizationItemName
-	"Detail Rattlesnake"
+	(SSSTE-ScenarioCustomizationTextures!DetailRattlesnake) "Detail Rattlesnake"
 end

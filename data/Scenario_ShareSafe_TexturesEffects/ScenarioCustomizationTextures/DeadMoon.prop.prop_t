@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureCustom
 key CustomizationItemKey dead_moon_texture
 
 texts CustomizationItemName
-	"Dead Moon"
+	(SSSTE-ScenarioCustomizationTextures!DeadMoon) "Dead Moon"
 end

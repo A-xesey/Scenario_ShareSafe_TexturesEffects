@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureDetail
 key CustomizationItemKey granite_detail_intertiling
 
 texts CustomizationItemName
-	"Detail Granite"
+	(SSSTE-ScenarioCustomizationTextures!DetailGranite) "Detail Granite"
 end

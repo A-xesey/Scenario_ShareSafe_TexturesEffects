@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureCustom
 key CustomizationItemKey be_basic_leaf_02__diffuse
 
 texts CustomizationItemName
-	"Leaf Cover 2"
+	(SSSTE-ScenarioCustomizationTextures!LeafCover02) "Leaf Cover 2"
 end

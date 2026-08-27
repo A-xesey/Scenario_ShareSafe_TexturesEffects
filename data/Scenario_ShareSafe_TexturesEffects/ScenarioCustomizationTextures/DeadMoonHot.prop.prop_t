@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureCustom
 key CustomizationItemKey roaster_surface_texture
 
 texts CustomizationItemName
-	"Dead Moon Hot"
+	(SSSTE-ScenarioCustomizationTextures!DeadMoonHot) "Dead Moon Hot"
 end

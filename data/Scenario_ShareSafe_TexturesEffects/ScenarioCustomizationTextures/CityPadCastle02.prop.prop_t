@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureCustom
 key CustomizationItemKey citypad_castle02
 
 texts CustomizationItemName
-	"City Pad - Castle 2"
+	(SSSTE-ScenarioCustomizationTextures!CityPadCastle02) "City Pad - Castle 2"
 end

@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureCustom
 key CustomizationItemKey CG_liquidFood_L1
 
 texts CustomizationItemName
-	"Cell Button"
+	(SSSTE-ScenarioCustomizationTextures!CellButton) "Cell Button"
 end

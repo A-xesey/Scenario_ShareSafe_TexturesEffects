@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureDetail
 key CustomizationItemKey organic_detail_intertiling
 
 texts CustomizationItemName
-	"Detail Organic"
+	(SSSTE-ScenarioCustomizationTextures!DetailOrganic) "Detail Organic"
 end

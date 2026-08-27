@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureDetail
 key CustomizationItemKey swissdetail_tiling
 
 texts CustomizationItemName
-	"Detail Swiss 2"
+	(SSSTE-ScenarioCustomizationTextures!DetailSwiss02) "Detail Swiss 2"
 end

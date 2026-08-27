@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureDetail
 key CustomizationItemKey spikes_detail_intertiling
 
 texts CustomizationItemName
-	"Detail Spikes"
+	(SSSTE-ScenarioCustomizationTextures!DetailSpikes) "Detail Spikes"
 end

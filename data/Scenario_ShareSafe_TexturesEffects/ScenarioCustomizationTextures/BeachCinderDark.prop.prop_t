@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureBeach
 key CustomizationItemKey beach_cinder_dark
 
 texts CustomizationItemName
-	"Beach Cinder Dark"
+	(SSSTE-ScenarioCustomizationTextures!BeachCinderDark) "Beach Cinder Dark"
 end

@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureCustom
 key CustomizationItemKey strokestyle1
 
 texts CustomizationItemName
-	"Strokes"
+	(SSSTE-ScenarioCustomizationTextures!Strokes) "Strokes"
 end

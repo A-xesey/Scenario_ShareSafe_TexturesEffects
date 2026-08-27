@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureCustom
 key CustomizationItemKey EP1_draperyBlack
 
 texts CustomizationItemName
-	"Drapery"
+	(SSSTE-ScenarioCustomizationTextures!Drapery) "Drapery"
 end

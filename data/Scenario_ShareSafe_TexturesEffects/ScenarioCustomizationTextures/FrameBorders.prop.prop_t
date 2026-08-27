@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureCustom
 key CustomizationItemKey rollover~!bubble-caption.png
 
 texts CustomizationItemName
-	"Frame Borders"
+	(SSSTE-ScenarioCustomizationTextures!FrameBorders) "Frame Borders"
 end

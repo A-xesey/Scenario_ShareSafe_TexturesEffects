@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureDetailNoise
 key CustomizationItemKey biome_noise_modifier
 
 texts CustomizationItemName
-	"Biome Noise Modifier"
+	(SSSTE-ScenarioCustomizationTextures!BiomeNoiseModifier) "Biome Noise Modifier"
 end

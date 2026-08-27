@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureCliff
 key CustomizationItemKey cliff_a
 
 texts CustomizationItemName
-	"Cliff Plain"
+	(SSSTE-ScenarioCustomizationTextures!CliffPlain) "Cliff Plain"
 end

@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureCustom
 key CustomizationItemKey be_basic_bamboo_04__diffuse
 
 texts CustomizationItemName
-	"Platter 1"
+	(SSSTE-ScenarioCustomizationTextures!Platter01) "Platter 1"
 end

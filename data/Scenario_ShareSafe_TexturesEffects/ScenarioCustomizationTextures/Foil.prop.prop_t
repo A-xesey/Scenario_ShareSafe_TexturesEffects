@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureCustom
 key CustomizationItemKey 0xbcfbd06e
 
 texts CustomizationItemName
-	"Foil"
+	(SSSTE-ScenarioCustomizationTextures!Foil) "Foil"
 end

@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureDetail
 key CustomizationItemKey shitaake_detail_tiling
 
 texts CustomizationItemName
-	"Detail Shitaake 2"
+	(SSSTE-ScenarioCustomizationTextures!DetailShitaake02) "Detail Shitaake 2"
 end

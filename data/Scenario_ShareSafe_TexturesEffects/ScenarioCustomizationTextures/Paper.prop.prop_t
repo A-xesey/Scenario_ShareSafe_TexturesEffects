@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureDetail # Intended
 key CustomizationItemKey editor_rigblock~!be_plate
 
 texts CustomizationItemName
-	"Paper"
+	(SSSTE-ScenarioCustomizationTextures!Paper) "Paper"
 end

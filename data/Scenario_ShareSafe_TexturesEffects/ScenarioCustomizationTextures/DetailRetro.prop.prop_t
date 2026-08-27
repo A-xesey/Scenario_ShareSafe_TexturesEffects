@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureDetail
 key CustomizationItemKey mNoise
 
 texts CustomizationItemName
-	"Detail Retro"
+	(SSSTE-ScenarioCustomizationTextures!DetailRetro) "Detail Retro"
 end

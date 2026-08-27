@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureDetail
 key CustomizationItemKey conglomerate_detail_intertiling
 
 texts CustomizationItemName
-	"Detail Conglomerate"
+	(SSSTE-ScenarioCustomizationTextures!DetailConglomerate) "Detail Conglomerate"
 end

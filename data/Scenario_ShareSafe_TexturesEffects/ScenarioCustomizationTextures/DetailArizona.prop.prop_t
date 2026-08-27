@@ -3,5 +3,5 @@ key parent ScenarioCustomizationTemplates!TemplateTextureDetail
 key CustomizationItemKey arizona_detail_intertiling
 
 texts CustomizationItemName
-	"Detail Arizona"
+	(SSSTE-ScenarioCustomizationTextures!DetailArizona) "Detail Arizona"
 end
