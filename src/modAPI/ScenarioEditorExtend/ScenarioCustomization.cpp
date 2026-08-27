@@ -73,9 +73,7 @@ ScenarioCustomization::ScenarioCustomization(
 	if (mpContentClientWin)
 	{
 		Math::Rectangle areaContentClientWin = mpContentClientWin->GetRealArea();
-		mnColumns = (int)((areaContentClientWin.GetWidth() + ITEM_MARGIN) / ITEM_WIDTH);
-		if (mnColumns < 1)
-			mnColumns = 1;
+		mnColumns = min_((int)((areaContentClientWin.GetWidth() + ITEM_MARGIN) / ITEM_WIDTH), 1);
 	}
 
 	Attach(mpPaletteTextureWin);
@@ -144,10 +142,13 @@ void ScenarioCustomization::InitItems(CustomizationItemsLookup itemsLookup)
 					this)
 				)
 					continue;
-				string16 itemName = pItem->GetName()->GetText();
-				itemName.make_lower();
-				if (itemName.find(itemsLookup.mSearchString) == string16::npos)
-					continue;
+				if (!itemsLookup.mSearchString.empty())
+				{
+					string16 itemName = pItem->GetName()->GetText();
+					itemName.make_lower();
+					if (itemName.find(itemsLookup.mSearchString) == string16::npos)
+						continue;
+				}
 				if (pItem->GetCustomization() == customizationKeyCurrent)
 				{
 					pItem->SetSelection(true);
@@ -168,7 +169,7 @@ void ScenarioCustomization::InitItems(CustomizationItemsLookup itemsLookup)
 						pItemWin->SetVisible(false);
 						mWinItemMap[pItemWin] = pItem;
 					}
-				mLastLookup = itemsLookup;
+				mLastLookup = move(itemsLookup);
 				return;
 			}
 
@@ -247,7 +248,7 @@ void ScenarioCustomization::InitItems(CustomizationItemsLookup itemsLookup)
 #pragma endregion
 
 		ScrollFrameVertical::Update(mpScrollFrameVerticalWin);
-		mLastLookup = itemsLookup;
+		mLastLookup = move(itemsLookup);
 	}
 }
 
@@ -335,10 +336,8 @@ ResourceKey ScenarioCustomization::GetCurrentCustomizationKey(uint32_t propertyI
 {
 	if (!mpScenarioTerraformMode)
 		return EmptyKey;
+
 	ResourceKey customizationKeyCurrent;
-	PropertyList* pPropList = mpScenarioTerraformMode->mpPropList.get();
-	if (!Property::GetKey(pPropList, propertyId, customizationKeyCurrent))
-		Property::GetUInt32(pPropList, propertyId, customizationKeyCurrent.instanceID);
 	switch (propertyId)
 	{
 	case kCustomizationPropertyEffectGround:
@@ -347,6 +346,12 @@ ResourceKey ScenarioCustomization::GetCurrentCustomizationKey(uint32_t propertyI
 	case kCustomizationPropertyEffectVisualStyle:
 		customizationKeyCurrent = mpScenarioTerraformMode->mVisualStyleId;
 		break;
+	default:
+	{
+		PropertyList* pPropList = mpScenarioTerraformMode->mpPropList.get();
+		if (!Property::GetKey(pPropList, propertyId, customizationKeyCurrent))
+			Property::GetUInt32(pPropList, propertyId, customizationKeyCurrent.instanceID);
+	}
 	}
 	return customizationKeyCurrent;
 }
@@ -462,7 +467,7 @@ void ScenarioCustomization::ShowCustomizationPanel(
 )
 {
 	ClearSearchbar();
-	InitItems(itemsLookup);
+	InitItems(move(itemsLookup));
 
 	Math::Rectangle areaPanelWin = mpPanelWin->GetArea();
 	float fHeightPanelWin = areaPanelWin.GetHeight();
@@ -511,12 +516,12 @@ void ScenarioCustomization::SetProperty(uint32_t propertyId, ResourceKey customi
 		STATIC_CALL_(GetAddress(SSSTE::cScenarioTerraformMode, ReloadGroundEffect), void);
 		break;
 	default:
-		PropertyListPtr pTerrainScript = mpScenarioTerraformMode->mpPropList;
+		PropertyList* pTerrainScript = mpScenarioTerraformMode->mpPropList.get();
 		pTerrainScript->SetProperty(
 			propertyId,
 			&Property().SetValueKey(customizationKey)
 		);
-		PlanetModel.mpSphere->ParseProp(pTerrainScript.get());
+		PlanetModel.mpSphere->ParseProp(pTerrainScript);
 		break;
 	}
 }
@@ -701,7 +706,7 @@ bool ScenarioCustomization::HandleUIMessage(IWindow* window, const Message& mess
 			searchString.make_lower();
 			if (mpSearchboxClearWin)
 				mpSearchboxClearWin->SetVisible(!searchString.empty());
-			InitItems({ mLastLookup.mItemsGroup, mLastLookup.mPropertyId, searchString });
+			InitItems({ mLastLookup.mItemsGroup, mLastLookup.mPropertyId, move(searchString) });
 			return true;
 		}
 		return false;

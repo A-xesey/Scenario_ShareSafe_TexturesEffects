@@ -51,7 +51,7 @@ public:
 		)
 			: mItemsGroup(itemsGroup)
 			, mPropertyId(propertyId)
-			, mSearchString(searchString)
+			, mSearchString(move(searchString))
 			, mbFillPanelWin(bFillPanelWin)
 			, mbIgnoreBlacklists(bIgnoreBlacklists)
 		{ }

@@ -21,6 +21,7 @@ protected:
 	bool mbIsSelected;
 	bool mbIgnoreGroundCoverLock;
 	IWindowPtr mpButton;
+	IWindowPtr mpCursorWin;
 	SporeTooltipWinProc* mpTooltipWinProc;
 
 public:

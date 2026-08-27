@@ -35,13 +35,13 @@ bool ScenarioCustomizationItem::SetCustomizationAndImage(
 		PROPERTY_ID_CUSTOMIZATION_ITEM_IS_GROUND_COVER,
 		mbIgnoreGroundCoverLock
 	);
-	IWindow* pButton = FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM);
-	IWindow* pThumbnailWin = pButton->FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM_THUMBNAIL);
-	if (pThumbnailWin) //ResourceManager.FindRecord(mThumbnailKey)
-		Image::SetBackgroundByKey(pThumbnailWin, mThumbnailKey);
-
-	if (pButton)
+	if (IWindow* pButton = FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM))
 	{
+		if (IWindow* pThumbnail = pButton->FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM_THUMBNAIL))
+			Image::SetBackgroundByKey(pThumbnail, mThumbnailKey);
+		else
+			return false;
+		mpCursorWin = pButton->FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM_CURSOR);
 		mpTooltipWinProc = CreateTooltip(mName.GetText());
 		pButton->AddWinProc(pHandler);
 		pButton->AddWinProc(mpTooltipWinProc);
@@ -49,12 +49,13 @@ bool ScenarioCustomizationItem::SetCustomizationAndImage(
 	}
 
 	SetSelection(false);
+	return true;
 }
 
 void ScenarioCustomizationItem::SetSelection(bool bIsSelected)
 {
-	IWindowPtr pCursorWin = FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM_CURSOR);
-	pCursorWin->SetVisible(bIsSelected);
+	if (mpCursorWin)
+		mpCursorWin->SetVisible(bIsSelected);
 	mbIsSelected = bIsSelected;
 }
 
