@@ -1,7 +1,7 @@
 key parent ScenarioCustomizationTemplates!TemplateTextureDetail # Intended
 
-key CustomizationItemKey editor_rigblock~!be_plate
+key CustomizationItemKey editor_rigblock~!ve_aircraft_01
 
 texts CustomizationItemName
-	"Paper"
+	"Checkerboard"
 end
