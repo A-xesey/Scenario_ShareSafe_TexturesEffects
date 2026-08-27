@@ -1,0 +1,5 @@
+key CustomizationItemKey warmStormLoopbox~
+
+texts CustomizationItemName
+	(SSSTE-ScenarioCustomizationEffects!SummerRain) "Summer Rain"
+end
