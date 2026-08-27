@@ -73,7 +73,7 @@ ScenarioCustomization::ScenarioCustomization(
 	if (mpContentClientWin)
 	{
 		Math::Rectangle areaContentClientWin = mpContentClientWin->GetRealArea();
-		mnColumns = min_((int)((areaContentClientWin.GetWidth() + ITEM_MARGIN) / ITEM_WIDTH), 1);
+		mnColumns = max_((int)((areaContentClientWin.GetWidth() + ITEM_MARGIN) / ITEM_WIDTH), 1);
 	}
 
 	Attach(mpPaletteTextureWin);
