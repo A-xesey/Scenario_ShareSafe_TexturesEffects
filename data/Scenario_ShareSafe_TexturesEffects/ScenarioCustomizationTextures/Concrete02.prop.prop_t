@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureCustom
+
+key CustomizationItemKey be_basic_stucco_03__diffuse
+
+texts CustomizationItemName
+	(SSSTE-ScenarioCustomizationTextures!Concrete02) "Concrete 2"
+end

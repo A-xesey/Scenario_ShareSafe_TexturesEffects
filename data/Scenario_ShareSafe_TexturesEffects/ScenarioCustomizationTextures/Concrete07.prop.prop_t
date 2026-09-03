@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureCustom
+
+key CustomizationItemKey be_concrete_03__diffuse
+
+texts CustomizationItemName
+	(SSSTE-ScenarioCustomizationTextures!Concrete07) "Concrete 7"
+end

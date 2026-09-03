@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureCustom
+
+key CustomizationItemKey be_concrete_01__diffuse
+
+texts CustomizationItemName
+	(SSSTE-ScenarioCustomizationTextures!Tiles) "Tiles"
+end
