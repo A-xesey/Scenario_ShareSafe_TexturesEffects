@@ -1,0 +1,34 @@
+# Translated by Liskomato:
+
+# Palette Page
+
+0x00000001 Planeetan yksityiskohdat
+
+
+# Palette Category
+
+0x10000001 Pintatekstuurit
+0x10000002 Visuaaliset tehosteet
+
+# terrainThemeAboveDetail2
+0x10000011 Yksityiskohdat
+# terrainThemeAboveDetailNoise
+0x10000012 Kohina
+# terrainThemeBelow
+0x10000013 Merenpohja
+# terrainThemeCliff
+0x10000014 Jyrkänteet
+# terrainThemeBeach2
+0x10000015 Ranta
+
+# terrainPlayerGroundEffects
+0x10000021 Pinta
+# visualStyle
+0x10000022 Ruutu
+
+0x100000A0 Valittu:
+
+0x100000C1 Valitse tekstuuri
+0x100000C2 Valitse tehoste
+
+0x100000D2 Poista tehoste
