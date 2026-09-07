@@ -1,0 +1,33 @@
+
+# Palette Page
+
+0x00000001 Planet Customization
+
+
+# Palette Category
+
+0x10000001 Ground Textures
+0x10000002 Visual Effects
+
+# terrainThemeAboveDetail2
+0x10000011 Detail
+# terrainThemeAboveDetailNoise
+0x10000012 Detail Noise
+# terrainThemeBelow
+0x10000013 Seabed
+# terrainThemeCliff
+0x10000014 Cliff
+# terrainThemeBeach2
+0x10000015 Beach
+
+# terrainPlayerGroundEffects
+0x10000021 Planet
+# visualStyle
+0x10000022 Screen
+
+0x100000A0 Selected:
+
+0x100000C1 Select Texture
+0x100000C2 Select Effect
+
+0x100000D2 Clear Effect
