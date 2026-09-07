@@ -99,7 +99,7 @@ jobs:
       - name: Setup SMFX
         uses: robinraju/release-downloader@v1
         with:
-          repository: 'emd4600/SporeModder-FX'
+          repository: 'Spore-Community/SporeModder-FX'
           latest: true
           fileName: ${{ env.SPORE_MODDER_FX_FILE }}
           tarBall: false
@@ -110,6 +110,10 @@ jobs:
       - name: Build SMFX Project
         run: |
           cd "SporeModder FX"
+          NAMES="../${{ matrix.project.dir }}/sporemaster/names.txt"
+          if [ -f "$NAMES" ]; then
+            cat "$NAMES" >> "reg_file.txt"
+          fi
           java -jar SporeModderFX.jar pack "../${{ matrix.project.dir }}" "../Packages/"
       - name: Upload Packages
         uses: actions/upload-artifact@v4
@@ -139,7 +143,7 @@ jobs:
       - name: Download ModAPI DLL Library
         uses: robinraju/release-downloader@v1
         with:
-          repository: 'emd4600/Spore-ModAPI'
+          repository: 'Spore-Community/Spore-ModAPI'
           latest: true
           fileName: ${{ env.SPORE_MODAPI_FILE }}
           tarBall: false
@@ -157,7 +161,7 @@ jobs:
       - name: Download ModAPI Source
         uses: actions/checkout@v4
         with:
-          repository: 'emd4600/Spore-ModAPI'
+          repository: 'Spore-Community/Spore-ModAPI'
           path: 'Spore-ModAPI'
           submodules: 'true'
 
@@ -209,7 +213,7 @@ jobs:
         id: find-latest-dlls-build
         uses: oprypin/find-latest-tag@v1
         with:
-          repository: emd4600/Spore-ModAPI
+          repository: Spore-Community/Spore-ModAPI
           releases-only: true
       - name: Save ModAPI DLLs build in environment variable
         run: |
@@ -251,13 +255,21 @@ jobs:
 
       - run: echo "DRAFT_RELEASE_NAME=$(echo "${{ github.event.repository.name }} ${{ github.ref_name }}" | tr '-' ' ')" >> $GITHUB_ENV
 
+      # For most players installing symbols would be useless, and for those for whom it wouldn't, they will be put as artifacts separately
+      - name: Move symbol files away
+        run: mv Sporemod/*.pdb ./ 2>/dev/null || true
+
+      # Zopfli provides a slightly better compression; definitely not a good practice for huge mods, but this is not the case
+      - name: Install advancecomp
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y advancecomp
       - name: Create .sporemod
-        uses: thedoctor0/zip-release@0.7.6
-        with:
-          type: 'zip'
-          filename: ${{ env.SPOREMOD_NAME }}
-          path: 'Sporemod'
-          custom: '-j -9'
+        run: |
+          cd Sporemod
+          zip -0 -r "../${{ env.SPOREMOD_NAME }}" ./*
+          cd ..
+          advzip -z -4 -i 1000 -k "${{ env.SPOREMOD_NAME }}"
 
       - name: Create draft release
         if: ${{ contains(github.ref_type, 'tag') }}
@@ -268,7 +280,7 @@ jobs:
           prerelease: ${{ env.SPOREMOD_EXPERIMENTAL }}
           makeLatest: true
           tag: ${{ github.ref_name }}
-          artifacts: ${{ env.SPOREMOD_NAME }}
+          artifacts: "${{ env.SPOREMOD_NAME }}, *.pdb"
 
       - name: Upload .sporemod artifact
         if: ${{ ! contains(github.ref_type, 'tag') }}
@@ -277,4 +289,6 @@ jobs:
           name: sporemod
           retention-days: 30
           compression-level: 0
-          path: ${{ env.SPOREMOD_NAME }}
+          path: |
+            ${{ env.SPOREMOD_NAME }}
+            *.pdb
