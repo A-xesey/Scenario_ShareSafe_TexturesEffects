@@ -536,7 +536,10 @@ int ScenarioCustomization::AddRef()
 // For internal use, do not modify.
 int ScenarioCustomization::Release()
 {
-	return DefaultRefCounted::Release();
+	int refCount = DefaultRefCounted::Release();
+	if (!refCount)
+		g_nScenarioCustomizationCategoryIndex = -1;
+	return refCount;
 }
 
 // You can extend this function to return any other types your class implements.

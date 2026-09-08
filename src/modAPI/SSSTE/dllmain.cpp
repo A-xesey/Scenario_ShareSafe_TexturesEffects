@@ -110,7 +110,7 @@ member_detour(
 			pPanelItemsWin
 		);
 		pPanelWin->AddWindow(pScrollFrameVerticalWin);
-		pScrollFrameVerticalWin->SetFillColor(Math::Color(0));
+		pScrollFrameVerticalWin->SetFillColor(Color(0));
 		pScrollFrameVerticalWin->AddWinProc(
 			new SimpleLayout(kAnchorBottom | kAnchorLeft | kAnchorRight | kAnchorTop)
 		);
