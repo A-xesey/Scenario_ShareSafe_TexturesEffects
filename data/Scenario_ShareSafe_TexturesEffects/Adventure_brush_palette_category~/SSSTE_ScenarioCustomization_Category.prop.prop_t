@@ -1,5 +1,20 @@
 key paletteCategoryLayoutFile PlanetCustomizationPaletteCategory
+
+# For players who don't have .dll loaded (aka no ModAPI):
 keys paletteCategoryIconList
+	ScenarioEditor!SSSTE-EDT_terra_customization-off.png
+	ScenarioEditor!SSSTE-EDT_terra_customization-off.png
+	ScenarioEditor!SSSTE-EDT_terra_customization-off.png
+	ScenarioEditor!SSSTE-EDT_terra_customization-off.png
+	ScenarioEditor!SSSTE-EDT_terra_customization-off.png
+	ScenarioEditor!SSSTE-EDT_terra_customization-off.png
+	ScenarioEditor!SSSTE-EDT_terra_customization-off.png
+	ScenarioEditor!SSSTE-EDT_terra_customization-off.png
+	ScenarioEditor!SSSTE-EDT_terra_customization-off.png
+end
+
+# For everyone else:
+keys paletteCategoryIconListModAPI
 	ScenarioEditor!SSSTE-EDT_terra_customization-norm.png
 	ScenarioEditor!SSSTE-EDT_terra_customization-off.png
 	ScenarioEditor!SSSTE-EDT_terra_customization-hl.png
@@ -10,6 +25,7 @@ keys paletteCategoryIconList
 	ScenarioEditor!SSSTE-EDT_terra_customization-on.png
 	ScenarioEditor!SSSTE-EDT_terra_customization-off.png
 end
+
 texts paletteCategoryName
 	(SSSTE!0x1) "Customization"
 end

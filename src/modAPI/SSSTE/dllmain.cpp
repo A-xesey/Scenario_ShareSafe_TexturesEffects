@@ -88,7 +88,7 @@ member_detour(
 		if (!IsScenarioMode())
 			return;
 
-		IWindow* pPaletteCategoryWin = mpLayout->FindWindowByID(CONTROL_ID_PALETTE);
+		IWindow* pPaletteCategoryWin = mpMainFrame->FindWindowByID(CONTROL_ID_PALETTE);
 		IWindow* pPanelWin = pPaletteCategoryWin
 			? pPaletteCategoryWin->FindWindowByID(CONTROL_ID_CUSTOMIZATION_PANEL)
 			: nullptr;
@@ -97,6 +97,11 @@ member_detour(
 			: nullptr;
 		if (!pPanelItemsWin)
 			return;
+
+		if (IWindow* pModAPIHideWin = pPaletteCategoryWin->FindWindowByID(CONTROL_ID_MODAPI_HIDE))
+			pModAPIHideWin->SetVisible(false);
+		if (IWindow* pModAPIShowWin = pPaletteCategoryWin->FindWindowByID(CONTROL_ID_MODAPI_SHOW))
+			pModAPIShowWin->SetVisible(true);
 
 		Math::Rectangle panelItemsWinArea = pPanelItemsWin->GetArea();
 		pPanelWin->RemoveWindow(pPanelItemsWin.get());
@@ -126,6 +131,37 @@ member_detour(
 	}
 };
 
+member_detour(
+	PaletteCategory_ReadProp,
+	PaletteCategory,
+	bool(const ResourceKey&, uint32_t)
+)
+{
+	// This one is just for a fancy disabled button to be shown if the .dll of the mod isn't loaded.
+	bool detoured(const ResourceKey& name, uint32_t defaultLayoutID)
+	{
+		if (original_function(this, name, defaultLayoutID))
+		{
+			PropertyListPtr pCategoryPropList;
+			if (PropManager.GetPropertyList(name.instanceID, name.groupID, pCategoryPropList))
+			{
+				ResourceKey* pCategoryIconsModAPI;
+				size_t nCategoryIconsModAPICount;
+				if (Property::GetArrayKey(
+						pCategoryPropList.get(),
+						PROPERTY_ID_PALETTE_CATEGORY_ICON_LIST_MODAPI,
+						nCategoryIconsModAPICount,
+						pCategoryIconsModAPI
+					) && nCategoryIconsModAPICount == 9
+				)
+					mCategoryIconList = pCategoryIconsModAPI;
+			}
+			return true;
+		}
+		return false;
+	}
+};
+
 #pragma region Switch Palette Category
 static inline void SwitchPaletteCategory()
 {
@@ -139,12 +175,12 @@ member_detour(PaletteUI_SetActiveCategory, PaletteUI, void(int))
 	{
 		if (g_pWinProc && g_nScenarioCustomizationCategoryIndex == -1)
 			for (int nCategoryIndexCheck = 0;
-				nCategoryIndexCheck < (int)this->mCategories.size();
+				nCategoryIndexCheck < (int)mCategories.size();
 				++nCategoryIndexCheck
 			)
 			{
-				IWindow* pPaletteCategoryWin = this->mCategories[nCategoryIndexCheck]->
-					mpLayout->FindWindowByID(CONTROL_ID_PALETTE);
+				IWindow* pPaletteCategoryWin = mCategories[nCategoryIndexCheck]->
+					mpMainFrame->FindWindowByID(CONTROL_ID_PALETTE);
 				if (pPaletteCategoryWin == g_pWinProc->GetCategoryWindow())
 				{
 					g_nScenarioCustomizationCategoryIndex = nCategoryIndexCheck;
@@ -246,6 +282,7 @@ member_detour(
 void AttachDetours()
 {
 	PaletteCategoryUI_Load::attach(GetAddress(PaletteCategoryUI, Load));
+	PaletteCategory_ReadProp::attach(GetAddress(PaletteCategory, ReadProp));
 	PaletteUI_SetActiveCategory::attach(GetAddress(PaletteUI, SetActiveCategory));
 	cScenarioEditModeDisplayStrategy_SetMode::attach(
 		GetAddress(SSSTE::cScenarioEditModeDisplayStrategy, SetMode)

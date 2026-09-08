@@ -32,3 +32,5 @@
 0x100000C2 Valitse tehoste
 
 0x100000D2 Poista tehoste
+
+0x100000E0 Varmista että käynnistät pelin ModAPI:n kautta.

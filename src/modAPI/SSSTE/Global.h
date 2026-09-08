@@ -64,10 +64,14 @@ static const uint32_t PROPERTY_ID_CUSTOMIZATION_ITEM_WHITELIST = id("Customizati
 static const uint32_t PROPERTY_ID_CUSTOMIZATION_ITEM_BLACKLIST = id("CustomizationItemPropertyBlacklist");
 static const uint32_t PROPERTY_ID_CUSTOMIZATION_ITEM_IS_GROUND_COVER = id("CustomizationItemIsGroundCover");
 
+static const uint32_t PROPERTY_ID_PALETTE_CATEGORY_ICON_LIST_MODAPI = id("paletteCategoryIconListModAPI");
+
 static const uint32_t GROUP_ID_TEXTURES_DEFINITIONS = id("ScenarioCustomizationTextures");
 static const uint32_t GROUP_ID_EFFECTS_DEFINITIONS = id("ScenarioCustomizationEffects");
 
 static const uint32_t CONTROL_ID_PALETTE = id("PlanetCustomizationPalette");
+static const uint32_t CONTROL_ID_MODAPI_HIDE = id("ModAPIHide"); // Error
+static const uint32_t CONTROL_ID_MODAPI_SHOW = id("ModAPIShow"); // Actual content
 static const uint32_t CONTROL_ID_CUSTOMIZATION_PANEL = id("PlanetCustomizationPanel");
 static const uint32_t CONTROL_ID_CUSTOMIZATION_PANEL_ITEMS = id("PlanetCustomizationItems");
 static const uint32_t CONTROL_ID_CUSTOMIZATION_ITEM = id("PlanetCustomizationItem");

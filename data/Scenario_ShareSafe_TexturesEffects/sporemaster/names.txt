@@ -554,3 +554,5 @@ PlanetCustomizationToggle
 auto_ScenarioCustomizationTextures_test
 conglomerate_detail_intertiling
 warmStormLoopbox~	0x5501dd1
+ModAPIHide
+ModAPIShow

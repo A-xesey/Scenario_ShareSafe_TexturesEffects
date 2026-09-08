@@ -31,3 +31,5 @@
 0x100000C2 Select Effect
 
 0x100000D2 Clear Effect
+
+0x100000E0 Make sure you launch the game with ModAPI.
