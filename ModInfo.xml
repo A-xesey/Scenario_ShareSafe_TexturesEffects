@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<mod description="Select and apply share-safe planet textures &amp; visual effects to your adventures!" displayName="Scenario_ShareSafe_TexturesEffects" dllsBuild="$SPOREMOD_DLLS_BUILD" hasCustomInstaller="false" installerSystemVersion="1.0.1.2" isExperimental="$SPOREMOD_EXPERIMENTAL" unique="Scenario_ShareSafe_TexturesEffects">
+<mod description="Select and apply share-safe planet textures &amp; visual effects to your adventures!" displayName="A-xeseya &amp; 0KepOnline's Share-Safe Adventure Textures &amp; Effects" dllsBuild="$SPOREMOD_DLLS_BUILD" hasCustomInstaller="false" installerSystemVersion="1.0.1.2" isExperimental="$SPOREMOD_EXPERIMENTAL" unique="Scenario_ShareSafe_TexturesEffects">
   <prerequisite game="GalacticAdventures">Scenario_ShareSafe_TexturesEffects.package</prerequisite>
   <prerequisite>SSSTE.dll</prerequisite>
 </mod>
