@@ -521,7 +521,20 @@ void ScenarioCustomization::SetProperty(uint32_t propertyId, ResourceKey customi
 			propertyId,
 			&Property().SetValueKey(customizationKey)
 		);
-		PlanetModel.mpSphere->ParseProp(pTerrainScript);
+		switch (propertyId)
+		{
+		case kCustomizationPropertyTextureDetail:
+			CALL(
+				GetAddress(SSSTE::cTerrainStateMgr, UpdateFromDefinition),
+				void,
+				Args(cTerrainStateMgr*, PropertyList*),
+				Args(mpScenarioTerraformMode->mpTerrainStateMgr, pTerrainScript)
+			);
+			break;
+		default:
+			PlanetModel.mpSphere->ParseProp(pTerrainScript);
+			break;
+		}
 		break;
 	}
 }

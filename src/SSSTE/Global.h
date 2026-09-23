@@ -30,6 +30,11 @@ namespace SSSTE
 		DefineAddress(SetGroundEffectId, ChooseAddress(0xf09140, 0xf35160));
 		DefineAddress(ReloadGroundEffect, ChooseAddress(0xf05d70, 0xf31d40));
 	}
+
+	namespace Addresses(cTerrainStateMgr)
+	{
+		DefineAddress(UpdateFromDefinition, ChooseAddress(0xf902d0, 0xfbc100));
+	}
 	
 	namespace Addresses(cScenarioEditModeDisplayStrategy)
 	{
