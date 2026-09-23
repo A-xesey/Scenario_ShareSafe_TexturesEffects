@@ -248,7 +248,7 @@ member_detour(
     {
         original_function(this);
         IWindow* pFloraGroundCoverWin = nullptr;
-        if (UILayout* pLayout = (UILayout*)field(this, 0x168))
+        if (UILayout* pLayout = this->mpLayout)
             pFloraGroundCoverWin = pLayout->FindWindowByID(CONTROL_ID_PALETTE_FLORA_GROUND_COVER);
 
         if (g_pFloraGroundCoverLock &&

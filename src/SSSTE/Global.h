@@ -10,7 +10,15 @@
 #define LookupWindow(pWin, controlId) pWin ? pWin->FindWindowByID(controlId) : nullptr
 #define Attach(pWin) if (pWin) pWin->AddWinProc(this)
 
-class ScenarioEditModeSculptFloraUI {};
+class ScenarioEditModeSculptFloraUI
+{
+private:
+    ScenarioEditModeSculptFloraUI();
+
+    uint8_t mUnknown[0x168];
+public:
+    UTFWin::UILayout* mpLayout;
+};
 
 class ScenarioCustomization;
 class ScenarioFloraGroundCoverLock;

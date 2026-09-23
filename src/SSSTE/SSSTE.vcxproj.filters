@@ -25,11 +25,13 @@
     <ClInclude Include="ScenarioCustomizationItem.h">
       <Filter>SSSTE</Filter>
     </ClInclude>
-    <ClInclude Include="Global.h" />
     <ClInclude Include="ScenarioFloraGroundCoverLock.h">
       <Filter>SSSTE</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Global.h">
+      <Filter>SSSTE</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

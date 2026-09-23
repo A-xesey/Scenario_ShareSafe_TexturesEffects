@@ -11,7 +11,7 @@ class ScenarioFloraGroundCoverLock
     , public DefaultRefCounted
 {
 protected:
-    IWindow* mpWin;
+    const IWindow* mpFloraFlowersWin;
     IWindow* mpFloraFlowersCheckboxWin;
     map<IWindow*, bool> mWinLockMap;
     bool mbIsLocked;
@@ -35,7 +35,7 @@ public:
     void SetLock(bool bLock);
     void Update();
 
-    inline IWindow* GetInitializedWindow() { return mpWin; }
+    inline const IWindow* GetInitializedWindow() { return mpFloraFlowersWin; }
     inline void Lock() { SetLock(true); }
     inline void Unlock() { SetLock(false); }
     inline bool IsLocked() const { return mbIsLocked; }

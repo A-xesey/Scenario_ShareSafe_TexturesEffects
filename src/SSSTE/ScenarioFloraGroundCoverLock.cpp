@@ -5,13 +5,13 @@ ScenarioFloraGroundCoverLock::ScenarioFloraGroundCoverLock(
     ScenarioEditModeSculptFloraUI* pEditModeSculptFloraUI,
     bool bIsLocked
 )
-    : mpWin(nullptr)
+    : mpFloraFlowersWin(nullptr)
     , mpFloraFlowersCheckboxWin(nullptr)
     , mbIsLocked(false)
 {
     if (pEditModeSculptFloraUI)
     {
-        if (UILayout* pLayout = (UILayout*)field(pEditModeSculptFloraUI, 0x168))
+        if (UILayout* pLayout = pEditModeSculptFloraUI->mpLayout)
         {
             if (IWindow* pFloraGroundCoverWin = pLayout->
                 FindWindowByID(CONTROL_ID_PALETTE_FLORA_GROUND_COVER))
@@ -46,7 +46,7 @@ ScenarioFloraGroundCoverLock::ScenarioFloraGroundCoverLock(
 #pragma endregion The reason for this is a bug in "ScenarioEditModeFloraPage.spui".
 
                 }
-                mpWin = pFloraGroundCoverWin;
+                mpFloraFlowersWin = pFloraGroundCoverWin;
             }
             IWindow* pFloraFlowersCheckboxWin = pLayout->
                 FindWindowByID(CONTROL_ID_PALETTE_FLORA_FLOWERS_CHECKBOX);
