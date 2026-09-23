@@ -411,7 +411,7 @@ void ScenarioCustomization::UpdatePaletteEffect()
 		? mpSelectedItem->GetName()->GetText()
 		: ResourceKeyToString(instance_id(customizationKeyCurrent.instanceID))
 	);
-	if (mPropertyEffect == kCustomizationPropertyEffectGround)
+	if (mPropertyEffect == kCustomizationPropertyEffectGround && g_pFloraGroundCoverLock)
 		g_pFloraGroundCoverLock->SetLock(mpSelectedItem
 			? !mpSelectedItem->IsGroundCoverLockIgnored()
 			: false
@@ -616,7 +616,12 @@ bool ScenarioCustomization::HandleUIMessage(IWindow* window, const Message& mess
 			if (!mpScenarioTerraformMode)
 				return true;
 			IWindow* pItemWin = message.source;
-			ScenarioCustomizationItemPtr pItem = mWinItemMap[pItemWin];
+			map<IWindow*, ScenarioCustomizationItemPtr>::iterator winItemIterator =
+				mWinItemMap.find(pItemWin);
+			if (winItemIterator == mWinItemMap.end() || !winItemIterator->second)
+				return true;
+			ScenarioCustomizationItemPtr pItem = winItemIterator->second;
+
 			if (pItem->IsSelected())
 				return true;
 			SelectItem(pItem);
@@ -652,6 +657,8 @@ bool ScenarioCustomization::HandleUIMessage(IWindow* window, const Message& mess
 		}
 		case CONTROL_ID_PALETTE_CLEAR_EFFECT:
 		{
+			if (!mpScenarioTerraformMode)
+				return true;
 			ResourceKey customizationKey = GetCurrentCustomizationKey(mPropertyEffect);
 			if (customizationKey == EmptyKey)
 				return true;

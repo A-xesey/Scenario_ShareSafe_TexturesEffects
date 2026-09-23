@@ -29,16 +29,19 @@ ScenarioFloraGroundCoverLock::ScenarioFloraGroundCoverLock(
 						SporeStdDrawableImageInfo* pDrawableImageInfo = pDrawable->GetImageInfo(1);
 						pDrawableImageInfo->SetIconDrawMode(IconDrawModes::WindowSize);
 						Color iconColor = pDrawableImageInfo->GetIconColor();
-						Vector3 iconColorHSV;
-						Color::RGBToHSV(
-							iconColor.r, iconColor.g, iconColor.b,
-							iconColorHSV.x, iconColorHSV.y, iconColorHSV.z
-						);
-						Color::HSVToRGB(
-							iconColorHSV.x, iconColorHSV.y, COLOR_VALUE_DISABLED,
-							iconColor.r, iconColor.g, iconColor.b
-						);
-						pDrawableImageInfo->SetIconColor(iconColor);
+						if (iconColor == Color(0xff, 0xff, 0xff, 0xff))
+						{
+							Vector3 iconColorHSV;
+							Color::RGBToHSV(
+								iconColor.r, iconColor.g, iconColor.b,
+								iconColorHSV.x, iconColorHSV.y, iconColorHSV.z
+							);
+							Color::HSVToRGB(
+								iconColorHSV.x, iconColorHSV.y, COLOR_VALUE_DISABLED,
+								iconColor.r, iconColor.g, iconColor.b
+							);
+							pDrawableImageInfo->SetIconColor(iconColor);
+						}
 					}
 #pragma endregion The reason for this is a bug in "ScenarioEditModeFloraPage.spui".
 
