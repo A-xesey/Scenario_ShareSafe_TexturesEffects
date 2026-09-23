@@ -1,0 +1,7 @@
+key parent ScenarioCustomizationTemplates!TemplateTextureCustom
+
+key CustomizationItemKey sg_solarblue_surface
+
+texts CustomizationItemName
+	(SSSTE-ScenarioCustomizationTextures!AquamarinePowder) "Aquamarine Powder"
+end
