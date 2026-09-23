@@ -17,7 +17,7 @@ private:
 protected:
     ResourceKey mCustomizationKey;
     ResourceKey mThumbnailKey;
-    LocalizedString mName;
+    const char16_t* mszName;
     bool mbIsSelected;
     bool mbIgnoreGroundCoverLock;
     IWindowPtr mpButton;
@@ -34,7 +34,7 @@ public:
     void SetSelection(bool bIsSelected);
     inline ResourceKey GetCustomization() { return mCustomizationKey; }
     inline ResourceKey GetThumbnail() { return mThumbnailKey; }
-    inline LocalizedString* GetName() { return &mName; }
+    inline const char16_t* GetName() { return mszName; }
     inline bool IsGroundCoverLockIgnored() { return mbIgnoreGroundCoverLock; }
     inline IWindow* GetButtonWindow() { return mpButton.get(); }
     inline bool IsSelected() const { return mbIsSelected; }

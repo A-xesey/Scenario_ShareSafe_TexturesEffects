@@ -1,4 +1,6 @@
 root~	0x0
+scenario_texture~	0x408a2100
+scenario_filter~	0x408a6f00
 auto_ScenarioCustomizationEffects_GroundCoverRocksLava
 HealthCritical
 beach_brown_light

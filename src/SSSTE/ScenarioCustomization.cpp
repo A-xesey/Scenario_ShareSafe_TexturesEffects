@@ -144,7 +144,7 @@ void ScenarioCustomization::InitItems(CustomizationItemsLookup itemsLookup)
                     continue;
                 if (!itemsLookup.mSearchString.empty())
                 {
-                    string16 itemName = pItem->GetName()->GetText();
+                    string16 itemName = pItem->GetName();
                     itemName.make_lower();
                     if (itemName.find(itemsLookup.mSearchString) == string16::npos)
                         continue;
@@ -204,8 +204,8 @@ void ScenarioCustomization::InitItems(CustomizationItemsLookup itemsLookup)
                     const ScenarioCustomizationItemPtr& b
                 )
                 {
-                    const char16_t* szTextA = a->GetName()->GetText();
-                    const char16_t* szTextB = b->GetName()->GetText();
+                    const char16_t* szTextA = a->GetName();
+                    const char16_t* szTextB = b->GetName();
                     return string16::comparei(
                         szTextA, szTextA + CharStrlen(szTextA),
                         szTextB, szTextB + CharStrlen(szTextB)
@@ -368,7 +368,7 @@ void ScenarioCustomization::UpdatePaletteTexture()
         Image::SetBackgroundByKey(mpPaletteTextureThumbnailWin, thumbnailKey);
     }
     UpdateSelectedCaption(mpPaletteTextureNameWin, mpSelectedItem
-        ? mpSelectedItem->GetName()->GetText()
+        ? mpSelectedItem->GetName()
         : ResourceKeyToString(GetCurrentCustomizationKey(mPropertyTexture))
     );
 }
@@ -408,7 +408,7 @@ void ScenarioCustomization::UpdatePaletteEffect()
         );
     }
     UpdateSelectedCaption(mpPaletteEffectNameWin, mpSelectedItem
-        ? mpSelectedItem->GetName()->GetText()
+        ? mpSelectedItem->GetName()
         : ResourceKeyToString(instance_id(customizationKeyCurrent.instanceID))
     );
     if (mPropertyEffect == kCustomizationPropertyEffectGround && g_pFloraGroundCoverLock)

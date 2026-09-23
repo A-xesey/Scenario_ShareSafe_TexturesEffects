@@ -9,6 +9,7 @@ ScenarioCustomizationItem::ScenarioCustomizationItem()
     , mbIgnoreGroundCoverLock(false)
     , mpButton(nullptr)
     , mpTooltipWinProc(nullptr)
+    , mszName(nullptr)
 {
 }
 
@@ -28,8 +29,16 @@ bool ScenarioCustomizationItem::SetCustomizationAndImage(
     if (!Property::GetKey(pPropList, PROPERTY_ID_CUSTOMIZATION_ITEM_KEY, mCustomizationKey))
         return false;
     mThumbnailKey = thumbnailKey;
-    if (!Property::GetText(pPropList, PROPERTY_ID_CUSTOMIZATION_ITEM_NAME, mName))
-        mName.SetText(0x0, 0x0);
+    Property* pPropertyName = nullptr;
+    if (pPropList->GetProperty(PROPERTY_ID_CUSTOMIZATION_ITEM_NAME, pPropertyName))
+    {
+        Property::TextProperty* pString = (Property::TextProperty*)pPropertyName->GetValueText();
+        mszName = pString->tableID && pString->instanceID
+            ? LocalizedString(pString->tableID, pString->instanceID).GetText()
+            : pString->buffer;
+    }
+    else
+        mszName = LocalizedString().GetText();
     Property::GetBool(
         pPropList,
         PROPERTY_ID_CUSTOMIZATION_ITEM_IS_GROUND_COVER,
@@ -42,7 +51,7 @@ bool ScenarioCustomizationItem::SetCustomizationAndImage(
         else
             return false;
         mpCursorWin = pButton->FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM_CURSOR);
-        mpTooltipWinProc = CreateTooltip(mName.GetText());
+        mpTooltipWinProc = CreateTooltip(mszName);
         pButton->AddWinProc(pHandler);
         pButton->AddWinProc(mpTooltipWinProc);
         mpButton = pButton;
