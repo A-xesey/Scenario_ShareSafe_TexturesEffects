@@ -22,35 +22,35 @@ extern intrusive_ptr<ScenarioFloraGroundCoverLock> g_pFloraGroundCoverLock;
 #pragma region Addresses
 namespace SSSTE
 {
-	using namespace ModAPI;
+    using namespace ModAPI;
 
-	namespace Addresses(cScenarioTerraformMode)
-	{
-		DefineAddress(SetVisualStyle, ChooseAddress(0xf079d0, 0xf339f0));
-		DefineAddress(SetGroundEffectId, ChooseAddress(0xf09140, 0xf35160));
-		DefineAddress(ReloadGroundEffect, ChooseAddress(0xf05d70, 0xf31d40));
-	}
+    namespace Addresses(cScenarioTerraformMode)
+    {
+        DefineAddress(SetVisualStyle, ChooseAddress(0xf079d0, 0xf339f0));
+        DefineAddress(SetGroundEffectId, ChooseAddress(0xf09140, 0xf35160));
+        DefineAddress(ReloadGroundEffect, ChooseAddress(0xf05d70, 0xf31d40));
+    }
 
-	namespace Addresses(cTerrainStateMgr)
-	{
-		DefineAddress(UpdateFromDefinition, ChooseAddress(0xf902d0, 0xfbc100));
-	}
-	
-	namespace Addresses(cScenarioEditModeDisplayStrategy)
-	{
-		DefineAddress(SetMode, ChooseAddress(0xeaab10, 0xed6620));
-	}
+    namespace Addresses(cTerrainStateMgr)
+    {
+        DefineAddress(UpdateFromDefinition, ChooseAddress(0xf902d0, 0xfbc100));
+    }
+    
+    namespace Addresses(cScenarioEditModeDisplayStrategy)
+    {
+        DefineAddress(SetMode, ChooseAddress(0xeaab10, 0xed6620));
+    }
 
-	namespace Addresses(cScenarioTerraformHistoryEntry)
-	{
-		DefineAddress(Undo, ChooseAddress(0xf0c450, 0xf383e0));
-		DefineAddress(Redo, ChooseAddress(0xf0c480, 0xf38410));
-	}
+    namespace Addresses(cScenarioTerraformHistoryEntry)
+    {
+        DefineAddress(Undo, ChooseAddress(0xf0c450, 0xf383e0));
+        DefineAddress(Redo, ChooseAddress(0xf0c480, 0xf38410));
+    }
 
-	namespace Addresses(ScenarioEditModeSculptFloraUI)
-	{
-		DefineAddress(UpdateFloraCategoryUI, ChooseAddress(0xebd020, 0xee8c80));
-	}
+    namespace Addresses(ScenarioEditModeSculptFloraUI)
+    {
+        DefineAddress(UpdateFloraCategoryUI, ChooseAddress(0xebd020, 0xee8c80));
+    }
 }
 #pragma endregion
 

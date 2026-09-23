@@ -3,7 +3,7 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
     <SporeSdkPath>E:\Всё, что связано со Spore\Spore-ModAPI\</SporeSdkPath>
-	<SporeLauncherPath>E:\PROGS\Spore ModAPI Launcher Kit\</SporeLauncherPath>
+    <SporeLauncherPath>E:\PROGS\Spore ModAPI Launcher Kit\</SporeLauncherPath>
   </PropertyGroup>
   <PropertyGroup />
   <ItemDefinitionGroup />

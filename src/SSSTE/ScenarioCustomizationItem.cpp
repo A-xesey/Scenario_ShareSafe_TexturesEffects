@@ -5,10 +5,10 @@
 using namespace App;
 
 ScenarioCustomizationItem::ScenarioCustomizationItem()
-	: mbIsSelected(false)
-	, mbIgnoreGroundCoverLock(false)
-	, mpButton(nullptr)
-	, mpTooltipWinProc(nullptr)
+    : mbIsSelected(false)
+    , mbIgnoreGroundCoverLock(false)
+    , mpButton(nullptr)
+    , mpTooltipWinProc(nullptr)
 {
 }
 
@@ -18,55 +18,55 @@ ScenarioCustomizationItem::~ScenarioCustomizationItem()
 }
 
 bool ScenarioCustomizationItem::SetCustomizationAndImage(
-	const PropertyList* pPropList,
-	ResourceKey thumbnailKey,
-	IWinProc* pHandler
+    const PropertyList* pPropList,
+    ResourceKey thumbnailKey,
+    IWinProc* pHandler
 )
 {
-	LoadByID(CONTROL_ID_CUSTOMIZATION_ITEM);
+    LoadByID(CONTROL_ID_CUSTOMIZATION_ITEM);
 
-	if (!Property::GetKey(pPropList, PROPERTY_ID_CUSTOMIZATION_ITEM_KEY, mCustomizationKey))
-		return false;
-	mThumbnailKey = thumbnailKey;
-	if (!Property::GetText(pPropList, PROPERTY_ID_CUSTOMIZATION_ITEM_NAME, mName))
-		mName.SetText(0x0, 0x0);
-	Property::GetBool(
-		pPropList,
-		PROPERTY_ID_CUSTOMIZATION_ITEM_IS_GROUND_COVER,
-		mbIgnoreGroundCoverLock
-	);
-	if (IWindow* pButton = FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM))
-	{
-		if (IWindow* pThumbnail = pButton->FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM_THUMBNAIL))
-			Image::SetBackgroundByKey(pThumbnail, mThumbnailKey);
-		else
-			return false;
-		mpCursorWin = pButton->FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM_CURSOR);
-		mpTooltipWinProc = CreateTooltip(mName.GetText());
-		pButton->AddWinProc(pHandler);
-		pButton->AddWinProc(mpTooltipWinProc);
-		mpButton = pButton;
-	}
+    if (!Property::GetKey(pPropList, PROPERTY_ID_CUSTOMIZATION_ITEM_KEY, mCustomizationKey))
+        return false;
+    mThumbnailKey = thumbnailKey;
+    if (!Property::GetText(pPropList, PROPERTY_ID_CUSTOMIZATION_ITEM_NAME, mName))
+        mName.SetText(0x0, 0x0);
+    Property::GetBool(
+        pPropList,
+        PROPERTY_ID_CUSTOMIZATION_ITEM_IS_GROUND_COVER,
+        mbIgnoreGroundCoverLock
+    );
+    if (IWindow* pButton = FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM))
+    {
+        if (IWindow* pThumbnail = pButton->FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM_THUMBNAIL))
+            Image::SetBackgroundByKey(pThumbnail, mThumbnailKey);
+        else
+            return false;
+        mpCursorWin = pButton->FindWindowByID(CONTROL_ID_CUSTOMIZATION_ITEM_CURSOR);
+        mpTooltipWinProc = CreateTooltip(mName.GetText());
+        pButton->AddWinProc(pHandler);
+        pButton->AddWinProc(mpTooltipWinProc);
+        mpButton = pButton;
+    }
 
-	SetSelection(false);
-	return true;
+    SetSelection(false);
+    return true;
 }
 
 void ScenarioCustomizationItem::SetSelection(bool bIsSelected)
 {
-	if (mpCursorWin)
-		mpCursorWin->SetVisible(bIsSelected);
-	mbIsSelected = bIsSelected;
+    if (mpCursorWin)
+        mpCursorWin->SetVisible(bIsSelected);
+    mbIsSelected = bIsSelected;
 }
 
 #pragma region Refcount
 int ScenarioCustomizationItem::AddRef()
 {
-	return DefaultRefCounted::AddRef();
+    return DefaultRefCounted::AddRef();
 }
 
 int ScenarioCustomizationItem::Release()
 {
-	return DefaultRefCounted::Release();
+    return DefaultRefCounted::Release();
 }
 #pragma endregion
