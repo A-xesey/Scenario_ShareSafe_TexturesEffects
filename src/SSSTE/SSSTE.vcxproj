@@ -104,6 +104,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="ScenarioCustomization.h" />
     <ClInclude Include="ScenarioCustomizationItem.h" />
+    <ClInclude Include="ScenarioCustomizationItemDefinitionImport.h" />
     <ClInclude Include="ScenarioFloraGroundCoverLock.h">
       <SubType>
       </SubType>
@@ -122,6 +123,7 @@
     </ClCompile>
     <ClCompile Include="ScenarioCustomization.cpp" />
     <ClCompile Include="ScenarioCustomizationItem.cpp" />
+    <ClCompile Include="ScenarioCustomizationItemDefinitionImport.cpp" />
     <ClCompile Include="ScenarioFloraGroundCoverLock.cpp">
       <SubType>
       </SubType>

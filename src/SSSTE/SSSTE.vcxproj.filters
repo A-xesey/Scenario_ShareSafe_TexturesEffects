@@ -32,6 +32,9 @@
     <ClInclude Include="Global.h">
       <Filter>SSSTE</Filter>
     </ClInclude>
+    <ClInclude Include="ScenarioCustomizationItemDefinitionImport.h">
+      <Filter>SSSTE</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -47,6 +50,9 @@
       <Filter>SSSTE</Filter>
     </ClCompile>
     <ClCompile Include="ScenarioFloraGroundCoverLock.cpp">
+      <Filter>SSSTE</Filter>
+    </ClCompile>
+    <ClCompile Include="ScenarioCustomizationItemDefinitionImport.cpp">
       <Filter>SSSTE</Filter>
     </ClCompile>
   </ItemGroup>

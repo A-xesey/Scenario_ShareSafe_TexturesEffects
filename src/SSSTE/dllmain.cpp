@@ -3,6 +3,7 @@
 #include "Global.h"
 #include "ScenarioCustomization.h"
 #include "ScenarioFloraGroundCoverLock.h"
+#include "ScenarioCustomizationItemDefinitionImport.h"
 #include <Spore\UI\ScrollFrameVertical.h>
 
 using namespace App;
@@ -299,6 +300,8 @@ void AttachDetours()
     cScenarioTerraformMode_SetVisualStyle::attach(
         GetAddress(SSSTE::cScenarioTerraformMode, SetVisualStyle)
     );
+
+    ScenarioCustomizationItemDefinitionImport::AttachDetours();
 }
 
 

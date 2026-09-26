@@ -33,3 +33,9 @@
 0x100000D2 Очистка эффекта
 
 0x100000E0 Игра должна быть запущена с ModAPI.
+
+
+# Save Areas
+
+0x408A2100 [Share-Safe Textures & Effects] Текстуры поверхности
+0x408A6F00 [Share-Safe Textures & Effects] Визуальные эффекты

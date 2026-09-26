@@ -34,3 +34,9 @@
 0x100000D2 Poista tehoste
 
 0x100000E0 Varmista että käynnistät pelin ModAPI:n kautta.
+
+
+# Save Areas
+
+0x408A2100 [Share-Safe Textures & Effects] Pintatekstuurit
+0x408A6F00 [Share-Safe Textures & Effects] Visuaaliset tehosteet

@@ -33,3 +33,9 @@
 0x100000D2 Clear Effect
 
 0x100000E0 Make sure you launch the game with ModAPI.
+
+
+# Save Areas
+
+0x408A2100 [Share-Safe Textures & Effects] Ground Textures
+0x408A6F00 [Share-Safe Textures & Effects] Visual Effects

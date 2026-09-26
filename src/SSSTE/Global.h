@@ -82,6 +82,8 @@ static const uint32_t PROPERTY_ID_PALETTE_CATEGORY_ICON_LIST_MODAPI = id("palett
 static const uint32_t GROUP_ID_TEXTURES_DEFINITIONS = 0x408a2100; // scenario_texture~
 static const uint32_t GROUP_ID_EFFECTS_DEFINITIONS = 0x408a6f00; // scenario_filter~
 
+static const uint32_t TABLE_ID_SAVE_AREAS = id("SSSTE");
+
 static const uint32_t CONTROL_ID_PALETTE = id("PlanetCustomizationPalette");
 static const uint32_t CONTROL_ID_MODAPI_HIDE = id("ModAPIHide"); // Error
 static const uint32_t CONTROL_ID_MODAPI_SHOW = id("ModAPIShow"); // Actual content
