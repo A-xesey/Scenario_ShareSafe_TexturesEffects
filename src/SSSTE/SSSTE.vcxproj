@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{07FC5B61-B575-4207-B464-AFAE6AF3FC19}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>ScenarioEditorExtend</RootNamespace>
+    <RootNamespace>SSSTE</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>SSSTE</ProjectName>
   </PropertyGroup>
@@ -70,6 +70,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -87,6 +88,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;SPOREMODAPITEMPLATE_EXPORTS;EXECUTABLE_TYPE=SPORE_STEAM;PATCHED_SPORE=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -100,11 +102,15 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DebugCheats\DebugCheats.h" />
+    <ClInclude Include="DebugCheats\GroundTextureTestCheat.h" />
+    <ClInclude Include="DebugCheats\VisualEffectTestCheat.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ScenarioCustomization.h" />
     <ClInclude Include="ScenarioCustomizationItem.h" />
     <ClInclude Include="ScenarioCustomizationItemDefinitionImport.h" />
+    <ClInclude Include="ScenarioCustomizationPaletteCategoryIcon.h" />
     <ClInclude Include="ScenarioFloraGroundCoverLock.h">
       <SubType>
       </SubType>
@@ -113,6 +119,9 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DebugCheats\DebugCheats.cpp" />
+    <ClCompile Include="DebugCheats\GroundTextureTestCheat.cpp" />
+    <ClCompile Include="DebugCheats\VisualEffectTestCheat.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -124,6 +133,7 @@
     <ClCompile Include="ScenarioCustomization.cpp" />
     <ClCompile Include="ScenarioCustomizationItem.cpp" />
     <ClCompile Include="ScenarioCustomizationItemDefinitionImport.cpp" />
+    <ClCompile Include="ScenarioCustomizationPaletteCategoryIcon.cpp" />
     <ClCompile Include="ScenarioFloraGroundCoverLock.cpp">
       <SubType>
       </SubType>

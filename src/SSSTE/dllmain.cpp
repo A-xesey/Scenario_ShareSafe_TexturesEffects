@@ -3,11 +3,16 @@
 #include "Global.h"
 #include "ScenarioCustomization.h"
 #include "ScenarioFloraGroundCoverLock.h"
+#include "ScenarioCustomizationPaletteCategoryIcon.h"
 #include "ScenarioCustomizationItemDefinitionImport.h"
 #include <Spore\UI\ScrollFrameVertical.h>
 
+#ifdef _DEBUG
+#include "DebugCheats\GroundTextureTestCheat.h"
+#include "DebugCheats\VisualEffectTestCheat.h"
+#endif
+
 using namespace App;
-using namespace ArgScript;
 using namespace Palettes;
 using namespace Simulator;
 using namespace UI;
@@ -18,56 +23,17 @@ ScenarioCustomizationPtr g_pWinProc = nullptr;
 ScenarioFloraGroundCoverLockPtr g_pFloraGroundCoverLock = nullptr;
 
 
-#ifdef _DEBUG
-class VisualEffectTestCheat
-    : public ICommand
-{
-public:
-    VisualEffectTestCheat() {}
-    ~VisualEffectTestCheat() {}
-
-    uint32_t ParseUniversal(const char* szArgument)
-    {
-        bool bIsInteger = true;
-        if (szArgument[0] == '0' && szArgument[1] == 'x')
-            return mpFormatParser->ParseUInt(szArgument);
-        for (const char* ch = szArgument; *ch != '\0'; ++ch)
-            if (*ch < '0' || *ch > '9')
-            {
-                bIsInteger = false;
-                break;
-            }
-        return bIsInteger
-            ? mpFormatParser->ParseInt(szArgument)
-            : id(szArgument);
-    }
-
-    void ParseLine(const Line& line) override
-    {
-        if (!IsScenarioMode() ||
-            ScenarioMode.GetMode() != cScenarioMode::Mode::EditMode ||
-            line.GetArgumentsCount() - 1 < 1
-        )
-            return;
-        ResourceKey visualEffectId = instance_id(ParseUniversal(line.GetArguments(1)[0]));
-        CALL(
-            GetAddress(SSSTE::cScenarioTerraformMode, SetVisualStyle),
-            void,
-            Args(cScenarioTerraformMode*, ResourceKey*),
-            Args(ScenarioMode.GetTerraformMode(), &visualEffectId)
-        );
-    }
-
-    const char* GetDescription(DescriptionMode mode) const override { return "meow"; }
-};
 
 void Initialize()
 {
-    CheatManager.AddCheat("sssteSetVisualStyle", new VisualEffectTestCheat());
-}
-#else
-void Initialize() {}
+#ifdef _DEBUG
+    using namespace DebugCheats;
+    
+    ICheatManager& rCheatManager = CheatManager;
+    rCheatManager.AddCheat(GroundTextureTestCheat::NAME, new GroundTextureTestCheat());
+    rCheatManager.AddCheat(VisualEffectTestCheat::NAME, new VisualEffectTestCheat());
 #endif
+}
 
 void Dispose()
 {
@@ -129,37 +95,6 @@ member_detour(
             pScrollFrameVerticalWin,
             pPanelItemsWin.get()
         );
-    }
-};
-
-member_detour(
-    PaletteCategory_ReadProp,
-    PaletteCategory,
-    bool(const ResourceKey&, uint32_t)
-)
-{
-    // This one is just for a fancy disabled button to be shown if the .dll of the mod isn't loaded.
-    bool detoured(const ResourceKey& name, uint32_t defaultLayoutID)
-    {
-        if (original_function(this, name, defaultLayoutID))
-        {
-            PropertyListPtr pCategoryPropList;
-            if (PropManager.GetPropertyList(name.instanceID, name.groupID, pCategoryPropList))
-            {
-                ResourceKey* pCategoryIconsModAPI;
-                size_t nCategoryIconsModAPICount;
-                if (Property::GetArrayKey(
-                        pCategoryPropList.get(),
-                        PROPERTY_ID_PALETTE_CATEGORY_ICON_LIST_MODAPI,
-                        nCategoryIconsModAPICount,
-                        pCategoryIconsModAPI
-                    ) && nCategoryIconsModAPICount == 9
-                )
-                    mCategoryIconList = pCategoryIconsModAPI;
-            }
-            return true;
-        }
-        return false;
     }
 };
 
@@ -283,7 +218,6 @@ member_detour(
 void AttachDetours()
 {
     PaletteCategoryUI_Load::attach(GetAddress(PaletteCategoryUI, Load));
-    PaletteCategory_ReadProp::attach(GetAddress(PaletteCategory, ReadProp));
     PaletteUI_SetActiveCategory::attach(GetAddress(PaletteUI, SetActiveCategory));
     cScenarioEditModeDisplayStrategy_SetMode::attach(
         GetAddress(SSSTE::cScenarioEditModeDisplayStrategy, SetMode)
@@ -301,6 +235,7 @@ void AttachDetours()
         GetAddress(SSSTE::cScenarioTerraformMode, SetVisualStyle)
     );
 
+    ScenarioCustomizationPaletteCategoryIcon::AttachDetours();
     ScenarioCustomizationItemDefinitionImport::AttachDetours();
 }
 

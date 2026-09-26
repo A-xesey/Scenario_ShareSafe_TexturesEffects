@@ -502,8 +502,8 @@ void ScenarioCustomization::SetProperty(uint32_t propertyId, ResourceKey customi
         CALL(
             GetAddress(SSSTE::cScenarioTerraformMode, SetVisualStyle),
             void,
-            Args(cScenarioTerraformMode*, ResourceKey*),
-            Args(mpScenarioTerraformMode, &customizationKey)
+            Args(cScenarioTerraformMode*, ResourceKey&),
+            Args(mpScenarioTerraformMode, customizationKey)
         );
         break;
     case kCustomizationPropertyEffectGround:
