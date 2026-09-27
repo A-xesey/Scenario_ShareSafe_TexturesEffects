@@ -1,5 +1,6 @@
 #pragma once
 
+#pragma region Macros
 // Scenario Share-Safe Textures & Effects
 #define ModID "SSSTE"
 #define PrivateName(name) (ModID "-" name)
@@ -10,58 +11,18 @@
 
 #define LookupWindow(pWin, controlId) pWin ? pWin->FindWindowByID(controlId) : nullptr
 #define Attach(pWin) if (pWin) pWin->AddWinProc(this)
+#pragma endregion
 
-class ScenarioEditModeSculptFloraUI
-{
-private:
-    ScenarioEditModeSculptFloraUI();
 
-    uint8_t mUnknown[0x168];
-public:
-    UTFWin::UILayout* mpLayout;
-};
-
+#pragma region Externs
 class ScenarioCustomization;
 class ScenarioFloraGroundCoverLock;
 
 extern int g_nScenarioCustomizationCategoryIndex;
 extern intrusive_ptr<ScenarioCustomization> g_pWinProc;
 extern intrusive_ptr<ScenarioFloraGroundCoverLock> g_pFloraGroundCoverLock;
-
-#pragma region Addresses
-namespace SSSTE
-{
-    using namespace ModAPI;
-
-    namespace Addresses(cScenarioTerraformMode)
-    {
-        DefineAddress(SetVisualStyle, ChooseAddress(0xf079d0, 0xf339f0));
-        DefineAddress(SetGroundEffectId, ChooseAddress(0xf09140, 0xf35160));
-        DefineAddress(ReloadGroundEffect, ChooseAddress(0xf05d70, 0xf31d40));
-    }
-
-    namespace Addresses(cTerrainStateMgr)
-    {
-        DefineAddress(UpdateFromDefinition, ChooseAddress(0xf902d0, 0xfbc100));
-    }
-    
-    namespace Addresses(cScenarioEditModeDisplayStrategy)
-    {
-        DefineAddress(SetMode, ChooseAddress(0xeaab10, 0xed6620));
-    }
-
-    namespace Addresses(cScenarioTerraformHistoryEntry)
-    {
-        DefineAddress(Undo, ChooseAddress(0xf0c450, 0xf383e0));
-        DefineAddress(Redo, ChooseAddress(0xf0c480, 0xf38410));
-    }
-
-    namespace Addresses(ScenarioEditModeSculptFloraUI)
-    {
-        DefineAddress(UpdateFloraCategoryUI, ChooseAddress(0xebd020, 0xee8c80));
-    }
-}
 #pragma endregion
+
 
 #pragma region Constants
 static const uint32_t PROPERTY_ID_TERRAIN_ABOVE_DETAIL2 = 0x3b4f7c9; // terrainThemeAboveDetail2

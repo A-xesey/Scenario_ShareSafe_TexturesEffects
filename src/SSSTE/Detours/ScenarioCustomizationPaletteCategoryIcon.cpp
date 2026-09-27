@@ -1,9 +1,9 @@
 #include "stdafx.h"
-#include "Global.h"
 #include "ScenarioCustomizationPaletteCategoryIcon.h"
 
 using namespace App;
 using namespace Palettes;
+
 
 
 member_detour(

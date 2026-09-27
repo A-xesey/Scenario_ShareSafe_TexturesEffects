@@ -3,10 +3,11 @@
 #include "ScenarioCustomizationItem.h"
 #include <Spore\UTFWin\IText.h>
 
-#define ScenarioCustomizationPtr intrusive_ptr<ScenarioCustomization>
-
-// To avoid repeating UTFWin:: all the time.
 using namespace UTFWin;
+
+
+
+#define ScenarioCustomizationPtr intrusive_ptr<ScenarioCustomization>
 
 class ScenarioCustomization 
     : public IWinProc
@@ -54,7 +55,8 @@ public:
             , mSearchString(move(searchString))
             , mbFillPanelWin(bFillPanelWin)
             , mbIgnoreBlacklists(bIgnoreBlacklists)
-        { }
+        {
+        }
 
         CustomizationItemsLookup(
             CustomizationItemsGroup itemsGroup,
@@ -63,7 +65,8 @@ public:
             bool bIgnoreBlacklists
         )
             : CustomizationItemsLookup(itemsGroup, propertyId, u"", bFillPanelWin, bIgnoreBlacklists)
-        { }
+        {
+        }
 
         inline bool operator==(const CustomizationItemsLookup& b) const
         {

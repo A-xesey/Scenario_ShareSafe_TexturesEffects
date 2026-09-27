@@ -20,6 +20,9 @@
     <Filter Include="SSSTE\Debug Cheats">
       <UniqueIdentifier>{ff49e2d0-14fd-426e-9e9e-15161868b5c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SSSTE\Spore Classes">
+      <UniqueIdentifier>{79d678d6-7016-4d67-987c-e24c2842468f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -32,21 +35,6 @@
     <ClInclude Include="Global.h">
       <Filter>SSSTE</Filter>
     </ClInclude>
-    <ClInclude Include="ScenarioCustomizationItemDefinitionImport.h">
-      <Filter>SSSTE\Detours</Filter>
-    </ClInclude>
-    <ClInclude Include="ScenarioCustomizationPaletteCategoryIcon.h">
-      <Filter>SSSTE\Detours</Filter>
-    </ClInclude>
-    <ClInclude Include="ScenarioFloraGroundCoverLock.h">
-      <Filter>SSSTE\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="ScenarioCustomization.h">
-      <Filter>SSSTE\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="ScenarioCustomizationItem.h">
-      <Filter>SSSTE\UI</Filter>
-    </ClInclude>
     <ClInclude Include="DebugCheats\VisualEffectTestCheat.h">
       <Filter>SSSTE\Debug Cheats</Filter>
     </ClInclude>
@@ -56,6 +44,30 @@
     <ClInclude Include="DebugCheats\DebugCheats.h">
       <Filter>SSSTE\Debug Cheats</Filter>
     </ClInclude>
+    <ClInclude Include="Spore\ScenarioEditModeSculptFloraUI.h">
+      <Filter>SSSTE\Spore Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Addresses.h">
+      <Filter>SSSTE</Filter>
+    </ClInclude>
+    <ClInclude Include="Detours\ScenarioCustomizationPaletteCategoryIcon.h">
+      <Filter>SSSTE\Detours</Filter>
+    </ClInclude>
+    <ClInclude Include="Detours\ScenarioCustomizationItemDefinitionImport.h">
+      <Filter>SSSTE\Detours</Filter>
+    </ClInclude>
+    <ClInclude Include="Spore\ScenarioEditModeFileDrop.h">
+      <Filter>SSSTE\Spore Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ScenarioFloraGroundCoverLock.h">
+      <Filter>SSSTE\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ScenarioCustomization.h">
+      <Filter>SSSTE\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ScenarioCustomizationItem.h">
+      <Filter>SSSTE\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -63,21 +75,6 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Internal</Filter>
-    </ClCompile>
-    <ClCompile Include="ScenarioCustomizationItemDefinitionImport.cpp">
-      <Filter>SSSTE\Detours</Filter>
-    </ClCompile>
-    <ClCompile Include="ScenarioCustomizationPaletteCategoryIcon.cpp">
-      <Filter>SSSTE\Detours</Filter>
-    </ClCompile>
-    <ClCompile Include="ScenarioFloraGroundCoverLock.cpp">
-      <Filter>SSSTE\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="ScenarioCustomization.cpp">
-      <Filter>SSSTE\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="ScenarioCustomizationItem.cpp">
-      <Filter>SSSTE\UI</Filter>
     </ClCompile>
     <ClCompile Include="DebugCheats\VisualEffectTestCheat.cpp">
       <Filter>SSSTE\Debug Cheats</Filter>
@@ -87,6 +84,21 @@
     </ClCompile>
     <ClCompile Include="DebugCheats\DebugCheats.cpp">
       <Filter>SSSTE\Debug Cheats</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours\ScenarioCustomizationItemDefinitionImport.cpp">
+      <Filter>SSSTE\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours\ScenarioCustomizationPaletteCategoryIcon.cpp">
+      <Filter>SSSTE\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ScenarioCustomization.cpp">
+      <Filter>SSSTE\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ScenarioCustomizationItem.cpp">
+      <Filter>SSSTE\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ScenarioFloraGroundCoverLock.cpp">
+      <Filter>SSSTE\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

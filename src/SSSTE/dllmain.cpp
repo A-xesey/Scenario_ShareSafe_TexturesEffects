@@ -1,10 +1,9 @@
-// dllmain.cpp : Defines the entry point for the DLL application.
 #include "stdafx.h"
-#include "Global.h"
-#include "ScenarioCustomization.h"
-#include "ScenarioFloraGroundCoverLock.h"
-#include "ScenarioCustomizationPaletteCategoryIcon.h"
-#include "ScenarioCustomizationItemDefinitionImport.h"
+#include "Detours\ScenarioCustomizationPaletteCategoryIcon.h"
+#include "Detours\ScenarioCustomizationItemDefinitionImport.h"
+#include "UI\ScenarioCustomization.h"
+#include "UI\ScenarioFloraGroundCoverLock.h"
+#include "Spore\ScenarioEditModeSculptFloraUI.h"
 #include <Spore\UI\ScrollFrameVertical.h>
 
 #ifdef _DEBUG
@@ -40,6 +39,7 @@ void Dispose()
     g_pWinProc = nullptr;
     g_pFloraGroundCoverLock = nullptr;
 }
+
 
 #pragma region Detours
 member_detour(
@@ -202,12 +202,12 @@ member_detour(
 member_detour(
     cScenarioTerraformMode_SetVisualStyle,
     cScenarioTerraformMode,
-    void(ResourceKey*)
+    void(ResourceKey&)
 )
 {
-    void detoured(ResourceKey* pKey)
+    void detoured(ResourceKey& rKey)
     {
-        original_function(this, pKey);
+        original_function(this, rKey);
         cScenarioMode& rScenarioMode = ScenarioMode;
         if (g_pWinProc && rScenarioMode.GetMode() == cScenarioMode::Mode::EditMode)
             g_pWinProc->InitEffects(true);

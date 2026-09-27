@@ -1,8 +1,9 @@
 #include "stdafx.h"
-#include "Global.h"
 #include "ScenarioCustomizationItem.h"
 
 using namespace App;
+
+
 
 ScenarioCustomizationItem::ScenarioCustomizationItem()
     : mbIsSelected(false)
@@ -13,10 +14,10 @@ ScenarioCustomizationItem::ScenarioCustomizationItem()
 {
 }
 
-
 ScenarioCustomizationItem::~ScenarioCustomizationItem()
 {
 }
+
 
 bool ScenarioCustomizationItem::SetCustomizationAndImage(
     const PropertyList* pPropList,

@@ -17,3 +17,6 @@
 
 // This is used everywhere
 #include <Spore\BasicIncludes.h>
+
+#include "Global.h"
+#include "Addresses.h"

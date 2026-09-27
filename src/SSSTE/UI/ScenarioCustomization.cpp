@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "Global.h"
 #include "ScenarioCustomization.h"
 #include "ScenarioFloraGroundCoverLock.h"
 #include <EASTL\sort.h>
@@ -10,6 +9,8 @@ using namespace Audio;
 using namespace Simulator;
 using namespace Terrain;
 using namespace UI;
+
+
 
 ScenarioCustomization::ScenarioCustomization(
     IWindow* pPaletteCategoryWin,
@@ -106,6 +107,7 @@ ScenarioCustomization::ScenarioCustomization(
 ScenarioCustomization::~ScenarioCustomization()
 {
 }
+
 
 void ScenarioCustomization::InitItems(CustomizationItemsLookup itemsLookup)
 {

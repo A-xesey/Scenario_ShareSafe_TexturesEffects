@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "Global.h"
 #include "DebugCheats.h"
 #include "GroundTextureTestCheat.h"
 
@@ -7,6 +6,7 @@ using namespace App;
 using namespace ArgScript;
 using namespace Simulator;
 using namespace Terrain;
+
 
 
 namespace DebugCheats

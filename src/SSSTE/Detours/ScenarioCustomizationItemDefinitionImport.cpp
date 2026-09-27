@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "Global.h"
 #include "ScenarioCustomizationItemDefinitionImport.h"
 
 using namespace App;
@@ -8,6 +7,7 @@ string16 g_sTextureDefinitionsImportPath;
 string16 g_sEffectDefinitionsImportPath;
 bool g_bDefinitionPathsInitialized = false;
 uint32_t g_nSaveGroupId = 0x0;
+
 
 
 member_detour(

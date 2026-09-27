@@ -1,11 +1,11 @@
 #include "stdafx.h"
-#include "Global.h"
 #include "DebugCheats.h"
 #include "VisualEffectTestCheat.h"
 
 using namespace App;
 using namespace ArgScript;
 using namespace Simulator;
+
 
 
 namespace DebugCheats

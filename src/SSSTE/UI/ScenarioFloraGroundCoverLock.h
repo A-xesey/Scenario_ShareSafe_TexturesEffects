@@ -1,27 +1,29 @@
 #pragma once
 
-#include "Global.h"
-
-#define ScenarioFloraGroundCoverLockPtr intrusive_ptr<ScenarioFloraGroundCoverLock>
+#include "Spore\ScenarioEditModeSculptFloraUI.h"
 
 using namespace UTFWin;
+
+
+
+#define ScenarioFloraGroundCoverLockPtr intrusive_ptr<ScenarioFloraGroundCoverLock>
 
 class ScenarioFloraGroundCoverLock 
     : public Object
     , public DefaultRefCounted
 {
-protected:
-    const IWindow* mpFloraFlowersWin;
-    IWindow* mpFloraFlowersCheckboxWin;
-    map<IWindow*, bool> mWinLockMap;
-    bool mbIsLocked;
-
 private:
 #pragma region Constants
     static constexpr float COLOR_VALUE_DISABLED = 0.7f;
 
     static const uint32_t CONTROL_ID_PALETTE_FLORA_FLOWERS_CHECKBOX = 0x16b1858d;
 #pragma endregion
+
+protected:
+    const IWindow* mpFloraFlowersWin;
+    IWindow* mpFloraFlowersCheckboxWin;
+    map<IWindow*, bool> mWinLockMap;
+    bool mbIsLocked;
 
 public:
     static const uint32_t TYPE = id(PrivateName("ScenarioFloraGroundCoverLock"));

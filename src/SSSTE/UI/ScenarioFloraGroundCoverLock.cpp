@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "ScenarioFloraGroundCoverLock.h"
 
+
+
 ScenarioFloraGroundCoverLock::ScenarioFloraGroundCoverLock(
     ScenarioEditModeSculptFloraUI* pEditModeSculptFloraUI,
     bool bIsLocked
@@ -24,7 +26,8 @@ ScenarioFloraGroundCoverLock::ScenarioFloraGroundCoverLock(
 
 #pragma region SporeStdDrawable Fix for Buttons
                     if (SporeStdDrawable* pDrawable = (SporeStdDrawable*)(pChildWin->
-                        GetDrawable()->Cast(SporeStdDrawable::TYPE)))
+                            GetDrawable()->Cast(SporeStdDrawable::TYPE))
+                    )
                     {
                         SporeStdDrawableImageInfo* pDrawableImageInfo = pDrawable->GetImageInfo(1);
                         pDrawableImageInfo->SetIconDrawMode(IconDrawModes::WindowSize);
@@ -60,11 +63,9 @@ ScenarioFloraGroundCoverLock::ScenarioFloraGroundCoverLock(
     SetLock(bIsLocked);
 }
 
-
 ScenarioFloraGroundCoverLock::~ScenarioFloraGroundCoverLock()
 {
 }
-
 
 
 void ScenarioFloraGroundCoverLock::SetLock(bool bLock)

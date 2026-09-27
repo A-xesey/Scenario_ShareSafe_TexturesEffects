@@ -102,26 +102,28 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Addresses.h" />
     <ClInclude Include="DebugCheats\DebugCheats.h" />
     <ClInclude Include="DebugCheats\GroundTextureTestCheat.h" />
     <ClInclude Include="DebugCheats\VisualEffectTestCheat.h" />
+    <ClInclude Include="Detours\ScenarioCustomizationItemDefinitionImport.h" />
+    <ClInclude Include="Detours\ScenarioCustomizationPaletteCategoryIcon.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="ScenarioCustomization.h" />
-    <ClInclude Include="ScenarioCustomizationItem.h" />
-    <ClInclude Include="ScenarioCustomizationItemDefinitionImport.h" />
-    <ClInclude Include="ScenarioCustomizationPaletteCategoryIcon.h" />
-    <ClInclude Include="ScenarioFloraGroundCoverLock.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
+    <ClInclude Include="Spore\ScenarioEditModeFileDrop.h" />
+    <ClInclude Include="Spore\ScenarioEditModeSculptFloraUI.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="UI\ScenarioCustomization.h" />
+    <ClInclude Include="UI\ScenarioCustomizationItem.h" />
+    <ClInclude Include="UI\ScenarioFloraGroundCoverLock.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugCheats\DebugCheats.cpp" />
     <ClCompile Include="DebugCheats\GroundTextureTestCheat.cpp" />
     <ClCompile Include="DebugCheats\VisualEffectTestCheat.cpp" />
+    <ClCompile Include="Detours\ScenarioCustomizationItemDefinitionImport.cpp" />
+    <ClCompile Include="Detours\ScenarioCustomizationPaletteCategoryIcon.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -130,18 +132,13 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ScenarioCustomization.cpp" />
-    <ClCompile Include="ScenarioCustomizationItem.cpp" />
-    <ClCompile Include="ScenarioCustomizationItemDefinitionImport.cpp" />
-    <ClCompile Include="ScenarioCustomizationPaletteCategoryIcon.cpp" />
-    <ClCompile Include="ScenarioFloraGroundCoverLock.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="UI\ScenarioCustomization.cpp" />
+    <ClCompile Include="UI\ScenarioCustomizationItem.cpp" />
+    <ClCompile Include="UI\ScenarioFloraGroundCoverLock.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SdkPathConfig.props" />

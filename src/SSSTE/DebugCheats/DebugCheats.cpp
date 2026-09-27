@@ -1,8 +1,8 @@
 #include "stdafx.h"
-#include "Global.h"
 #include "DebugCheats.h"
 
 using namespace ArgScript;
+
 
 
 namespace DebugCheats

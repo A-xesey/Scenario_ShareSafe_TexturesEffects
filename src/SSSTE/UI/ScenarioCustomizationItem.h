@@ -1,9 +1,10 @@
 #pragma once
 
-#define ScenarioCustomizationItemPtr intrusive_ptr<ScenarioCustomizationItem>
-
-// To avoid repeating UTFWin:: all the time.
 using namespace UTFWin;
+
+
+
+#define ScenarioCustomizationItemPtr intrusive_ptr<ScenarioCustomizationItem>
 
 class ScenarioCustomizationItem 
     : public UILayout
