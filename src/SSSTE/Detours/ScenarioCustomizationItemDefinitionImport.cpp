@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "ScenarioCustomizationItemDefinitionImport.h"
+#include "UI\ScenarioCustomization.h"
+#include "Spore\ScenarioEditModeFileDrop.h"
 
 using namespace App;
 
@@ -83,6 +85,21 @@ member_detour(
     }
 };
 
+member_detour(
+    ScenarioEditModeFileDrop_HandleMessage,
+    ScenarioEditModeFileDrop,
+    bool(uint32_t, void*)
+)
+{
+    bool detoured(uint32_t messageID, void* pMessage)
+    {
+        bool bResult = original_function(this, messageID, pMessage);
+        if (g_pWinProc)
+            g_pWinProc->SwitchPaletteCategory();
+        return bResult;
+    }
+};
+
 
 namespace ScenarioCustomizationItemDefinitionImport
 {
@@ -94,6 +111,9 @@ namespace ScenarioCustomizationItemDefinitionImport
         );
         Thumbnail_cImportExport_ImportDirectoryPNGs::attach(
             GetAddress(Thumbnail_cImportExport, ImportDirectoryPNGs)
+        );
+        ScenarioEditModeFileDrop_HandleMessage::attach(
+            GetAddress(SSSTE::ScenarioEditModeFileDrop, HandleMessage)
         );
     }
 }
