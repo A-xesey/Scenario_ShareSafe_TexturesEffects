@@ -12,7 +12,7 @@ member_detour(
     bool(const ResourceKey&, uint32_t)
 )
 {
-    bool detoured(const ResourceKey & name, uint32_t defaultLayoutID)
+    bool detoured(const ResourceKey& name, uint32_t defaultLayoutID)
     {
         if (original_function(this, name, defaultLayoutID))
         {

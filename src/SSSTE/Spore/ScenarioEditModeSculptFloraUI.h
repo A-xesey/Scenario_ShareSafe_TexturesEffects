@@ -3,7 +3,7 @@
 class ScenarioEditModeSculptFloraUI
 {
 private:
-    ScenarioEditModeSculptFloraUI();
+    ScenarioEditModeSculptFloraUI() = delete;
 
     uint8_t mUnknown[0x168];
 public:

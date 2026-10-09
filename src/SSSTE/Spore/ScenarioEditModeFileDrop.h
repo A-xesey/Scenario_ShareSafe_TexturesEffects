@@ -2,4 +2,6 @@
 
 class ScenarioEditModeFileDrop
 {
+private:
+    ScenarioEditModeFileDrop() = delete;
 };
