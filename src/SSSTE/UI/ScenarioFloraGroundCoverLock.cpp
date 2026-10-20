@@ -32,7 +32,7 @@ ScenarioFloraGroundCoverLock::ScenarioFloraGroundCoverLock(
                         SporeStdDrawableImageInfo* pDrawableImageInfo = pDrawable->GetImageInfo(1);
                         pDrawableImageInfo->SetIconDrawMode(IconDrawModes::WindowSize);
                         Color iconColor = pDrawableImageInfo->GetIconColor();
-                        if (iconColor == Color(0xff, 0xff, 0xff, 0xff))
+                        if (iconColor == Color::WHITE)
                         {
                             Vector3 iconColorHSV;
                             Color::RGBToHSV(

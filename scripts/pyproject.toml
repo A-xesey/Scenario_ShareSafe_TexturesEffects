@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+package = false
+
+
+
+[dependency-groups]
+defgen = [
+    "fixedint>=0.2.0",
+    "crcmod>=1.7",
+    "pypng>=0.20220715.0",
+    "zopfli>=0.2.3",
+    "pillow>=13.0.0",
+]
+
+[tool.pylint.main]
+prefer-stubs = true
+ignore = ["prerequisites"]
+init-hook = "import sys, pathlib; sys.path += map(str, pathlib.Path('prerequisites').glob('*'))"
+
+[tool.pyright]
+extraPaths = [
+    "prerequisites/SporeGlobals-Python",
+    "prerequisites/Spore_EP1Stegano-Python",
+]

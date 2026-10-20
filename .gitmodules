@@ -1,0 +1,6 @@
+[submodule "scripts/prerequisites/SporeGlobals-Python"]
+	path = scripts/prerequisites/SporeGlobals-Python
+	url = https://github.com/Spore-Community/SporeGlobals-Python.git
+[submodule "scripts/prerequisites/Spore_EP1Stegano-Python"]
+	path = scripts/prerequisites/Spore_EP1Stegano-Python
+	url = https://github.com/Spore-Community/Spore_EP1Stegano-Python.git
