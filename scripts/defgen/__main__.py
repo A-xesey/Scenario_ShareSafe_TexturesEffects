@@ -36,6 +36,7 @@ CUSTOMIZATION_ITEM_NAME: UInt32 = UInt32(fnv1('CustomizationItemName'))
 
 
 _DEFAULT_TEMPLATE_TEXTURE: ResourceKey | None = ResourceKey(fnv1('TemplateTextureCustom'),
+                                                            None,
                                                             fnv1('ScenarioCustomizationTemplates'))
 _DEFAULT_TEMPLATE_EFFECT: ResourceKey | None = None
 
@@ -72,9 +73,10 @@ def _action_encode(customization_key: ResourceKey,
                    template_key: ResourceKey | None = None,
                    name: str | None = None,
                    use_zopfli: bool = True) -> int:
-    logging.info(f'Generating \"{output_path}\" with thumbnail \"{image_path}\"'
-                 + f' and mask \"{mask_path}\"' if mask_path else ''
-                 + '...')
+    logging.info('Generating "%s" with thumbnail "%s"%s...',
+                 output_path,
+                 image_path,
+                 f' and mask "{mask_path}"' if mask_path else '')
     if name:
         logging.info('%s:', name)
     else:
@@ -84,7 +86,7 @@ def _action_encode(customization_key: ResourceKey,
                  definition_key)
     if template_key:
         logging.info('(the template is %s)', customization_key)
-    logging.info('Zopfli & ZopfliPNG are ' + 'ON' if use_zopfli else 'OFF' + '.')
+    logging.info('Zopfli & ZopfliPNG are %s.', 'ON' if use_zopfli else 'OFF')
 
     stack: ExitStack
     with ExitStack() as stack:
@@ -121,9 +123,7 @@ def _action_encode(customization_key: ResourceKey,
             CUSTOMIZATION_ITEM_NAME: [Text(placeholder=Text.String16Placeholder(name))]
         }
         if template_key:
-            proplist |= {
-                PARENT: template_key
-            }
+            proplist[PARENT] = template_key
 
         logging.info('Serializing the property list...')
         proplist_io: BytesIO
@@ -250,7 +250,7 @@ def _action_main() -> int:
                               args.name,
                               args.use_zopfli)
     # effects: action
-    elif args.command in ['effect', 'fx']:
+    if args.command in ['effect', 'fx']:
         return _action_encode(ResourceKey(_parse_uint32(args.input_instance_id)),
                               ResourceKey(type_id=PROP, group_id=SCENARIO_FILTER),
                               args.input_thumb,
