@@ -85,7 +85,7 @@ def _action_encode(customization_key: ResourceKey,
                  customization_key,
                  definition_key)
     if template_key:
-        logging.info('(the template is %s)', customization_key)
+        logging.info('(the template is %s)', template_key)
     logging.info('Zopfli & ZopfliPNG are %s.', 'ON' if use_zopfli else 'OFF')
 
     stack: ExitStack
