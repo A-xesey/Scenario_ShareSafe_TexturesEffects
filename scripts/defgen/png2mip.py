@@ -68,16 +68,19 @@ def read_image(image: bytes | ImageFile.ImageFile | BinaryIO,
     g: Image.Image
     b: Image.Image
     a: Image.Image
-    image_rgba: Image.Image
+    image_size: tuple[int, int]
     if mask:
         mask_rgba: Image.Image = _read_image(mask)
-        image_rgba = _read_image(image, lambda image: _resize(image, mask_rgba.size))
-        r, g, b, _ = image_rgba.split()
+        image_size = mask_rgba.size
+        image_rgb: Image.Image
+        image_rgb = _read_image(image, lambda image: _resize(image.convert('RGB'), image_size))
+        r, g, b = image_rgb.split()
         a, _, _, _ = mask_rgba.split()
     else:
-        image_rgba = _read_image(image)
+        image_rgba: Image.Image = _read_image(image)
+        image_size = image_rgba.size
         r, g, b, a = image_rgba.split()
-    return (Image.merge('RGBA', (b, g, r, a)).tobytes(), image_rgba.size)
+    return (Image.merge('RGBA', (b, g, r, a)).tobytes(), image_size)
 
 def stegano_from(image: BGRA,
                  header: MiPHeader,
