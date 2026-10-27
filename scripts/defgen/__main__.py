@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-'''Generates the definition for a ground texture or a visual effect from the CLI.'''#TODO:docstrings
+'''Generates the definition for a ground texture or a visual effect from the CLI.'''
 
 
 
@@ -13,7 +13,7 @@ from io import BytesIO, BufferedReader, BufferedWriter
 from pathlib import Path
 from PIL import UnidentifiedImageError
 from spore_globals.fnv import fnv1
-from spore_globals.property import *
+from spore_globals.property import UInt32, ResourceKey, Text, PropertyList, serialize
 from .mip_metadata import MiPHeader, ServerID
 from .png2mip import BGRA, read_image, bgra_to_mip
 
@@ -29,8 +29,8 @@ SCENARIO_FILTER: UInt32 = UInt32(0x408a6f00)
 
 # property ids
 PARENT: UInt32 = UInt32(0xb2cccb)
-CUSTOMIZATION_ITEM_KEY: UInt32 = UInt32(fnv1('CustomizationItemKey'))
-CUSTOMIZATION_ITEM_NAME: UInt32 = UInt32(fnv1('CustomizationItemName'))
+CUSTOMIZATION_ITEM_KEY: UInt32 = fnv1('CustomizationItemKey')
+CUSTOMIZATION_ITEM_NAME: UInt32 = fnv1('CustomizationItemName')
 
 
 
@@ -51,19 +51,41 @@ _DEFAULT_METADATA: dict = {
 
 
 def _parse_uint32(string: str | None) -> UInt32 | None:
+    '''Parses the stringified UInt32 as a hexadecimal (0x...) value, or a name to hash with FNV1.
+    
+    Arguments:
+        string (str | None): The string to parse UInt32 from.
+    
+    Returns:
+        out (UInt32 | None): The parsed value, or None if the string is None.
+    '''
     if not string:
         return None
     return UInt32(int(string, 16)) if string.startswith('0x') else fnv1(string)
 
-def _parse_key(key: str) -> ResourceKey:
+def _parse_key(string: str | None) -> ResourceKey:
+    '''Parses the stringified ResourceKey with hexadecimal (0x...) values, or names to hash
+    with FNV1.
+    
+    Arguments:
+        string: (str | None): The string to parse ResourceKey from.
+    
+    Returns:
+        out (ResourceKey): The parsed key, or (0, 0, 0) if the string is None.
+    '''
+    if not string:
+        return ResourceKey(0)
     instance_id: str
     type_id: str | None = None
     group_id: str | None = None
-    group_id, _, instance_id = key.rpartition('!')
+    group_id, _, instance_id = string.rpartition('!')
     instance_id, _, type_id = instance_id.partition('.')
     return ResourceKey(_parse_uint32(instance_id),
                        _parse_uint32(type_id),
                        _parse_uint32(group_id))
+
+
+
 
 def _action_encode(customization_key: ResourceKey,
                    definition_key: ResourceKey,
@@ -73,6 +95,21 @@ def _action_encode(customization_key: ResourceKey,
                    template_key: ResourceKey | None = None,
                    name: str | None = None,
                    use_zopfli: bool = True) -> int:
+    '''Encodes the definition into a M-i-P PNG file.
+    
+    Arguments:
+        customization_key: (ResourceKey): The customization key of the encoded definition.
+        definition_key: (ResourceKey): The ResourceKey of a .prop file of the definition.
+        image_path: (str): The path to the thumbnail to use.
+        output_path: (str): The path to write the result to.
+        mask_path: (str | None): The path to the alpha channel mask to apply to the thumbnail.
+        template_key (ResourceKey | None): The ResourceKey of the template (parent) .prop file.
+        name (str | None): The name of the definition. Defaults to str(customization_key) if None.
+        use_zopfli (bool): If Zopfli & ZopfliPNG should be used or not. Default: True.
+    
+    Returns:
+        out (int): The status code: 0 if successful, 1 if failed.
+    '''
     logging.info('Generating "%s" with thumbnail "%s"%s...',
                  output_path,
                  image_path,
@@ -149,11 +186,19 @@ def _action_encode(customization_key: ResourceKey,
         logging.info('Done. Have a good Timestamp().')
         return 0
 
+
+
+
 def _action_main() -> int:
+    '''Main entry point of defgen.
+
+    Returns:
+        out (int): The status code: 0 if successful, 1 if failed.
+    '''
     status_code: int = 1
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
         prog='defgen',
-        description=('(Def)inition (gen)erator for ground textures & effects that packs those into'
+        description=('(Def)inition (gen)erator for ground textures & effects that packs those into '
                      + 'Spore M-i-Ps.')
     )
     parser.add_argument(
